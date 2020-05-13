@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Item implements Serializable {
-
+    // TODO: 5/13/2020 Remove this class - left here if we need something from it.
     public enum Category {
         NA, LOW_RANGE, MID_RANGE, HIGH_RANGE,
         SPECIAL_MIDHIGH_RANGE //used in chapter 4
