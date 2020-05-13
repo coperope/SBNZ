@@ -9,9 +9,9 @@ public class CarModel implements Serializable {
     // TODO: 5/13/2020 Add annotations.
     private Long id;
     private String name;
-    private main.java.facts.Brand brand;
+    private Brand brand;
 
-    public CarModel(Long id, String name, main.java.facts.Brand brand) {
+    public CarModel(Long id, String name, Brand brand) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -33,11 +33,11 @@ public class CarModel implements Serializable {
         this.name = name;
     }
 
-    public main.java.facts.Brand getBrand() {
+    public Brand getBrand() {
         return brand;
     }
 
-    public void setBrand(main.java.facts.Brand brand) {
+    public void setBrand(Brand brand) {
         this.brand = brand;
     }
 
