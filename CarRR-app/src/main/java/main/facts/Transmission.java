@@ -1,14 +1,23 @@
-package facts;
+package main.facts;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Entity
 public class Transmission implements Serializable {
     private static final long serialVersionUID = 1L;
     // TODO: 5/13/2020 Add annotations.
+
+    @Id
+    @SequenceGenerator(name="transmission_id_seq",sequenceName="transmission_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="transmission_id_seq")
     private Long id;
     private String name;
 
+    public Transmission(){
+
+    }
     public Transmission(Long id, String name) {
         this.id = id;
         this.name = name;

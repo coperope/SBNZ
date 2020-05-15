@@ -1,20 +1,32 @@
-package facts;
+package main.facts;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
-public class CarModel implements Serializable {
-
+@Entity
+public class Brand implements Serializable {
     private static final long serialVersionUID = 1L;
     // TODO: 5/13/2020 Add annotations.
-    private Long id;
-    private String name;
-    private Brand brand;
 
-    public CarModel(Long id, String name, Brand brand) {
+    @Id
+    @SequenceGenerator(name="brand_id_seq",sequenceName="brand_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="brand_id_seq")
+    private Long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
+    Set<CarModel> models;
+
+    public Brand(){
+
+    }
+    public Brand(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.brand = brand;
     }
 
     public Long getId() {
@@ -33,35 +45,23 @@ public class CarModel implements Serializable {
         this.name = name;
     }
 
-    public Brand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
-    }
-
     @Override
     public String toString() {
-        return "CarModel{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", brand=" + brand +
-                '}';
+        return "id=" + id +
+                ", name='" + name + '\'';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CarModel carModel = (CarModel) o;
-        return getId().equals(carModel.getId()) &&
-                getName().equals(carModel.getName()) &&
-                getBrand().equals(carModel.getBrand());
+        Brand brand = (Brand) o;
+        return getId().equals(brand.getId()) &&
+                getName().equals(brand.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getBrand());
+        return Objects.hash(getId(), getName());
     }
 }

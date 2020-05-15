@@ -1,4 +1,4 @@
-package facts;
+package main.facts;
 
 import java.io.Serializable;
 import java.util.Objects;
