@@ -1,26 +1,61 @@
-package facts;
+package main.facts;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class Vehicle implements Serializable {
     private static final long serialVersionUID = 1L;
     // TODO: 5/13/2020 Add missing fields and add annotations.
-    private Long id;
-    private Brand brand;
-    private CarModel model;
-    private Fuel fuel;
-    private Transmission transmission;
-    private int seatsNo;
-    private int doorNo;
-    // In liters per 100km.
-    private Long fuelConsumption;
-    // If car has A/C.
-    private boolean ac;
-    List<Category> categories;
-    List<Tag> tags;
 
+    @Id
+    @SequenceGenerator(name="vehicle_id_seq",sequenceName="vehicle_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="vehicle_id_seq")
+    private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Brand brand;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private CarModel model;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Fuel fuel;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Transmission transmission;
+
+    @Column(name = "seatsNo")
+    private int seatsNo;
+
+    @Column(name = "doorNo")
+    private int doorNo;
+
+    // In liters per 100km.
+    @Column(name = "fuelConsumption")
+    private Long fuelConsumption;
+
+    // If car has A/C.
+    @Column(name = "ac")
+    private boolean ac;
+
+    @ManyToMany
+    @JoinTable(name = "vehicle_categories", joinColumns = @JoinColumn(name = "vehicle_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
+    private List<Category> categories;
+
+    @ManyToMany
+    @JoinTable(name = "vehicle_tags", joinColumns = @JoinColumn(name = "vehicle_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
+    private List<Tag> tags;
+
+    // Zero for unlimited.
+    @Column(name = "mileageLimit")
+    private int mileageLimit;
+
+    public Vehicle(){
+
+    }
     public Vehicle(Long id, Brand brand, CarModel model, Fuel fuel, Transmission transmission, int seatsNo, int doorNo, Long fuelConsumption, boolean ac, List<Category> categories, List<Tag> tags) {
         this.id = id;
         this.brand = brand;

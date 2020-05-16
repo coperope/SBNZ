@@ -1,16 +1,32 @@
-package facts;
+package main.facts;
 
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class Tag implements Serializable {
     private static final long serialVersionUID = 1L;
     // TODO: 5/13/2020 Add annotations.
+
+    @Id
+    @SequenceGenerator(name="tag_id_seq",sequenceName="tag_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="tag_id_seq")
     private Long id;
+
+    @Column(name = "name")
     private String name;
 
     // TODO: 5/13/2020 Connect with Category.
+    @ManyToMany
+    @JoinTable(name = "category_tags", joinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"),
+            foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
+            inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
+    List<Category> categories;
+    public Tag() {
 
+    }
     public Tag(Long id, String name) {
         this.id = id;
         this.name = name;
