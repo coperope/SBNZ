@@ -1,10 +1,11 @@
 package main.facts;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Map;
 
 @Entity
-public class BusinessPlan {
+public class BusinessPlan implements Serializable {
     @Id
     @SequenceGenerator(name="business_history_id_seq",sequenceName="business_history_id_seq", allocationSize=1)
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="business_history_id_seq")

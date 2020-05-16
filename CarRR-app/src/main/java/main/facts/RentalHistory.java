@@ -2,11 +2,12 @@ package main.facts;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 @Entity
-public class RentalHistory {
+public class RentalHistory implements Serializable {
     @Id
     @SequenceGenerator(name="rental_history_id_seq",sequenceName="rental_history_id_seq", allocationSize=1)
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="rental_history_id_seq")

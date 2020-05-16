@@ -1,10 +1,11 @@
 package main.facts;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Map;
 
 @Entity
-public class SearchHistory {
+public class SearchHistory implements Serializable {
     @Id
     @SequenceGenerator(name="search_history_id_seq",sequenceName="search_history_id_seq", allocationSize=1)
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="search_history_id_seq")
