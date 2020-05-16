@@ -23,7 +23,9 @@ public class SampleAppService {
 	}
 
 	public Item getClassifiedItem(Item i) {
-		KieSession kieSession = kieContainer.newKieSession();
+		KieSession kieSession = kieContainer.newKieSession("categorisation_tagging_session");
+
+		//KieSession kieSession = kieContainer.newKieSession();
 		kieSession.insert(i);
 		kieSession.fireAllRules();
 		kieSession.dispose();

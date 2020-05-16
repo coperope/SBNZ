@@ -1,0 +1,29 @@
+//created on: May 16, 2020
+package categorisation_tagging_rule
+
+//list any import classes here.
+
+
+
+//declare any global variables here
+
+
+
+
+rule "Your First Rule"
+
+    when
+        //conditions
+    then
+        System.out.println("STIGAO");
+
+end
+
+rule "Your Second Rule"
+    //include attributes such as "salience" here...
+    when
+        //conditions
+    then
+        //actions
+
+end
