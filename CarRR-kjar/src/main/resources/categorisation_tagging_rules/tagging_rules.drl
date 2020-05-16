@@ -10,18 +10,56 @@ import main.facts.Tag;
 
 rule "High fuel consumption tag"
     when
-        $vehicle: Vehicle(fuelConsumption > 12)
+        $vehicle: Vehicle(fuelConsumption >= 12)
         $tag: Tag(name=="High fuel consumption")
     then
     	modify($vehicle){ getTags().add($tag)}
-        System.out.println("STIGAO");
 end
 
-rule "Your Second Rule"
-    //include attributes such as "salience" here...
+rule "Medium fuel consumption tag"
     when
-        //conditions
+        $vehicle: Vehicle(fuelConsumption < 12, fuelConsumption > 9)
+        $tag: Tag(name=="Medium fuel consumption")
     then
-        //actions
+    	modify($vehicle){ getTags().add($tag)}
+end
 
+rule "Low fuel consumption tag"
+    when
+        $vehicle: Vehicle(fuelConsumption <= 9)
+        $tag: Tag(name=="Low fuel consumption")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Sport engine power tag"
+    when
+        $vehicle: Vehicle(power*1000/weight >= 174) // w/kg
+        $tag: Tag(name=="Sport engine power")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "High engine power tag"
+    when
+        $vehicle: Vehicle(power*1000/weight >= 114)
+        $tag: Tag(name=="High engine power")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Medium engine power tag"
+    when
+        $vehicle: Vehicle(power*1000/weight < 114, power*1000/weight > 49)
+        $tag: Tag(name=="Medium engine power")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Low engine power tag"
+    when
+        $vehicle: Vehicle(power*1000/weight < 49)
+        $tag: Tag(name=="Low engine power")
+    then
+    	modify($vehicle){ getTags().add($tag)}
 end

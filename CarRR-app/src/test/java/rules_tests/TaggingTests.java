@@ -42,9 +42,141 @@ public class TaggingTests {
 		
 		System.out.println(vehicle);
 		assertEquals(1, vehicle.getTags().size());
+		assertEquals("High fuel consumption", vehicle.getTags().get(0).getName());
     }
     
-
+    @Test
+    public void testMediumFuelConsumptionTag() {
+    	Tag tag = new Tag();
+    	tag.setName("Medium fuel consumption");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setFuelConsumption(10l);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(1, vehicle.getTags().size());
+		assertEquals("Medium fuel consumption", vehicle.getTags().get(0).getName());
+    }
+    
+    @Test
+    public void testLowFuelConsumptionTag() {
+    	Tag tag = new Tag();
+    	tag.setName("Low fuel consumption");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setFuelConsumption(8l);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(1, vehicle.getTags().size());
+		assertEquals("Low fuel consumption", vehicle.getTags().get(0).getName());
+    }
+    
+    @Test
+    public void testSportEnginePowerTag() {
+    	Tag tag = new Tag();
+    	tag.setName("Sport engine power");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setPower(321);
+    	vehicle.setWeight(1441);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(1, vehicle.getTags().size());
+		assertEquals("Sport engine power", vehicle.getTags().get(0).getName());
+    }
+    
+    @Test
+    public void testHighEnginePowerTag() {
+    	Tag tag = new Tag();
+    	tag.setName("High engine power");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setPower(321);
+    	vehicle.setWeight(1441);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(1, vehicle.getTags().size());
+		assertEquals("High engine power", vehicle.getTags().get(0).getName());
+    }
+    
+    @Test
+    public void testSportAndHighEnginePowerTag() {
+    	Tag tag = new Tag();
+    	tag.setName("Sport engine power");
+    	Tag tag2 = new Tag();
+    	tag2.setName("High engine power");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setPower(321);
+    	vehicle.setWeight(1441);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(tag2);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(2, vehicle.getTags().size());
+    }
+    
+    @Test
+    public void testMediumEnginePowerTag() {
+    	Tag tag = new Tag();
+    	tag.setName("Medium engine power");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setPower(66);
+    	vehicle.setWeight(1030);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(1, vehicle.getTags().size());
+		assertEquals("Medium engine power", vehicle.getTags().get(0).getName());
+    }
+    
+    @Test
+    public void testLowEnginePowerTag() {
+    	Tag tag = new Tag();
+    	tag.setName("Low engine power");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setPower(47);
+    	vehicle.setWeight(1080);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(1, vehicle.getTags().size());
+		assertEquals("Low engine power", vehicle.getTags().get(0).getName());
+    }
     
 
 }

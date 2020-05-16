@@ -52,11 +52,19 @@ public class Vehicle implements Serializable {
     // Zero for unlimited.
     @Column(name = "mileageLimit")
     private int mileageLimit;
+    
+    // In kW
+    @Column(name = "power")
+    private double power;
 
+    // In kg
+    @Column(name = "weight")
+    private double weight;
+    
     public Vehicle(){
 
     }
-    public Vehicle(Long id, Brand brand, CarModel model, Fuel fuel, Transmission transmission, int seatsNo, int doorNo, Long fuelConsumption, boolean ac, List<Category> categories, List<Tag> tags) {
+    public Vehicle(Long id, Brand brand, CarModel model, Fuel fuel, Transmission transmission, int seatsNo, int doorNo, Long fuelConsumption, boolean ac, List<Category> categories, List<Tag> tags, double power, double weight) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -68,6 +76,8 @@ public class Vehicle implements Serializable {
         this.ac = ac;
         this.categories = categories;
         this.tags = tags;
+        this.power = power;
+        this.weight = weight;
     }
 
     public Long getId() {
@@ -157,8 +167,32 @@ public class Vehicle implements Serializable {
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
-
-    @Override
+    
+    public int getMileageLimit() {
+		return mileageLimit;
+	}
+    
+	public void setMileageLimit(int mileageLimit) {
+		this.mileageLimit = mileageLimit;
+	}
+	
+	public double getPower() {
+		return power;
+	}
+	
+	public void setPower(double power) {
+		this.power = power;
+	}
+	
+	public double getWeight() {
+		return weight;
+	}
+	
+	public void setWeight(double weight) {
+		this.weight = weight;
+	}
+	
+	@Override
     public String toString() {
         return "Vehicle{" +
                 "id=" + id +
