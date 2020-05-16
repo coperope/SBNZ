@@ -2,21 +2,19 @@
 package categorisation_tagging_rule
 
 //list any import classes here.
-
-
+import main.facts.Vehicle;
+import main.facts.Tag;
 
 //declare any global variables here
 
 
-
-
-rule "Your First Rule"
-
+rule "High fuel consumption tag"
     when
-        //conditions
+        $vehicle: Vehicle(fuelConsumption > 12)
+        $tag: Tag(name=="High fuel consumption")
     then
+    	modify($vehicle){ getTags().add($tag)}
         System.out.println("STIGAO");
-
 end
 
 rule "Your Second Rule"
