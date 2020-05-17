@@ -45,6 +45,14 @@ public class CategorisingTest {
         cat6.setName("Luxury");
         Category cat7 = new Category();
         cat7.setName("Premium");
+        Category cat8 = new Category();
+        cat8.setName("Sport");
+        Category cat9 = new Category();
+        cat9.setName("Coupe");
+        Category cat10 = new Category();
+        cat10.setName("Passenger van");
+        Category cat11 = new Category();
+        cat11.setName("Pick up");
         kieSession.insert(cat);
         kieSession.insert(cat2);
         kieSession.insert(cat3);
@@ -52,6 +60,10 @@ public class CategorisingTest {
         kieSession.insert(cat5);
         kieSession.insert(cat6);
         kieSession.insert(cat7);
+        kieSession.insert(cat8);
+        kieSession.insert(cat9);
+        kieSession.insert(cat10);
+        kieSession.insert(cat11);
     }
 
     @Test
@@ -226,5 +238,116 @@ public class CategorisingTest {
         System.out.println(vehicle);
         Category test = vehicle.getCategories().stream().filter(category -> category.getName().equals("Premium")).findFirst().orElse(null);
         assertEquals("Premium", test.getName());
+    }
+
+    @Test
+    public void testSportCategory() {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setFuelConsumption(13);
+        vehicle.setSeatsNo(4);
+        vehicle.setDoorNo(2);
+        vehicle.setCargoVolume(200);
+        vehicle.setPassengerAreaVolume(2000);
+        vehicle.setLength(420);
+        vehicle.setWidth(186);
+        vehicle.setHeight(125);
+        vehicle.setPricePerDay(100);
+        vehicle.setPower(321);
+        vehicle.setWeight(1441);
+        vehicle.setCategories(new ArrayList<Category>());
+        List<ExtraFeatures> features = new ArrayList<ExtraFeatures>();
+        features.add(new ExtraFeatures(1l, "Parking sensors"));
+        features.add(new ExtraFeatures(1l, "Rear camera"));
+        features.add(new ExtraFeatures(1l, "Cruise control"));
+        vehicle.setFeatures(features);
+
+        kieSession.insert(vehicle);
+        kieSession.fireAllRules();
+        kieSession.dispose();
+
+        System.out.println(vehicle);
+        Category test = vehicle.getCategories().stream().filter(category -> category.getName().equals("Sport")).findFirst().orElse(null);
+        assertEquals("Sport", test.getName());
+    }
+
+    @Test
+    public void testCoupeCategory() {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setFuelConsumption(11);
+        vehicle.setSeatsNo(2);
+        vehicle.setDoorNo(2);
+        vehicle.setCargoVolume(180);
+        vehicle.setPassengerAreaVolume(1500);
+        vehicle.setLength(420);
+        vehicle.setWidth(186);
+        vehicle.setHeight(140);
+        vehicle.setPricePerDay(100);
+        vehicle.setPower(100);
+        vehicle.setWeight(2000);
+        vehicle.setCategories(new ArrayList<Category>());
+        List<ExtraFeatures> features = new ArrayList<ExtraFeatures>();
+        vehicle.setFeatures(features);
+
+        kieSession.insert(vehicle);
+        kieSession.fireAllRules();
+        kieSession.dispose();
+
+        System.out.println(vehicle);
+        Category test = vehicle.getCategories().stream().filter(category -> category.getName().equals("Coupe")).findFirst().orElse(null);
+        assertEquals("Coupe", test.getName());
+    }
+
+    @Test
+    public void testPassengerVanCategory() {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setFuelConsumption(16);
+        vehicle.setSeatsNo(12);
+        vehicle.setDoorNo(4);
+        vehicle.setCargoVolume(500);
+        vehicle.setPassengerAreaVolume(4600);
+        vehicle.setLength(560);
+        vehicle.setWidth(200);
+        vehicle.setHeight(202);
+        vehicle.setPricePerDay(150);
+        vehicle.setPower(500);
+        vehicle.setWeight(4500);
+        vehicle.setCategories(new ArrayList<Category>());
+        List<ExtraFeatures> features = new ArrayList<ExtraFeatures>();
+        vehicle.setFeatures(features);
+
+        kieSession.insert(vehicle);
+        kieSession.fireAllRules();
+        kieSession.dispose();
+
+        System.out.println(vehicle);
+        Category test = vehicle.getCategories().stream().filter(category -> category.getName().equals("Passenger van")).findFirst().orElse(null);
+        assertEquals("Passenger van", test.getName());
+    }
+
+    @Test
+    public void testPickUpCategory() {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setFuelConsumption(15.5);
+        vehicle.setSeatsNo(5);
+        vehicle.setDoorNo(4);
+        vehicle.setCargoVolume(2200);
+        vehicle.setPassengerAreaVolume(1500);
+        vehicle.setLength(570);
+        vehicle.setWidth(220);
+        vehicle.setHeight(203);
+        vehicle.setPricePerDay(130);
+        vehicle.setPower(200);
+        vehicle.setWeight(2500);
+        vehicle.setCategories(new ArrayList<Category>());
+        List<ExtraFeatures> features = new ArrayList<ExtraFeatures>();
+        vehicle.setFeatures(features);
+
+        kieSession.insert(vehicle);
+        kieSession.fireAllRules();
+        kieSession.dispose();
+
+        System.out.println(vehicle);
+        Category test = vehicle.getCategories().stream().filter(category -> category.getName().equals("Pick up")).findFirst().orElse(null);
+        assertEquals("Pick up", test.getName());
     }
 }
