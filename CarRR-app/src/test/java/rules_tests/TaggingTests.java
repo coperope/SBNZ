@@ -32,7 +32,7 @@ public class TaggingTests {
     	Tag tag = new Tag();
     	tag.setName("High fuel consumption");
     	Vehicle vehicle = new Vehicle();
-    	vehicle.setFuelConsumption(13l);
+    	vehicle.setFuelConsumption(13.1);
     	vehicle.setTags(new ArrayList<Tag>());
     	
     	kieSession.insert(tag);

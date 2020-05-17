@@ -77,4 +77,6 @@ public class RentalHistory implements Serializable {
     @Column(name = "no_of_occurrences")
     private Map<Long, Integer> fuelConsumption;
 
+
+
 }

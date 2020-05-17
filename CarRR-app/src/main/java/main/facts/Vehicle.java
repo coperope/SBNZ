@@ -35,7 +35,7 @@ public class Vehicle implements Serializable {
 
     // In liters per 100km.
     @Column(name = "fuelConsumption")
-    private Long fuelConsumption;
+    private double fuelConsumption;
 
     // If car has A/C.
     @Column(name = "ac")
@@ -49,14 +49,46 @@ public class Vehicle implements Serializable {
     @JoinTable(name = "vehicle_tags", joinColumns = @JoinColumn(name = "vehicle_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
     private List<Tag> tags;
 
+    // Features like sensors or auto a/c that come as an extra to the base version of a car.
+    // In a luxury car it is expected to have these even in a basic version.
+    @ManyToMany
+    @JoinTable(name = "vehicle_extra_features", joinColumns = @JoinColumn(name = "vehicle_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "feature_id", referencedColumnName = "id"))
+    private List<ExtraFeatures> features;
+
     // Zero for unlimited.
     @Column(name = "mileageLimit")
     private int mileageLimit;
 
+    // In liters.
+    @Column(name = "cargoVolume")
+    private int cargoVolume;
+
+    // In liters.
+    @Column(name = "passengerAreaVolume")
+    private int passengerAreaVolume;
+
+    // In centimeters.
+    @Column(name = "width")
+    private int width;
+
+    // In centimeters.
+    @Column(name = "height")
+    private int height;
+
+    // In centimeters.
+    @Column(name = "length")
+    private int length;
+
+    // In euros.
+    @Column(name = "pricePerDay")
+    private int pricePerDay;
+
+
+
     public Vehicle(){
 
     }
-    public Vehicle(Long id, Brand brand, CarModel model, Fuel fuel, Transmission transmission, int seatsNo, int doorNo, Long fuelConsumption, boolean ac, List<Category> categories, List<Tag> tags) {
+    public Vehicle(Long id, Brand brand, CarModel model, Fuel fuel, Transmission transmission, int seatsNo, int doorNo, double fuelConsumption, boolean ac, List<Category> categories, List<Tag> tags) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -126,11 +158,11 @@ public class Vehicle implements Serializable {
         this.doorNo = doorNo;
     }
 
-    public Long getFuelConsumption() {
+    public double getFuelConsumption() {
         return fuelConsumption;
     }
 
-    public void setFuelConsumption(Long fuelConsumption) {
+    public void setFuelConsumption(double fuelConsumption) {
         this.fuelConsumption = fuelConsumption;
     }
 
@@ -175,23 +207,6 @@ public class Vehicle implements Serializable {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Vehicle vehicle = (Vehicle) o;
-        return getSeatsNo() == vehicle.getSeatsNo() &&
-                getDoorNo() == vehicle.getDoorNo() &&
-                isAc() == vehicle.isAc() &&
-                getId().equals(vehicle.getId()) &&
-                getBrand().equals(vehicle.getBrand()) &&
-                getModel().equals(vehicle.getModel()) &&
-                getFuel().equals(vehicle.getFuel()) &&
-                getTransmission().equals(vehicle.getTransmission()) &&
-                getFuelConsumption().equals(vehicle.getFuelConsumption()) &&
-                Objects.equals(getCategories(), vehicle.getCategories()) &&
-                Objects.equals(getTags(), vehicle.getTags());
-    }
 
     @Override
     public int hashCode() {

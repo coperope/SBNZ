@@ -14,6 +14,8 @@ public class Category implements Serializable {
     @SequenceGenerator(name="category_id_seq",sequenceName="category_id_seq", allocationSize=1)
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="category_id_seq")
     private Long id;
+
+    @Column(name = "name")
     private String name;
 
     // TODO: 5/13/2020 Connect with Tag.
