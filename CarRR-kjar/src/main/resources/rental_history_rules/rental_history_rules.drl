@@ -1,0 +1,17 @@
+package rental_history_rules
+
+//list any import classes here.
+import main.facts.Rental;
+import main.facts.Customer;
+import main.facts.RentalHistory;
+import main.facts.Vehicle;
+
+rule "Update users rental history"
+    when
+        Rental($customer: customer, $vehicle: vehicle)
+    then
+    	
+    	$customer.getRentalHistory().updateRentalHistory($vehicle);
+        System.out.println("Rental history updated");
+end
+
