@@ -49,6 +49,12 @@ public class Vehicle implements Serializable {
     @JoinTable(name = "vehicle_tags", joinColumns = @JoinColumn(name = "vehicle_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
     private List<Tag> tags;
 
+    // Features like sensors or auto a/c that come as an extra to the base version of a car.
+    // In a luxury car it is expected to have these even in a basic version.
+    @ManyToMany
+    @JoinTable(name = "vehicle_extra_features", joinColumns = @JoinColumn(name = "vehicle_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "feature_id", referencedColumnName = "id"))
+    private List<ExtraFeatures> features;
+
     // Zero for unlimited.
     @Column(name = "mileageLimit")
     private int mileageLimit;
@@ -72,6 +78,12 @@ public class Vehicle implements Serializable {
     // In centimeters.
     @Column(name = "length")
     private int length;
+
+    // In euros.
+    @Column(name = "pricePerDay")
+    private int pricePerDay;
+
+
 
     public Vehicle(){
 
@@ -178,6 +190,54 @@ public class Vehicle implements Serializable {
         this.tags = tags;
     }
 
+    public int getMileageLimit() {
+        return mileageLimit;
+    }
+
+    public void setMileageLimit(int mileageLimit) {
+        this.mileageLimit = mileageLimit;
+    }
+
+    public int getCargoVolume() {
+        return cargoVolume;
+    }
+
+    public void setCargoVolume(int cargoVolume) {
+        this.cargoVolume = cargoVolume;
+    }
+
+    public int getPassengerAreaVolume() {
+        return passengerAreaVolume;
+    }
+
+    public void setPassengerAreaVolume(int passengerAreaVolume) {
+        this.passengerAreaVolume = passengerAreaVolume;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
     @Override
     public String toString() {
         return "Vehicle{" +
@@ -217,4 +277,6 @@ public class Vehicle implements Serializable {
     public int hashCode() {
         return Objects.hash(getId(), getBrand(), getModel(), getFuel(), getTransmission(), getSeatsNo(), getDoorNo(), getFuelConsumption(), isAc());
     }
+
+
 }
