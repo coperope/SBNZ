@@ -12,6 +12,7 @@ import org.kie.api.runtime.KieSession;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -40,11 +41,14 @@ public class CategorisingTest {
 
         Category cat5 = new Category();
         cat5.setName("Full size");
+        Category cat6 = new Category();
+        cat6.setName("Luxury");
         kieSession.insert(cat);
         kieSession.insert(cat2);
         kieSession.insert(cat3);
         kieSession.insert(cat4);
         kieSession.insert(cat5);
+        kieSession.insert(cat6);
     }
 
     @Test
@@ -156,6 +160,32 @@ public class CategorisingTest {
         vehicle.setHeight(171);
         vehicle.setPricePerDay(50);
         vehicle.setCategories(new ArrayList<Category>());
+        vehicle.setFeatures(new ArrayList<ExtraFeatures>());
+
+        kieSession.insert(vehicle);
+        kieSession.fireAllRules();
+        kieSession.dispose();
+
+        System.out.println(vehicle);
+        Category test = vehicle.getCategories().stream().filter(category -> category.getName().equals("Full size")).findFirst().orElse(null);
+        assertEquals("Full size", test.getName());
+    }
+
+    @Test
+    public void testLuxuryCategory() {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setFuelConsumption(13);
+        vehicle.setSeatsNo(5);
+        vehicle.setDoorNo(4);
+        vehicle.setCargoVolume(500);
+        vehicle.setPassengerAreaVolume(3000);
+        vehicle.setLength(451);
+        vehicle.setWidth(200);
+        vehicle.setHeight(171);
+        vehicle.setPricePerDay(360);
+        vehicle.setCategories(new ArrayList<Category>());
+        List<ExtraFeatures> features = new ArrayList<ExtraFeatures>();
+        features.add(new ExtraFeatures(1l, "Parking sensors"));
         vehicle.setFeatures(new ArrayList<ExtraFeatures>());
 
         kieSession.insert(vehicle);
