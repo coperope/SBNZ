@@ -1,0 +1,39 @@
+//created on: May 17, 2020
+package categorisation_tagging_rule
+
+//list any import classes here.
+import main.facts.Vehicle;
+import main.facts.Category;
+
+
+rule "Economy category"
+    when
+        $vehicle: Vehicle(fuelConsumption < 8, length < 450, height < 160, width < 190, cargoVolume < 450, seatsNo <= 5, doorNo <= 4)
+        $category: Category(name=="Economy")
+    then
+    	modify($vehicle){ getCategories().add($category)}
+end
+
+rule "Compact category"
+    when
+        $vehicle: Vehicle(fuelConsumption < 9, length < 450, height < 160, width < 190, cargoVolume + passengerAreaVolume < 3086, seatsNo <= 5, doorNo <= 4)
+        $category: Category(name=="Compact")
+    then
+    	modify($vehicle){ getCategories().add($category)}
+end
+
+rule "Standard category"
+    when
+        $vehicle: Vehicle(fuelConsumption < 11, length > 450, height > 160, width > 190, cargoVolume + passengerAreaVolume > 3400, seatsNo == 5, doorNo == 4)
+        $category: Category(name=="Standard")
+    then
+    	modify($vehicle){ getCategories().add($category)}
+end
+
+rule "Intermediate category"
+    when
+        $vehicle: Vehicle(fuelConsumption < 11, length > 450, height > 160, width > 190, cargoVolume + passengerAreaVolume > 3086, cargoVolume + passengerAreaVolume < 3400, seatsNo == 5, doorNo == 4)
+        $category: Category(name=="Standard")
+    then
+    	modify($vehicle){ getCategories().add($category)}
+end

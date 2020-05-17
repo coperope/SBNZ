@@ -53,6 +53,26 @@ public class Vehicle implements Serializable {
     @Column(name = "mileageLimit")
     private int mileageLimit;
 
+    // In liters.
+    @Column(name = "cargoVolume")
+    private int cargoVolume;
+
+    // In liters.
+    @Column(name = "passengerAreaVolume")
+    private int passengerAreaVolume;
+
+    // In centimeters.
+    @Column(name = "width")
+    private int width;
+
+    // In centimeters.
+    @Column(name = "height")
+    private int height;
+
+    // In centimeters.
+    @Column(name = "length")
+    private int length;
+
     public Vehicle(){
 
     }
