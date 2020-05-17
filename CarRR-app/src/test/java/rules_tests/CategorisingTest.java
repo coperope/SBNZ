@@ -227,8 +227,8 @@ public class CategorisingTest {
         vehicle.setCategories(new ArrayList<Category>());
         List<ExtraFeatures> features = new ArrayList<ExtraFeatures>();
         features.add(new ExtraFeatures(1l, "Parking sensors"));
-        features.add(new ExtraFeatures(1l, "Rear camera"));
-        features.add(new ExtraFeatures(1l, "Cruise control"));
+        features.add(new ExtraFeatures(2l, "Rear camera"));
+        features.add(new ExtraFeatures(3l, "Cruise control"));
         vehicle.setFeatures(features);
 
         kieSession.insert(vehicle);
@@ -257,8 +257,8 @@ public class CategorisingTest {
         vehicle.setCategories(new ArrayList<Category>());
         List<ExtraFeatures> features = new ArrayList<ExtraFeatures>();
         features.add(new ExtraFeatures(1l, "Parking sensors"));
-        features.add(new ExtraFeatures(1l, "Rear camera"));
-        features.add(new ExtraFeatures(1l, "Cruise control"));
+        features.add(new ExtraFeatures(2l, "Rear camera"));
+        features.add(new ExtraFeatures(3l, "Cruise control"));
         vehicle.setFeatures(features);
 
         kieSession.insert(vehicle);
