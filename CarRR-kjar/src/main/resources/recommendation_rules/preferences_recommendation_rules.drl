@@ -1,0 +1,34 @@
+//created on: May 17, 2020
+package recommendation_rules
+
+//list any import classes here.
+import main.facts.Customer;
+import main.facts.PreferencesRecommendations;
+import main.facts.Category;
+import main.facts.CustomerPreferences;
+import main.facts.Vehicle;
+
+//declare any global variables here
+
+rule "Category preference rule"
+no-loop
+    when
+        Customer($preferences: preferences)
+        CustomerPreferences($preferedCategories: categoryList) from $preferences
+        
+        $pr: PreferencesRecommendations()
+        $vehicle: Vehicle($categories: categories)
+        
+        Number($preferencesHit : intValue) from accumulate(
+                    $c: Category() from $categories
+					and
+					Category($c.name == name) from $preferedCategories
+                    ,
+                    init(int count = 0;),
+                    action(count += 1;),
+                    result(count)
+                )
+    then
+    	modify ($pr) {addHits($vehicle, $preferencesHit)}
+end
+

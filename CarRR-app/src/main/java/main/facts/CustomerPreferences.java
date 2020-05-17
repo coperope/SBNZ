@@ -2,6 +2,7 @@ package main.facts;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,23 +14,23 @@ public class CustomerPreferences implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "customer_preferences_category", joinColumns = @JoinColumn(name = "customer_preferences_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
-    private List<Category> categoryList;
+    private List<Category> categoryList = new ArrayList<Category>();
 
     @ManyToMany
     @JoinTable(name = "customer_preferences_tag", joinColumns = @JoinColumn(name = "customer_preferences_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
-    private List<Tag> tagList;
+    private List<Tag> tagList = new ArrayList<Tag>();
 
     @ManyToMany
     @JoinTable(name = "customer_preferences_brand", joinColumns = @JoinColumn(name = "customer_preferences_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "brand_id", referencedColumnName = "id"))
-    private List<Brand> brandList;
+    private List<Brand> brandList = new ArrayList<Brand>();
 
     @ManyToMany
     @JoinTable(name = "customer_preferences_fuel", joinColumns = @JoinColumn(name = "customer_preferences_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "fuel_id", referencedColumnName = "id"))
-    private List<Fuel> fuelList;
+    private List<Fuel> fuelList = new ArrayList<Fuel>();
 
     @ManyToMany
     @JoinTable(name = "customer_preferences_transmission", joinColumns = @JoinColumn(name = "customer_preferences_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "transmission_id", referencedColumnName = "id"))
-    private List<Transmission> transmissionList;
+    private List<Transmission> transmissionList = new ArrayList<Transmission>();
 
     // Customer likes <= seatsNo
     @Column(name = "seatsNo")
@@ -41,7 +42,7 @@ public class CustomerPreferences implements Serializable {
 
     // Customer likes <= fuelConsumption
     @Column(name = "fuelConsumption")
-    private int fuelConsumption;
+    private double fuelConsumption;
 
     @Column(name = "ac")
     private boolean ac;
@@ -109,11 +110,11 @@ public class CustomerPreferences implements Serializable {
         this.doorNo = doorNo;
     }
 
-    public int getFuelConsumption() {
+    public double getFuelConsumption() {
         return fuelConsumption;
     }
 
-    public void setFuelConsumption(int fuelConsumption) {
+    public void setFuelConsumption(double fuelConsumption) {
         this.fuelConsumption = fuelConsumption;
     }
 
