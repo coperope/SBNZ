@@ -120,7 +120,7 @@ end
 
 rule "Unlimited mileage tag"
     when
-        $vehicle: Vehicle(mileageLimit == 0)
+        $vehicle: Vehicle(mileageLimit == -1)
         $tag: Tag(name=="Unlimited mileage")
     then
     	modify($vehicle){ getTags().add($tag)}

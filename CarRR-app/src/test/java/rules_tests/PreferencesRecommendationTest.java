@@ -82,7 +82,8 @@ public class PreferencesRecommendationTest {
 		vehicle.setDoorNo(2);
 		vehicle.setFuelConsumption(18);
 		vehicle.setSeatsNo(2);
-    	
+		vehicle.setMileageLimit(300);
+
 		Vehicle vehicle2 = new Vehicle();
 		vehicle2.setId(2L);
 			Brand brand2 = new Brand();
@@ -121,6 +122,7 @@ public class PreferencesRecommendationTest {
 		vehicle2.setDoorNo(4);
 		vehicle2.setFuelConsumption(12.1);
 		vehicle2.setSeatsNo(4);
+		vehicle2.setMileageLimit(-1);
 
     	CustomerPreferences preferences = new CustomerPreferences();
     	preferences.getBrandList().add(brand);
@@ -133,6 +135,8 @@ public class PreferencesRecommendationTest {
     	preferences.getTransmissionList().add(transmission);
     	preferences.getTagList().add(tag);
     	preferences.setFuelConsumption(12.2);
+    	preferences.setFuelConsumption(12);
+    	preferences.setMileageLimit(-1);
 
     	Customer customer = new Customer();
     	customer.setPreferences(preferences);
@@ -153,7 +157,7 @@ public class PreferencesRecommendationTest {
 			    .sorted(Entry.<Vehicle, Integer>comparingByValue().reversed())
 			    .collect(Collectors.toMap(Entry::getKey, Entry::getValue,
 			                              (e1, e2) -> e1, LinkedHashMap::new));
-		System.out.println(sortedMap.keySet());
+		System.out.println(sortedMap);
 		assertEquals(new Long(2), ( (Vehicle)sortedMap.keySet().toArray()[0]).getId());
     }
 }

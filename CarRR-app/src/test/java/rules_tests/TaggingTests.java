@@ -305,7 +305,7 @@ public class TaggingTests {
     @Test
     public void testUnlimitedMileageTag() {
     	Vehicle vehicle = new Vehicle();
-    	vehicle.setMileageLimit(0);
+    	vehicle.setMileageLimit(-1);
     	vehicle.setMileagePrice(0);
     	vehicle.setTags(new ArrayList<Tag>());
     	
