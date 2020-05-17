@@ -12,6 +12,8 @@ public class Fuel implements Serializable {
     @SequenceGenerator(name="fuel_id_seq",sequenceName="fuel_id_seq", allocationSize=1)
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="fuel_id_seq")
     private Long id;
+    
+    @Column(name = "name")
     private String name;
 
     public Fuel(){

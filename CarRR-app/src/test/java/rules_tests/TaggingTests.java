@@ -11,6 +11,7 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
 import main.facts.Tag;
+import main.facts.Transmission;
 import main.facts.Vehicle;
 
 public class TaggingTests {
@@ -186,7 +187,7 @@ public class TaggingTests {
     	tag2.setName("Small family car");
     	Vehicle vehicle = new Vehicle();
     	vehicle.setSeatsNo(5);
-    	vehicle.setPassengerVolume(2500);
+    	vehicle.setPassengerAreaVolume(2500);
     	vehicle.setCargoVolume(300);
     	vehicle.setTags(new ArrayList<Tag>());
     	
@@ -208,7 +209,7 @@ public class TaggingTests {
     	tag2.setName("Big family car");
     	Vehicle vehicle = new Vehicle();
     	vehicle.setSeatsNo(5);
-    	vehicle.setPassengerVolume(3000);
+    	vehicle.setPassengerAreaVolume(3000);
     	vehicle.setCargoVolume(400);
     	vehicle.setTags(new ArrayList<Tag>());
     	
@@ -222,5 +223,176 @@ public class TaggingTests {
 		assertEquals(2, vehicle.getTags().size());
     }
     
-
+    @Test
+    public void testLongRangeTag() {
+    	Tag tag = new Tag();
+    	tag.setName("Long range");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setFuelConsumption(5);
+    	vehicle.setTankVolume(50);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(1, vehicle.getTags().size());
+		assertEquals("Long range", vehicle.getTags().get(0).getName());
+    }
+    
+    @Test
+    public void testMediumRangeTag() {
+    	Tag tag = new Tag();
+    	tag.setName("Medium range");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setFuelConsumption(7);
+    	vehicle.setTankVolume(50);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(1, vehicle.getTags().size());
+		assertEquals("Medium range", vehicle.getTags().get(0).getName());
+    }
+    
+    @Test
+    public void testShortRangeTag() {
+    	Tag tag = new Tag();
+    	tag.setName("Short range");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setFuelConsumption(10);
+    	vehicle.setTankVolume(40);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(1, vehicle.getTags().size());
+		assertEquals("Short range", vehicle.getTags().get(0).getName());
+    }
+    
+    @Test
+    public void testUnlimitedMileageTag() {
+    	Tag tag = new Tag();
+    	tag.setName("Unlimited mileage");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setMileageLimit(0);
+    	vehicle.setMileagePrice(0);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(1, vehicle.getTags().size());
+		assertEquals("Unlimited mileage", vehicle.getTags().get(0).getName());
+    }
+    
+    @Test
+    public void testHighMileagePriceTag() {
+    	Tag tag = new Tag();
+    	tag.setName("High mileage price");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setMileageLimit(100);
+    	vehicle.setMileagePrice(1.3);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(1, vehicle.getTags().size());
+		assertEquals("High mileage price", vehicle.getTags().get(0).getName());
+    }
+    
+    @Test
+    public void testMediumMileagePriceTag() {
+    	Tag tag = new Tag();
+    	tag.setName("Medium mileage price");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setMileageLimit(100);
+    	vehicle.setMileagePrice(0.9);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(1, vehicle.getTags().size());
+		assertEquals("Medium mileage price", vehicle.getTags().get(0).getName());
+    }
+    
+    @Test
+    public void testLowMileagePriceTag() {
+    	Tag tag = new Tag();
+    	tag.setName("Low mileage price");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setMileageLimit(100);
+    	vehicle.setMileagePrice(0.4);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(1, vehicle.getTags().size());
+		assertEquals("Low mileage price", vehicle.getTags().get(0).getName());
+    }
+    
+    @Test
+    public void testAutomaticTransmissionTag() {
+    	Tag tag = new Tag();
+    	tag.setName("Automatic");
+    	Transmission transmission = new Transmission();
+    	transmission.setName("Automatic");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setTransmission(transmission);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(1, vehicle.getTags().size());
+		assertEquals("Automatic", vehicle.getTags().get(0).getName());
+    }
+    
+    @Test
+    public void testManualTransmissionTag() {
+    	Tag tag = new Tag();
+    	tag.setName("Manual");
+    	Transmission transmission = new Transmission();
+    	transmission.setName("5 gears manual");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setTransmission(transmission);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(1, vehicle.getTags().size());
+		assertEquals("Manual", vehicle.getTags().get(0).getName());
+    }
 }
