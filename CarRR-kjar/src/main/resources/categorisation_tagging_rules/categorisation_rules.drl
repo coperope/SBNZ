@@ -44,7 +44,7 @@ end
 
 rule "Full size category"
     when
-        $vehicle: Vehicle(fuelConsumption < 12, fuelConsumption > 10, length > 430, height > 170, width > 195, cargoVolume + passengerAreaVolume > 3450, seatsNo >= 5, doorNo >= 4, pricePerDay > 45, pricePerDay < 300)
+        $vehicle: Vehicle(fuelConsumption < 12, fuelConsumption >= 10, length > 430, height > 170, width > 195, cargoVolume + passengerAreaVolume > 3450, seatsNo >= 5, doorNo >= 4, pricePerDay > 45, pricePerDay < 300)
         $category: Category(name=="Full size")
     then
     	modify($vehicle){ getCategories().add($category)}

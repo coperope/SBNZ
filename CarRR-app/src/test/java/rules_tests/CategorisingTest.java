@@ -44,6 +44,7 @@ public class CategorisingTest {
         kieSession.insert(cat2);
         kieSession.insert(cat3);
         kieSession.insert(cat4);
+        kieSession.insert(cat5);
     }
 
     @Test
@@ -78,7 +79,7 @@ public class CategorisingTest {
         vehicle.setDoorNo(4);
         vehicle.setCargoVolume(318);
         vehicle.setPassengerAreaVolume(2000);
-        vehicle.setLength(395);
+        vehicle.setLength(315);
         vehicle.setWidth(182);
         vehicle.setHeight(158);
         vehicle.setPricePerDay(30);
@@ -126,7 +127,7 @@ public class CategorisingTest {
         vehicle.setSeatsNo(5);
         vehicle.setDoorNo(4);
         vehicle.setCargoVolume(500);
-        vehicle.setPassengerAreaVolume(3000);
+        vehicle.setPassengerAreaVolume(2800);
         vehicle.setLength(451);
         vehicle.setWidth(200);
         vehicle.setHeight(162);
@@ -145,14 +146,14 @@ public class CategorisingTest {
     @Test
     public void testFullSizeCategory() {
         Vehicle vehicle = new Vehicle();
-        vehicle.setFuelConsumption(10.85);
+        vehicle.setFuelConsumption(11);
         vehicle.setSeatsNo(5);
         vehicle.setDoorNo(4);
         vehicle.setCargoVolume(500);
         vehicle.setPassengerAreaVolume(3000);
         vehicle.setLength(451);
         vehicle.setWidth(200);
-        vehicle.setHeight(162);
+        vehicle.setHeight(171);
         vehicle.setPricePerDay(50);
         vehicle.setCategories(new ArrayList<Category>());
         vehicle.setFeatures(new ArrayList<ExtraFeatures>());
