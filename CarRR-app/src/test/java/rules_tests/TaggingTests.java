@@ -97,8 +97,9 @@ public class TaggingTests {
     	kieSession.insert(vehicle);
 		kieSession.fireAllRules();
 		kieSession.dispose();
-		
+
 		System.out.println(vehicle);
+
 		Tag test = vehicle.getTags().stream().filter(tag -> tag.getName().equals("High fuel consumption")).findFirst().orElse(null);		
 		assertEquals("High fuel consumption", test.getName());
     }

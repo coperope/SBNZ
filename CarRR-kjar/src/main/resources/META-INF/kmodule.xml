@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule" 
-			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-   <kbase name="categorisation_tagging_rules" packages="categorisation_tagging_rules">
-        <ksession name="categorisation_tagging_session"/>
-    </kbase>
+<kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<kbase name="categorisation_tagging_rules"
+		packages="categorisation_tagging_rules">
+		<ksession name="categorisation_tagging_session" />
+	</kbase>
+
+	<kbase name="rental_history_rules"
+		packages="rental_history_rules">
+		<ksession name="rental_history_update_session" />
+	</kbase>
 </kmodule>
