@@ -47,6 +47,7 @@ public class CustomerPreferences implements Serializable {
     @Column(name = "ac")
     private boolean ac;
 
+    // -1 for unlimited.
     @Column(name = "mileageLimit")
     private int mileageLimit;
 

@@ -11,7 +11,8 @@ import main.facts.Vehicle;
 //declare any global variables here
 
 rule "Category preference rule"
-no-loop
+no-loop true
+lock-on-active true
     when
         Customer($preferences: preferences)
         CustomerPreferences($preferedCategories: categoryList) from $preferences
@@ -30,5 +31,23 @@ no-loop
                 )
     then
     	modify ($pr) {addHits($vehicle, $preferencesHit)}
+    	
+end
+
+rule "Mileage limit preference rule"
+no-loop true
+lock-on-active true
+    when
+        Customer($preferences: preferences)
+        CustomerPreferences($preferedMileageLimit: mileageLimit) from $preferences
+        $vehicle: Vehicle()
+        
+        Vehicle(mileageLimit == -1, $preferedMileageLimit == -1 ) from $vehicle
+        or
+        Vehicle(mileageLimit != -1, $preferedMileageLimit != -1, mileageLimit >= $preferedMileageLimit) from $vehicle 
+        
+        $pr: PreferencesRecommendations()
+    then
+    	modify ($pr) {addHits($vehicle, 1)}
 end
 

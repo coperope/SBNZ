@@ -65,7 +65,7 @@ public class Vehicle implements Serializable {
     @JoinTable(name = "vehicle_extra_features", joinColumns = @JoinColumn(name = "vehicle_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "feature_id", referencedColumnName = "id"))
     private List<ExtraFeatures> features;
 
-    // Zero for unlimited.
+    // -1 for unlimited.
     @Column(name = "mileageLimit")
     private int mileageLimit;
 
