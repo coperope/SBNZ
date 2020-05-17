@@ -4,24 +4,164 @@ package categorisation_tagging_rule
 //list any import classes here.
 import main.facts.Vehicle;
 import main.facts.Tag;
+import main.facts.Transmission;
 
 //declare any global variables here
 
 
 rule "High fuel consumption tag"
     when
-        $vehicle: Vehicle(fuelConsumption > 12)
+        $vehicle: Vehicle(fuelConsumption >= 12)
         $tag: Tag(name=="High fuel consumption")
     then
     	modify($vehicle){ getTags().add($tag)}
-        System.out.println("STIGAO");
 end
 
-rule "Your Second Rule"
-    //include attributes such as "salience" here...
+rule "Medium fuel consumption tag"
     when
-        //conditions
+        $vehicle: Vehicle(fuelConsumption < 12, fuelConsumption > 9)
+        $tag: Tag(name=="Medium fuel consumption")
     then
-        //actions
+    	modify($vehicle){ getTags().add($tag)}
+end
 
+rule "Low fuel consumption tag"
+    when
+        $vehicle: Vehicle(fuelConsumption <= 9)
+        $tag: Tag(name=="Low fuel consumption")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Sport engine power tag"
+    when
+        $vehicle: Vehicle(power*1000/weight >= 174) // w/kg
+        $tag: Tag(name=="Sport engine power")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "High engine power tag"
+    when
+        $vehicle: Vehicle(power*1000/weight >= 114)
+        $tag: Tag(name=="High engine power")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Medium engine power tag"
+    when
+        $vehicle: Vehicle(power*1000/weight < 114, power*1000/weight > 49)
+        $tag: Tag(name=="Medium engine power")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Low engine power tag"
+    when
+        $vehicle: Vehicle(power*1000/weight < 49)
+        $tag: Tag(name=="Low engine power")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Family car tag"
+no-loop
+    when
+        $vehicle: Vehicle(seatsNo >= 5)
+        $tag: Tag(name=="Family car")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Small family car tag"
+no-loop
+    when
+        $vehicle: Vehicle(passengerAreaVolume + cargoVolume < 3086, $tags: tags)
+        Tag(name=="Family car") from $tags
+        $tag: Tag(name=="Small family car")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Big family car tag"
+no-loop
+    when
+        $vehicle: Vehicle(passengerAreaVolume + cargoVolume >= 3086, $tags: tags)
+        Tag(name=="Family car") from $tags
+        $tag: Tag(name=="Big family car")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Long range tag"
+    when
+        $vehicle: Vehicle((100 / fuelConsumption) * tankVolume >= 900)
+        $tag: Tag(name=="Long range")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Medium range tag"
+    when
+        $vehicle: Vehicle((100 / fuelConsumption) * tankVolume > 400, (100 / fuelConsumption) * tankVolume < 900)
+        $tag: Tag(name=="Medium range")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Short range tag"
+    when
+        $vehicle: Vehicle((100 / fuelConsumption) * tankVolume <= 400)
+        $tag: Tag(name=="Short range")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Unlimited mileage tag"
+    when
+        $vehicle: Vehicle(mileageLimit == 0)
+        $tag: Tag(name=="Unlimited mileage")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "High mileage price tag"
+    when
+        $vehicle: Vehicle(mileageLimit > 0, mileagePrice >= 1.2)
+        $tag: Tag(name=="High mileage price")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Medium mileage price tag"
+    when
+        $vehicle: Vehicle(mileageLimit > 0, mileagePrice > 0.5, mileagePrice < 1.2)
+        $tag: Tag(name=="Medium mileage price")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Low mileage price tag"
+    when
+        $vehicle: Vehicle(mileageLimit > 0, mileagePrice <= 0.5)
+        $tag: Tag(name=="Low mileage price")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Transmission automatic tag"
+    when
+        $vehicle: Vehicle(transmission != null, transmission.name == "Automatic")
+        $tag: Tag(name=="Automatic")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Transmission manual tag"
+    when
+        $vehicle: Vehicle(transmission != null, transmission.name != "Automatic")
+        $tag: Tag(name=="Manual")
+    then
+    	modify($vehicle){ getTags().add($tag)}
 end

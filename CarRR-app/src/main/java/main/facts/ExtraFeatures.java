@@ -2,24 +2,25 @@ package main.facts;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Fuel implements Serializable {
+public class ExtraFeatures implements Serializable {
     private static final long serialVersionUID = 1L;
     // TODO: 5/13/2020 Add annotations.
     @Id
-    @SequenceGenerator(name="fuel_id_seq",sequenceName="fuel_id_seq", allocationSize=1)
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="fuel_id_seq")
+    @SequenceGenerator(name="extraFeatures_id_seq",sequenceName="extraFeatures_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="extraFeatures_id_seq")
     private Long id;
-    
+
     @Column(name = "name")
     private String name;
 
-    public Fuel(){
+    public ExtraFeatures(){
 
     }
-    public Fuel(Long id, String name) {
+    public ExtraFeatures(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -42,7 +43,7 @@ public class Fuel implements Serializable {
 
     @Override
     public String toString() {
-        return "Fuel{" +
+        return "Feature{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
@@ -52,9 +53,9 @@ public class Fuel implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Fuel fuel = (Fuel) o;
-        return getId().equals(fuel.getId()) &&
-                getName().equals(fuel.getName());
+        ExtraFeatures category = (ExtraFeatures) o;
+        return getId().equals(category.getId()) &&
+                getName().equals(category.getName());
     }
 
     @Override
