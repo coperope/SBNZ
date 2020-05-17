@@ -4,7 +4,10 @@ package rental_history_rules
 import main.facts.Rental;
 import main.facts.Customer;
 import main.facts.RentalHistory;
+import main.facts.SearchHistory;
 import main.facts.Vehicle;
+
+import main.dto.SearchDTO;
 
 rule "Update users rental history"
     when
@@ -13,5 +16,18 @@ rule "Update users rental history"
     	
     	$customer.getRentalHistory().updateRentalHistory($vehicle);
         System.out.println("Rental history updated");
+end
+
+rule "Update users search history"
+    when
+    	$customer: Customer()
+        $searchParams: SearchDTO(customer == $customer)
+    then
+    	
+    	System.out.println($customer);
+    	System.out.println($searchParams);
+    	System.out.println($customer.getSearchHistory());
+    	$customer.getSearchHistory().updateSearchHistory($searchParams);
+        System.out.println("Search history updated");
 end
 
