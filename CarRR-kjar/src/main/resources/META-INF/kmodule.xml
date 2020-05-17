@@ -11,4 +11,9 @@
 		packages="rental_history_rules">
 		<ksession name="rental_history_update_session" />
 	</kbase>
+	
+	<kbase name="recommendation_rules"
+		packages="recommendation_rules">
+		<ksession name="recommendation_rules_session" />
+	</kbase>
 </kmodule>

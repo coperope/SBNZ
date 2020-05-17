@@ -108,7 +108,13 @@ public class Vehicle implements Serializable {
     // In euros.
     @Column(name = "pricePerDay")
     private int pricePerDay;
+    
+    @Column(name = "numberOfStars")
+    private int numberOfStars;
 
+    @Column(name = "numberOfReviews")
+    private int numberOfReviews;
+    
     public Vehicle(){
 
     }
@@ -329,6 +335,22 @@ public class Vehicle implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public int getNumberOfStars() {
+		return numberOfStars;
+	}
+
+	public void setNumberOfStars(int numberOfStars) {
+		this.numberOfStars = numberOfStars;
+	}
+
+	public int getNumberOfReviews() {
+		return numberOfReviews;
+	}
+
+	public void setNumberOfReviews(int numberOfReviews) {
+		this.numberOfReviews = numberOfReviews;
 	}
 
 	@Override
