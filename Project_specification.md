@@ -99,6 +99,19 @@ Low mileage price -> mileageLimit > 0, mileagePrice <= 0.5 <br />
 Transmission automatic -> transmission == Automatic <br />
 Transmission manual -> transmission != Automatic <br />
 
+
+#### Kategorije:
+Economy -> <= 8 litres per 100km and l < 4m and w < 1.9m and h < 1.6m and cargoVolume < 450l and seatsNo <= 5 and doorNo <= 4 and pricePerDay < 25  <br />
+Compact -> <= 9 litres per 100km and l < 3.2m and w < 1.9m and h < 1.6m and cargoVolume + passengerAreaVolume < 3086 and seatsNo <= 5 and doorNo <= 4 and 20 < pricePerDay < 60  <br />
+Standard -> <= 11 litres per 100km and l > 4m and w < 1.9m and h < 1.6m and cargoVolume + passengerAreaVolume > 3400 and seatsNo == 5 and doorNo == 4 and 40 < pricePerDay < 120  <br />
+Intermediate -> <= 11 litres per 100km and l > 4.1m and w < 1.9m and h < 1.6m and cargoVolume + passengerAreaVolume > 3400 and cargoVolume + passengerAreaVolume < 3086 and seatsNo == 5 and doorNo == 4 and 40 < pricePerDay < 100  <br />
+Full size -> <= 12 litres/100km and >= 10 litres/100km and l > 4.3m and w < 1.95m and h < 1.7m and cargoVolume + passengerAreaVolume > 3450 and seatsNo >= 5 and doorNo >= 4 and 45 < pricePerDay < 300  <br />
+Luxury -> <= 14 litres/100km and >= 10 litres/100km and l > 4.3m and w < 1.95m and h < 1.7m and cargoVolume + passengerAreaVolume > 3300 and seatsNo >= 5 and doorNo >= 4 and 300 < pricePerDay and No of features < 2 <br />
+Premium -> <= 14 litres/100km and >= 10 litres/100km and l > 4.3m and w < 1.95m and h < 1.7m and seatsNo >= 5 and doorNo >= 4 and 80 < pricePerDay < 400 and No of features > 2 <br />
+Sport -> <= 14 litres/100km and >= 10 litres/100km and l < 5m and w < 1.9m and h < 1.3m and seatsNo >= 2 and seatsNo <= 4 and doorNo == 2 and 80 < pricePerDay < 400 and (power x 1000/weight) >= 174 <br />
+Coupe -> <= 12 litres/100km and >= 10 litres/100km and l < 5m and w < 2m and h < 1.6m and seatsNo >= 2 and cargoVolume + passengerAreaVolume < 2200 and seatsNo == 2 and doorNo == 2 and 80 < pricePerDay < 400 <br />
+Passenger van -> <= 20 litres/100km and >= 15 litres/100km and l < 5.5m  and h > 2m and seatsNo >= 10 and seatsNo <= 15 and cargoVolume + passengerAreaVolume > 5000 and doorNo == 4 and 80 < pricePerDay < 400 <br />
+Pick up -> <= 20 litres/100km and >= 15 litres/100km and l < 5.5m  and h > 2m and seatsNo == 5 and cargoVolume > 2000 and doorNo == 4 <br />
 ### Literatura:
 
 [1] [The Design of Web Based Car Recommendation System using Hybrid Recommender Algorithm](https://www.researchgate.net/publication/332683028_The_Design_of_Web_Based_Car_Recommendation_System_using_Hybrid_Recommender_Algorithm)
