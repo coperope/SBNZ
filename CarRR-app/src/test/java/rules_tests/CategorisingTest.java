@@ -43,12 +43,15 @@ public class CategorisingTest {
         cat5.setName("Full size");
         Category cat6 = new Category();
         cat6.setName("Luxury");
+        Category cat7 = new Category();
+        cat7.setName("Premium");
         kieSession.insert(cat);
         kieSession.insert(cat2);
         kieSession.insert(cat3);
         kieSession.insert(cat4);
         kieSession.insert(cat5);
         kieSession.insert(cat6);
+        kieSession.insert(cat7);
     }
 
     @Test
@@ -186,14 +189,42 @@ public class CategorisingTest {
         vehicle.setCategories(new ArrayList<Category>());
         List<ExtraFeatures> features = new ArrayList<ExtraFeatures>();
         features.add(new ExtraFeatures(1l, "Parking sensors"));
-        vehicle.setFeatures(new ArrayList<ExtraFeatures>());
+        vehicle.setFeatures(features);
 
         kieSession.insert(vehicle);
         kieSession.fireAllRules();
         kieSession.dispose();
 
         System.out.println(vehicle);
-        Category test = vehicle.getCategories().stream().filter(category -> category.getName().equals("Full size")).findFirst().orElse(null);
-        assertEquals("Full size", test.getName());
+        Category test = vehicle.getCategories().stream().filter(category -> category.getName().equals("Luxury")).findFirst().orElse(null);
+        assertEquals("Luxury", test.getName());
+    }
+
+    @Test
+    public void testPremiumCategory() {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setFuelConsumption(13);
+        vehicle.setSeatsNo(5);
+        vehicle.setDoorNo(4);
+        vehicle.setCargoVolume(500);
+        vehicle.setPassengerAreaVolume(3000);
+        vehicle.setLength(451);
+        vehicle.setWidth(200);
+        vehicle.setHeight(171);
+        vehicle.setPricePerDay(100);
+        vehicle.setCategories(new ArrayList<Category>());
+        List<ExtraFeatures> features = new ArrayList<ExtraFeatures>();
+        features.add(new ExtraFeatures(1l, "Parking sensors"));
+        features.add(new ExtraFeatures(1l, "Rear camera"));
+        features.add(new ExtraFeatures(1l, "Cruise control"));
+        vehicle.setFeatures(features);
+
+        kieSession.insert(vehicle);
+        kieSession.fireAllRules();
+        kieSession.dispose();
+
+        System.out.println(vehicle);
+        Category test = vehicle.getCategories().stream().filter(category -> category.getName().equals("Premium")).findFirst().orElse(null);
+        assertEquals("Premium", test.getName());
     }
 }
