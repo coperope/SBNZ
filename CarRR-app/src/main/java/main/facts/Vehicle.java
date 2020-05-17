@@ -59,6 +59,12 @@ public class Vehicle implements Serializable {
     @JoinTable(name = "vehicle_tags", joinColumns = @JoinColumn(name = "vehicle_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
     private List<Tag> tags;
 
+    // Features like sensors or auto a/c that come as an extra to the base version of a car.
+    // In a luxury car it is expected to have these even in a basic version.
+    @ManyToMany
+    @JoinTable(name = "vehicle_extra_features", joinColumns = @JoinColumn(name = "vehicle_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "feature_id", referencedColumnName = "id"))
+    private List<ExtraFeatures> features;
+
     // Zero for unlimited.
     @Column(name = "mileageLimit")
     private int mileageLimit;
@@ -66,7 +72,7 @@ public class Vehicle implements Serializable {
     // In $ per km, zero for unlimited.
     @Column(name = "mileagePrice")
     private double mileagePrice;
-    
+
     // In kW
     @Column(name = "power")
     private double power;
@@ -94,10 +100,16 @@ public class Vehicle implements Serializable {
     // In centimeters.
     @Column(name = "length")
     private int length;
-    
+
     // In liters.
     @Column(name = "tankVolume")
     private double tankVolume;
+
+    // In euros.
+    @Column(name = "pricePerDay")
+    private int pricePerDay;
+
+
 
     public Vehicle(){
 
@@ -205,94 +217,44 @@ public class Vehicle implements Serializable {
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
-    
-	public int getMileageLimit() {
-		return mileageLimit;
-	}
-	
-	public void setMileageLimit(int mileageLimit) {
-		this.mileageLimit = mileageLimit;
-	}
-	
-	public double getMileagePrice() {
-		return mileagePrice;
-	}
-	
-	public void setMileagePrice(double mileagePrice) {
-		this.mileagePrice = mileagePrice;
-	}
-	
-	public double getPower() {
-		return power;
-	}
-	
-	public void setPower(double power) {
-		this.power = power;
-	}
-	
-	public double getWeight() {
-		return weight;
-	}
-	
-	public void setWeight(double weight) {
-		this.weight = weight;
-	}
-	
-	public int getCargoVolume() {
-		return cargoVolume;
-	}
-	
-	public void setCargoVolume(int cargoVolume) {
-		this.cargoVolume = cargoVolume;
-	}
-	
-	public int getPassengerAreaVolume() {
-		return passengerAreaVolume;
-	}
-	
-	public void setPassengerAreaVolume(int passengerAreaVolume) {
-		this.passengerAreaVolume = passengerAreaVolume;
-	}
-	
-	public int getWidth() {
-		return width;
-	}
-	
-	public void setWidth(int width) {
-		this.width = width;
-	}
-	
-	public int getHeight() {
-		return height;
-	}
-	
-	public void setHeight(int height) {
-		this.height = height;
-	}
-	
-	public int getLength() {
-		return length;
-	}
-	
-	public void setLength(int length) {
-		this.length = length;
-	}
-	
-	public double getTankVolume() {
-		return tankVolume;
-	}
-	
-	public void setTankVolume(double tankVolume) {
-		this.tankVolume = tankVolume;
-	}
-	
-	@Override
-	public String toString() {
-		return "Vehicle [id=" + id + ", brand=" + brand + ", model=" + model + ", fuel=" + fuel + ", transmission="
-				+ transmission + ", seatsNo=" + seatsNo + ", doorNo=" + doorNo + ", fuelConsumption=" + fuelConsumption
-				+ ", ac=" + ac + ", categories=" + categories + ", tags=" + tags + ", mileageLimit=" + mileageLimit
-				+ ", power=" + power + ", weight=" + weight + ", cargoVolume=" + cargoVolume + ", passengerAreaVolume="
-				+ passengerAreaVolume + ", width=" + width + ", height=" + height + ", length=" + length + "]";
-	}
 
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "id=" + id +
+                ", brand=" + brand +
+                ", model=" + model +
+                ", fuel=" + fuel +
+                ", transmission=" + transmission +
+                ", seatsNo=" + seatsNo +
+                ", doorNo=" + doorNo +
+                ", fuelConsumption=" + fuelConsumption +
+                ", ac=" + ac +
+                ", categories=" + categories +
+                ", tags=" + tags +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vehicle vehicle = (Vehicle) o;
+        return getSeatsNo() == vehicle.getSeatsNo() &&
+                getDoorNo() == vehicle.getDoorNo() &&
+                isAc() == vehicle.isAc() &&
+                getId().equals(vehicle.getId()) &&
+                getBrand().equals(vehicle.getBrand()) &&
+                getModel().equals(vehicle.getModel()) &&
+                getFuel().equals(vehicle.getFuel()) &&
+                getTransmission().equals(vehicle.getTransmission()) &&
+                getFuelConsumption().equals(vehicle.getFuelConsumption()) &&
+                Objects.equals(getCategories(), vehicle.getCategories()) &&
+                Objects.equals(getTags(), vehicle.getTags());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getBrand(), getModel(), getFuel(), getTransmission(), getSeatsNo(), getDoorNo(), getFuelConsumption(), isAc());
+    }
 }
