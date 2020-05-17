@@ -76,17 +76,16 @@ public class RentalHistory implements Serializable {
             joinColumns = {@JoinColumn(name = "rental_history_id", referencedColumnName = "id")})
     @MapKeyColumn(name = "fuelConsumption_id")
     @Column(name = "no_of_occurrences")
-    private Map<Long, Integer> fuelConsumption;
+    private Map<Double, Integer> fuelConsumption;
     
     
-
 	public RentalHistory() {
 		super();
 		this.brands = new HashMap<Brand, Integer>();
 		this.categories = new HashMap<Category, Integer>();
 		this.doorNo = new HashMap<Integer, Integer>();
 		this.fuel = new HashMap<Fuel, Integer>();
-		this.fuelConsumption = new HashMap<Long, Integer>();
+		this.fuelConsumption = new HashMap<Double, Integer>();
 		this.model = new HashMap<CarModel, Integer>();
 		this.seatsNo = new HashMap<Integer, Integer>();
 		this.tags = new HashMap<Tag, Integer>();
@@ -165,11 +164,11 @@ public class RentalHistory implements Serializable {
 		this.doorNo = doorNo;
 	}
 
-	public Map<Long, Integer> getFuelConsumption() {
+	public Map<Double, Integer> getFuelConsumption() {
 		return fuelConsumption;
 	}
 
-	public void setFuelConsumption(Map<Long, Integer> fuelConsumption) {
+	public void setFuelConsumption(Map<Double, Integer> fuelConsumption) {
 		this.fuelConsumption = fuelConsumption;
 	}
 

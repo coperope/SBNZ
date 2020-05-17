@@ -4,32 +4,23 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
-public class Category implements Serializable {
+public class ExtraFeatures implements Serializable {
     private static final long serialVersionUID = 1L;
     // TODO: 5/13/2020 Add annotations.
     @Id
-    @SequenceGenerator(name="category_id_seq",sequenceName="category_id_seq", allocationSize=1)
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="category_id_seq")
+    @SequenceGenerator(name="extraFeatures_id_seq",sequenceName="extraFeatures_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="extraFeatures_id_seq")
     private Long id;
 
     @Column(name = "name")
     private String name;
 
-    // TODO: 5/13/2020 Connect with Tag.
-
-    @ManyToMany
-    @JoinTable(name = "category_tags", joinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"),
-            foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
-            inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
-    List<Tag> tags;
-
-    public Category(){
+    public ExtraFeatures(){
 
     }
-    public Category(Long id, String name) {
+    public ExtraFeatures(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -52,7 +43,7 @@ public class Category implements Serializable {
 
     @Override
     public String toString() {
-        return "Category{" +
+        return "Feature{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
@@ -62,7 +53,7 @@ public class Category implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Category category = (Category) o;
+        ExtraFeatures category = (ExtraFeatures) o;
         return getId().equals(category.getId()) &&
                 getName().equals(category.getName());
     }
