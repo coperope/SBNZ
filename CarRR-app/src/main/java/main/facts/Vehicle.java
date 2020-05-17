@@ -1,9 +1,19 @@
 package main.facts;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Vehicle implements Serializable {
@@ -35,7 +45,7 @@ public class Vehicle implements Serializable {
 
     // In liters per 100km.
     @Column(name = "fuelConsumption")
-    private Long fuelConsumption;
+    private double fuelConsumption;
 
     // If car has A/C.
     @Column(name = "ac")
@@ -59,6 +69,18 @@ public class Vehicle implements Serializable {
     @Column(name = "mileageLimit")
     private int mileageLimit;
 
+    // In $ per km, zero for unlimited.
+    @Column(name = "mileagePrice")
+    private double mileagePrice;
+
+    // In kW
+    @Column(name = "power")
+    private double power;
+
+    // In kg
+    @Column(name = "weight")
+    private double weight;
+
     // In liters.
     @Column(name = "cargoVolume")
     private int cargoVolume;
@@ -79,204 +101,245 @@ public class Vehicle implements Serializable {
     @Column(name = "length")
     private int length;
 
+    // In liters.
+    @Column(name = "tankVolume")
+    private double tankVolume;
+
     // In euros.
     @Column(name = "pricePerDay")
     private int pricePerDay;
 
-
-
     public Vehicle(){
 
     }
-    public Vehicle(Long id, Brand brand, CarModel model, Fuel fuel, Transmission transmission, int seatsNo, int doorNo, Long fuelConsumption, boolean ac, List<Category> categories, List<Tag> tags) {
-        this.id = id;
-        this.brand = brand;
-        this.model = model;
-        this.fuel = fuel;
-        this.transmission = transmission;
-        this.seatsNo = seatsNo;
-        this.doorNo = doorNo;
-        this.fuelConsumption = fuelConsumption;
-        this.ac = ac;
-        this.categories = categories;
-        this.tags = tags;
-    }
 
-    public Long getId() {
-        return id;
-    }
+	public Vehicle(Long id, Brand brand, CarModel model, Fuel fuel, Transmission transmission, int seatsNo, int doorNo,
+			double fuelConsumption, boolean ac, List<Category> categories, List<Tag> tags, List<ExtraFeatures> features,
+			int mileageLimit, double mileagePrice, double power, double weight, int cargoVolume,
+			int passengerAreaVolume, int width, int height, int length, double tankVolume, int pricePerDay) {
+		super();
+		this.id = id;
+		this.brand = brand;
+		this.model = model;
+		this.fuel = fuel;
+		this.transmission = transmission;
+		this.seatsNo = seatsNo;
+		this.doorNo = doorNo;
+		this.fuelConsumption = fuelConsumption;
+		this.ac = ac;
+		this.categories = categories;
+		this.tags = tags;
+		this.features = features;
+		this.mileageLimit = mileageLimit;
+		this.mileagePrice = mileagePrice;
+		this.power = power;
+		this.weight = weight;
+		this.cargoVolume = cargoVolume;
+		this.passengerAreaVolume = passengerAreaVolume;
+		this.width = width;
+		this.height = height;
+		this.length = length;
+		this.tankVolume = tankVolume;
+		this.pricePerDay = pricePerDay;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public Brand getBrand() {
-        return brand;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setBrand(Brand brand) {
-        this.brand = brand;
-    }
+	public Brand getBrand() {
+		return brand;
+	}
 
-    public CarModel getModel() {
-        return model;
-    }
+	public void setBrand(Brand brand) {
+		this.brand = brand;
+	}
 
-    public void setModel(CarModel model) {
-        this.model = model;
-    }
+	public CarModel getModel() {
+		return model;
+	}
 
-    public Fuel getFuel() {
-        return fuel;
-    }
+	public void setModel(CarModel model) {
+		this.model = model;
+	}
 
-    public void setFuel(Fuel fuel) {
-        this.fuel = fuel;
-    }
+	public Fuel getFuel() {
+		return fuel;
+	}
 
-    public Transmission getTransmission() {
-        return transmission;
-    }
+	public void setFuel(Fuel fuel) {
+		this.fuel = fuel;
+	}
 
-    public void setTransmission(Transmission transmission) {
-        this.transmission = transmission;
-    }
+	public Transmission getTransmission() {
+		return transmission;
+	}
 
-    public int getSeatsNo() {
-        return seatsNo;
-    }
+	public void setTransmission(Transmission transmission) {
+		this.transmission = transmission;
+	}
 
-    public void setSeatsNo(int seatsNo) {
-        this.seatsNo = seatsNo;
-    }
+	public int getSeatsNo() {
+		return seatsNo;
+	}
 
-    public int getDoorNo() {
-        return doorNo;
-    }
+	public void setSeatsNo(int seatsNo) {
+		this.seatsNo = seatsNo;
+	}
 
-    public void setDoorNo(int doorNo) {
-        this.doorNo = doorNo;
-    }
+	public int getDoorNo() {
+		return doorNo;
+	}
 
-    public Long getFuelConsumption() {
-        return fuelConsumption;
-    }
+	public void setDoorNo(int doorNo) {
+		this.doorNo = doorNo;
+	}
 
-    public void setFuelConsumption(Long fuelConsumption) {
-        this.fuelConsumption = fuelConsumption;
-    }
+	public double getFuelConsumption() {
+		return fuelConsumption;
+	}
 
-    public boolean isAc() {
-        return ac;
-    }
+	public void setFuelConsumption(double fuelConsumption) {
+		this.fuelConsumption = fuelConsumption;
+	}
 
-    public void setAc(boolean ac) {
-        this.ac = ac;
-    }
+	public boolean isAc() {
+		return ac;
+	}
 
-    public List<Category> getCategories() {
-        return categories;
-    }
+	public void setAc(boolean ac) {
+		this.ac = ac;
+	}
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
+	public List<Category> getCategories() {
+		return categories;
+	}
 
-    public List<Tag> getTags() {
-        return tags;
-    }
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
+	}
 
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
-    }
+	public List<Tag> getTags() {
+		return tags;
+	}
 
-    public int getMileageLimit() {
-        return mileageLimit;
-    }
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
 
-    public void setMileageLimit(int mileageLimit) {
-        this.mileageLimit = mileageLimit;
-    }
+	public List<ExtraFeatures> getFeatures() {
+		return features;
+	}
 
-    public int getCargoVolume() {
-        return cargoVolume;
-    }
+	public void setFeatures(List<ExtraFeatures> features) {
+		this.features = features;
+	}
 
-    public void setCargoVolume(int cargoVolume) {
-        this.cargoVolume = cargoVolume;
-    }
+	public int getMileageLimit() {
+		return mileageLimit;
+	}
 
-    public int getPassengerAreaVolume() {
-        return passengerAreaVolume;
-    }
+	public void setMileageLimit(int mileageLimit) {
+		this.mileageLimit = mileageLimit;
+	}
 
-    public void setPassengerAreaVolume(int passengerAreaVolume) {
-        this.passengerAreaVolume = passengerAreaVolume;
-    }
+	public double getMileagePrice() {
+		return mileagePrice;
+	}
 
-    public int getWidth() {
-        return width;
-    }
+	public void setMileagePrice(double mileagePrice) {
+		this.mileagePrice = mileagePrice;
+	}
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
+	public double getPower() {
+		return power;
+	}
 
-    public int getHeight() {
-        return height;
-    }
+	public void setPower(double power) {
+		this.power = power;
+	}
 
-    public void setHeight(int height) {
-        this.height = height;
-    }
+	public double getWeight() {
+		return weight;
+	}
 
-    public int getLength() {
-        return length;
-    }
+	public void setWeight(double weight) {
+		this.weight = weight;
+	}
 
-    public void setLength(int length) {
-        this.length = length;
-    }
+	public int getCargoVolume() {
+		return cargoVolume;
+	}
 
-    @Override
-    public String toString() {
-        return "Vehicle{" +
-                "id=" + id +
-                ", brand=" + brand +
-                ", model=" + model +
-                ", fuel=" + fuel +
-                ", transmission=" + transmission +
-                ", seatsNo=" + seatsNo +
-                ", doorNo=" + doorNo +
-                ", fuelConsumption=" + fuelConsumption +
-                ", ac=" + ac +
-                ", categories=" + categories +
-                ", tags=" + tags +
-                '}';
-    }
+	public void setCargoVolume(int cargoVolume) {
+		this.cargoVolume = cargoVolume;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Vehicle vehicle = (Vehicle) o;
-        return getSeatsNo() == vehicle.getSeatsNo() &&
-                getDoorNo() == vehicle.getDoorNo() &&
-                isAc() == vehicle.isAc() &&
-                getId().equals(vehicle.getId()) &&
-                getBrand().equals(vehicle.getBrand()) &&
-                getModel().equals(vehicle.getModel()) &&
-                getFuel().equals(vehicle.getFuel()) &&
-                getTransmission().equals(vehicle.getTransmission()) &&
-                getFuelConsumption().equals(vehicle.getFuelConsumption()) &&
-                Objects.equals(getCategories(), vehicle.getCategories()) &&
-                Objects.equals(getTags(), vehicle.getTags());
-    }
+	public int getPassengerAreaVolume() {
+		return passengerAreaVolume;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getBrand(), getModel(), getFuel(), getTransmission(), getSeatsNo(), getDoorNo(), getFuelConsumption(), isAc());
-    }
+	public void setPassengerAreaVolume(int passengerAreaVolume) {
+		this.passengerAreaVolume = passengerAreaVolume;
+	}
 
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
+	}
+
+	public double getTankVolume() {
+		return tankVolume;
+	}
+
+	public void setTankVolume(double tankVolume) {
+		this.tankVolume = tankVolume;
+	}
+
+	public int getPricePerDay() {
+		return pricePerDay;
+	}
+
+	public void setPricePerDay(int pricePerDay) {
+		this.pricePerDay = pricePerDay;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	@Override
+	public String toString() {
+		return "Vehicle [id=" + id + ", brand=" + brand + ", model=" + model + ", fuel=" + fuel + ", transmission="
+				+ transmission + ", seatsNo=" + seatsNo + ", doorNo=" + doorNo + ", fuelConsumption=" + fuelConsumption
+				+ ", ac=" + ac + ", categories=" + categories + ", tags=" + tags + ", features=" + features
+				+ ", mileageLimit=" + mileageLimit + ", mileagePrice=" + mileagePrice + ", power=" + power + ", weight="
+				+ weight + ", cargoVolume=" + cargoVolume + ", passengerAreaVolume=" + passengerAreaVolume + ", width="
+				+ width + ", height=" + height + ", length=" + length + ", tankVolume=" + tankVolume + ", pricePerDay="
+				+ pricePerDay + "]";
+	}
 
 }

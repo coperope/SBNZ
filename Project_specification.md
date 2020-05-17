@@ -76,6 +76,29 @@ uspešnost oglasa iz iste ili slične kategorije i zaključuje koji njihovi para
 većeg profita.
 Takođe se prikazuju kategorije i oznake oglasa koji su najpretraženiji i/ili najuspešniji.
 
+### Pravila:
+#### Tagovi:
+High fuel consumption ->= 12 litres per 100km <br />
+Medium fuel consumption -> 8 - 12 litres per 100km <br />
+Low fuel consumption -> <= 8 litres per 100km <br />
+Sport engine power -> > 174 W/kg <br />
+High engine power -> >= 114 W/kg <br />
+Medium engine power -> 49 > x < 114 W/kg <br />
+Low engine power -> <= 49 W/kg <br />
+Family car -> seats >= 5 <br />
+Big family car -> Family car AND combined passenger and cargo volume >= 3086 L  <br />
+Small family car -> Family car AND combined passenger and cargo volume < 3086 L  <br />
+Range: 100km / (liters per km) * tank space (in liters) <br />
+Long range -> >= 900 km per tank <br />
+Medium range -> 400 km per tank > x < 900 km per tank <br />
+Short range -> <= 400km per tank <br />
+Unlimited mileage -> mileageLimit ==  0 <br />
+High mileage price -> mileageLimit > 0, mileagePrice >= 1.2 <br />
+Medium mileage price -> mileageLimit > 0, mileagePrice > 0.5, mileagePrice < 1.2 <br />
+Low mileage price -> mileageLimit > 0, mileagePrice <= 0.5 <br />
+Transmission automatic -> transmission == Automatic <br />
+Transmission manual -> transmission != Automatic <br />
+
 ### Literatura:
 
 [1] [The Design of Web Based Car Recommendation System using Hybrid Recommender Algorithm](https://www.researchgate.net/publication/332683028_The_Design_of_Web_Based_Car_Recommendation_System_using_Hybrid_Recommender_Algorithm)
