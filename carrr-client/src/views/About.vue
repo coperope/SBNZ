@@ -5,7 +5,7 @@
 
       <hr class="my-4" />
       <ul>
-        <li>Petar Basić</li>
+        <li>Petar Bašić</li>
         <li>Mihajlo Perendija</li>
         <li>Damjan Pantić</li>
       </ul>
