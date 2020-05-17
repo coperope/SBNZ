@@ -341,5 +341,4 @@ public class Vehicle implements Serializable {
 				+ width + ", height=" + height + ", length=" + length + ", tankVolume=" + tankVolume + ", pricePerDay="
 				+ pricePerDay + "]";
 	}
-
 }

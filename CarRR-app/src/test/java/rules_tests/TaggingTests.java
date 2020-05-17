@@ -91,7 +91,7 @@ public class TaggingTests {
     @Test
     public void testHighFuelConsumptionTag() {
     	Vehicle vehicle = new Vehicle();
-    	vehicle.setFuelConsumption(13l);
+    	vehicle.setFuelConsumption(13.1);
     	vehicle.setTags(new ArrayList<Tag>());
     	
     	kieSession.insert(vehicle);

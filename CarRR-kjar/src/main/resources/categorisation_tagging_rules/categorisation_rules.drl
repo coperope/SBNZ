@@ -4,27 +4,31 @@ package categorisation_tagging_rule
 //list any import classes here.
 import main.facts.Vehicle;
 import main.facts.Category;
+import main.facts.ExtraFeatures;
 
 
 rule "Economy category"
+no-loop
     when
-        $vehicle: Vehicle(fuelConsumption < 8, length < 450, height < 160, width < 190, cargoVolume < 450, seatsNo <= 5, doorNo <= 4)
+        $vehicle: Vehicle(fuelConsumption < 8, length < 400, height < 160, width < 190, cargoVolume < 450, seatsNo <= 5, doorNo <= 4, pricePerDay < 25)
         $category: Category(name=="Economy")
     then
     	modify($vehicle){ getCategories().add($category)}
 end
 
 rule "Compact category"
+no-loop
     when
-        $vehicle: Vehicle(fuelConsumption < 9, length < 450, height < 160, width < 190, cargoVolume + passengerAreaVolume < 3086, seatsNo <= 5, doorNo <= 4)
+        $vehicle: Vehicle(fuelConsumption < 9, length < 320, height < 160, width < 190, cargoVolume + passengerAreaVolume < 3086, seatsNo <= 5, doorNo <= 4, pricePerDay > 20, pricePerDay < 60)
         $category: Category(name=="Compact")
     then
     	modify($vehicle){ getCategories().add($category)}
 end
 
 rule "Standard category"
+no-loop
     when
-        $vehicle: Vehicle(fuelConsumption < 11, length > 450, height > 160, width > 190, cargoVolume + passengerAreaVolume > 3400, seatsNo == 5, doorNo == 4)
+        $vehicle: Vehicle(fuelConsumption < 11, length > 400, height > 160, width > 190, cargoVolume + passengerAreaVolume > 3400, seatsNo == 5, doorNo == 4, pricePerDay > 40, pricePerDay < 120)
         $category: Category(name=="Standard")
     then
     	modify($vehicle){ getCategories().add($category)}
@@ -32,8 +36,54 @@ end
 
 rule "Intermediate category"
     when
-        $vehicle: Vehicle(fuelConsumption < 11, length > 450, height > 160, width > 190, cargoVolume + passengerAreaVolume > 3086, cargoVolume + passengerAreaVolume < 3400, seatsNo == 5, doorNo == 4)
-        $category: Category(name=="Standard")
+        $vehicle: Vehicle(fuelConsumption < 11, length > 410, height > 160, width > 190, cargoVolume + passengerAreaVolume > 3086, cargoVolume + passengerAreaVolume < 3400, seatsNo == 5, doorNo == 4, pricePerDay > 40, pricePerDay < 100)
+        $category: Category(name=="Intermediate")
+    then
+    	modify($vehicle){ getCategories().add($category)}
+end
+
+rule "Full size category"
+    when
+        $vehicle: Vehicle(fuelConsumption < 12, fuelConsumption > 10, length > 430, height > 170, width > 195, cargoVolume + passengerAreaVolume > 3450, seatsNo >= 5, doorNo >= 4, pricePerDay > 45, pricePerDay < 300)
+        $category: Category(name=="Full size")
+    then
+    	modify($vehicle){ getCategories().add($category)}
+end
+
+rule "Luxury category"
+    when
+        $vehicle: Vehicle(fuelConsumption < 14, fuelConsumption > 10, length > 430, height > 170, width > 195, cargoVolume + passengerAreaVolume > 3300, seatsNo >= 5, doorNo >= 4, pricePerDay > 300, $features: features)
+        Number(intValue < 2) from accumulate(
+                    ExtraFeatures(
+                    ) from $features,
+                    init(int count = 0;),
+                    action(count += 1;),
+                    result(count)
+                )
+        $category: Category(name=="Luxury")
+    then
+    	modify($vehicle){ getCategories().add($category)}
+end
+
+rule "Premium category"
+    when
+        $vehicle: Vehicle(fuelConsumption < 14, fuelConsumption > 10, seatsNo >= 5, doorNo >= 4, pricePerDay > 80, pricePerDay < 400, $features: features)
+        Number(intValue >= 2) from accumulate(
+                    ExtraFeatures(
+                    ) from $features,
+                    init(int count = 0;),
+                    action(count += 1;),
+                    result(count)
+                )
+        $category: Category(name=="Premium")
+    then
+    	modify($vehicle){ getCategories().add($category)}
+end
+
+rule "Sport category"
+    when
+        $vehicle: Vehicle(fuelConsumption < 14, fuelConsumption > 10, length < 500, height < 150, width < 190, cargoVolume + passengerAreaVolume < 3300, seatsNo >= 2, seatsNo <= 4, doorNo == 2, pricePerDay > 80, pricePerDay < 400, $features: features)
+        $category: Category(name=="Sport")
     then
     	modify($vehicle){ getCategories().add($category)}
 end
