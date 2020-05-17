@@ -1,6 +1,7 @@
 package main.facts;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.CollectionTable;
@@ -86,6 +87,19 @@ public class SearchHistory implements Serializable {
 	@MapKeyColumn(name = "fuelConsumption_id")
 	@Column(name = "no_of_occurrences")
 	private Map<Double, Integer> fuelConsumption;
+	
+	public SearchHistory() {
+		super();
+		this.brands = new HashMap<Brand, Integer>();
+		this.categories = new HashMap<Category, Integer>();
+		this.doorNo = new HashMap<Integer, Integer>();
+		this.fuel = new HashMap<Fuel, Integer>();
+		this.fuelConsumption = new HashMap<Double, Integer>();
+		this.model = new HashMap<CarModel, Integer>();
+		this.seatsNo = new HashMap<Integer, Integer>();
+		this.tags = new HashMap<Tag, Integer>();
+		this.transmission = new HashMap<Transmission, Integer>();
+	}
 
 	public Long getId() {
 		return id;
@@ -190,7 +204,7 @@ public class SearchHistory implements Serializable {
 				this.tags.put(tag, factor);
 			}
 		}
-
+		
 		// Brand update
 		for (Brand brand : searchParam.getBrands()) {
 			Integer brandValue = this.brands.get(brand);
@@ -261,5 +275,10 @@ public class SearchHistory implements Serializable {
 			}
 		}
 
+	}
+
+	@Override
+	public String toString() {
+		return "SearchHistory [id=" + id + "]";
 	}
 }

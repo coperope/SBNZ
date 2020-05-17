@@ -1,5 +1,6 @@
 package main.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,15 @@ public class SearchDTO {
 
 	public SearchDTO() {
 		super();
+		this.categories = new ArrayList<Category>();
+		this.tags = new ArrayList<Tag>();
+		this.brands = new ArrayList<Brand>();
+		this.models = new ArrayList<CarModel>();
+		this.fuels = new ArrayList<Fuel>();
+		this.transmissions = new ArrayList<Transmission>();
+		this.seatsNo = new ArrayList<Integer>();
+		this.doorNo = new ArrayList<Integer>();
+		this.fuelConsumptions = new ArrayList<Double>();
 		this.scaleFactor = 1;
 	}
 	
@@ -135,5 +145,10 @@ public class SearchDTO {
 
 	public void setScaleFactor(Integer scaleFactor) {
 		this.scaleFactor = scaleFactor;
+	}
+
+	@Override
+	public String toString() {
+		return "SearchDTO [customer=" + customer + "]";
 	}
 }
