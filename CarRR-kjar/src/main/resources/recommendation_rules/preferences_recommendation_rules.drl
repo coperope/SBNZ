@@ -5,6 +5,10 @@ package recommendation_rules
 import main.facts.Customer;
 import main.facts.PreferencesRecommendations;
 import main.facts.Category;
+import main.facts.Tag;
+import main.facts.Brand;
+import main.facts.Fuel;
+import main.facts.Transmission;
 import main.facts.CustomerPreferences;
 import main.facts.Vehicle;
 
@@ -12,6 +16,7 @@ import main.facts.Vehicle;
 
 rule "Category preference rule"
 no-loop
+lock-on-active true
     when
         Customer($preferences: preferences)
         CustomerPreferences($preferedCategories: categoryList) from $preferences
@@ -32,3 +37,108 @@ no-loop
     	modify ($pr) {addHits($vehicle, $preferencesHit)}
 end
 
+
+rule "Tag preference rule"
+no-loop
+lock-on-active true
+    when
+        Customer($preferences: preferences)
+        CustomerPreferences($preferedTags: tagList) from $preferences
+
+        $pr: PreferencesRecommendations()
+        $vehicle: Vehicle($tags: tags)
+
+        Number($preferencesHit : intValue) from accumulate(
+                    $c: Tag() from $tags
+					and
+					Tag($c.name == name) from $preferedTags
+                    ,
+                    init(int count = 0;),
+                    action(count += 1;),
+                    result(count)
+                )
+    then
+    	modify ($pr) {addHits($vehicle, $preferencesHit)}
+end
+
+rule "Brand preference rule"
+no-loop
+lock-on-active true
+    when
+        Customer($preferences: preferences)
+        CustomerPreferences($preferedBrands: brandList) from $preferences
+
+        $pr: PreferencesRecommendations()
+        $vehicle: Vehicle($brand: brand)
+        Brand(name == $brand.name) from $preferedBrands
+    then
+    	modify ($pr) {addHits($vehicle, 1)}
+end
+
+rule "Fuel preference rule"
+no-loop
+lock-on-active true
+    when
+        Customer($preferences: preferences)
+        CustomerPreferences($preferedFuels: fuelList) from $preferences
+
+        $pr: PreferencesRecommendations()
+        $vehicle: Vehicle($fuel: fuel)
+        Fuel(name == $fuel.name) from $preferedFuels
+    then
+    	modify ($pr) {addHits($vehicle, 1)}
+end
+
+
+rule "Transmission preference rule"
+no-loop
+lock-on-active true
+    when
+        Customer($preferences: preferences)
+        CustomerPreferences($preferedTransmissions: transmissionList) from $preferences
+
+        $pr: PreferencesRecommendations()
+        $vehicle: Vehicle($transmission: transmission)
+        Transmission(name == $transmission.name) from $preferedTransmissions
+    then
+    	modify ($pr) {addHits($vehicle, 1)}
+end
+
+rule "Seats number preference rule"
+no-loop
+lock-on-active true
+    when
+        Customer($preferences: preferences)
+        CustomerPreferences($preferedSeatsNo: seatsNo) from $preferences
+
+        $pr: PreferencesRecommendations()
+        $vehicle: Vehicle($preferedSeatsNo == seatsNo)
+    then
+    	modify ($pr) {addHits($vehicle, 1)}
+end
+
+rule "Door number preference rule"
+no-loop
+lock-on-active true
+    when
+        Customer($preferences: preferences)
+        CustomerPreferences($preferedDoorNo: doorNo) from $preferences
+
+        $pr: PreferencesRecommendations()
+        $vehicle: Vehicle($preferedDoorNo == doorNo)
+    then
+    	modify ($pr) {addHits($vehicle, 1)}
+end
+
+rule "Fuel consumption preference rule"
+no-loop
+lock-on-active true
+    when
+        Customer($preferences: preferences)
+        CustomerPreferences($preferedFuelConsumption: fuelConsumption) from $preferences
+
+        $pr: PreferencesRecommendations()
+        $vehicle: Vehicle($preferedFuelConsumption >= fuelConsumption)
+    then
+    	modify ($pr) {addHits($vehicle, 1)}
+end

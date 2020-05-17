@@ -91,7 +91,7 @@ public class PreferencesRecommendationTest {
 		vehicle2.setBrand(brand2);
 			Fuel fuel2 = new Fuel();
 			fuel2.setId(2L);
-			fuel2.setName("Gasoline");
+			fuel2.setName("Diesel");
 		vehicle2.setFuel(fuel2);
 			CarModel model2 = new CarModel();
 			model2.setBrand(brand);
@@ -121,15 +121,18 @@ public class PreferencesRecommendationTest {
 		vehicle2.setDoorNo(4);
 		vehicle2.setFuelConsumption(12.1);
 		vehicle2.setSeatsNo(4);
-    	
+
     	CustomerPreferences preferences = new CustomerPreferences();
     	preferences.getBrandList().add(brand);
+		preferences.setDoorNo(4);
+		preferences.setSeatsNo(4);
     	preferences.getCategoryList().add(sportCategory);
     	preferences.getCategoryList().add(compact);
 
+    	preferences.getFuelList().add(fuel2);
+    	preferences.getTransmissionList().add(transmission);
     	preferences.getTagList().add(tag);
-    	preferences.setFuelConsumption(12);
-    	preferences.setSeatsNo(2);
+    	preferences.setFuelConsumption(12.2);
 
     	Customer customer = new Customer();
     	customer.setPreferences(preferences);
