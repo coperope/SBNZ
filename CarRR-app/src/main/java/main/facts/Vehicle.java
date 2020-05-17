@@ -61,6 +61,14 @@ public class Vehicle implements Serializable {
     @Column(name = "weight")
     private double weight;
     
+    // In L
+    @Column(name = "passengerVolume")
+    private double passengerVolume;
+    
+    // In L
+    @Column(name = "cargoVolume")
+    private double cargoVolume;
+    
     public Vehicle(){
 
     }
@@ -190,6 +198,22 @@ public class Vehicle implements Serializable {
 	
 	public void setWeight(double weight) {
 		this.weight = weight;
+	}
+	
+	public double getPassengerVolume() {
+		return passengerVolume;
+	}
+	
+	public void setPassengerVolume(double passengerVolume) {
+		this.passengerVolume = passengerVolume;
+	}
+	
+	public double getCargoVolume() {
+		return cargoVolume;
+	}
+	
+	public void setCargoVolume(double cargoVolume) {
+		this.cargoVolume = cargoVolume;
 	}
 	
 	@Override

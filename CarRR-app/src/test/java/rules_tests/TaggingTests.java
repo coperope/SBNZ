@@ -178,5 +178,49 @@ public class TaggingTests {
 		assertEquals("Low engine power", vehicle.getTags().get(0).getName());
     }
     
+    @Test
+    public void testSmallFamilyTag() {
+    	Tag tag = new Tag();
+    	tag.setName("Family car");
+    	Tag tag2 = new Tag();
+    	tag2.setName("Small family car");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setSeatsNo(5);
+    	vehicle.setPassengerVolume(2500);
+    	vehicle.setCargoVolume(300);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(tag2);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(2, vehicle.getTags().size());
+    }
+    
+    @Test
+    public void testBigFamilyTag() {
+    	Tag tag = new Tag();
+    	tag.setName("Family car");
+    	Tag tag2 = new Tag();
+    	tag2.setName("Big family car");
+    	Vehicle vehicle = new Vehicle();
+    	vehicle.setSeatsNo(5);
+    	vehicle.setPassengerVolume(3000);
+    	vehicle.setCargoVolume(400);
+    	vehicle.setTags(new ArrayList<Tag>());
+    	
+    	kieSession.insert(tag);
+    	kieSession.insert(tag2);
+    	kieSession.insert(vehicle);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		System.out.println(vehicle);
+		assertEquals(2, vehicle.getTags().size());
+    }
+    
 
 }

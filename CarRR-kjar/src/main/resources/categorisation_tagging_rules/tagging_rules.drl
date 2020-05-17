@@ -63,3 +63,32 @@ rule "Low engine power tag"
     then
     	modify($vehicle){ getTags().add($tag)}
 end
+
+rule "Family car tag"
+no-loop
+    when
+        $vehicle: Vehicle(seatsNo >= 5)
+        $tag: Tag(name=="Family car")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Small family car tag"
+no-loop
+    when
+        $vehicle: Vehicle(passengerVolume + cargoVolume < 3086, $tags: tags)
+        Tag(name=="Family car") from $tags
+        $tag: Tag(name=="Small family car")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
+
+rule "Big family car tag"
+no-loop
+    when
+        $vehicle: Vehicle(passengerVolume + cargoVolume >= 3086, $tags: tags)
+        Tag(name=="Family car") from $tags
+        $tag: Tag(name=="Big family car")
+    then
+    	modify($vehicle){ getTags().add($tag)}
+end
