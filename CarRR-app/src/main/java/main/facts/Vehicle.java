@@ -52,7 +52,7 @@ public class Vehicle implements Serializable {
     // Zero for unlimited.
     @Column(name = "mileageLimit")
     private int mileageLimit;
-    
+
     // In kW
     @Column(name = "power")
     private double power;
@@ -60,15 +60,27 @@ public class Vehicle implements Serializable {
     // In kg
     @Column(name = "weight")
     private double weight;
-    
-    // In L
-    @Column(name = "passengerVolume")
-    private double passengerVolume;
-    
-    // In L
+
+    // In liters.
     @Column(name = "cargoVolume")
-    private double cargoVolume;
-    
+    private int cargoVolume;
+
+    // In liters.
+    @Column(name = "passengerAreaVolume")
+    private int passengerAreaVolume;
+
+    // In centimeters.
+    @Column(name = "width")
+    private int width;
+
+    // In centimeters.
+    @Column(name = "height")
+    private int height;
+
+    // In centimeters.
+    @Column(name = "length")
+    private int length;
+
     public Vehicle(){
 
     }
@@ -175,48 +187,8 @@ public class Vehicle implements Serializable {
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
-    
-    public int getMileageLimit() {
-		return mileageLimit;
-	}
-    
-	public void setMileageLimit(int mileageLimit) {
-		this.mileageLimit = mileageLimit;
-	}
-	
-	public double getPower() {
-		return power;
-	}
-	
-	public void setPower(double power) {
-		this.power = power;
-	}
-	
-	public double getWeight() {
-		return weight;
-	}
-	
-	public void setWeight(double weight) {
-		this.weight = weight;
-	}
-	
-	public double getPassengerVolume() {
-		return passengerVolume;
-	}
-	
-	public void setPassengerVolume(double passengerVolume) {
-		this.passengerVolume = passengerVolume;
-	}
-	
-	public double getCargoVolume() {
-		return cargoVolume;
-	}
-	
-	public void setCargoVolume(double cargoVolume) {
-		this.cargoVolume = cargoVolume;
-	}
-	
-	@Override
+
+    @Override
     public String toString() {
         return "Vehicle{" +
                 "id=" + id +
