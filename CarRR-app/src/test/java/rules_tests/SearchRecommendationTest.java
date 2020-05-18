@@ -38,10 +38,6 @@ public class SearchRecommendationTest {
     	ks = KieServices.Factory.get();
     	kieContainer = ks.getKieClasspathContainer();
     	kieSession = kieContainer.newKieSession(ksessionName);
-    	
-    	
-		
-    	
 
     }
     
@@ -145,6 +141,8 @@ public class SearchRecommendationTest {
     	List<Brand> brands = new ArrayList<Brand>();
 		searchHistory.getBrands().put(brand, 2);
 		searchHistory.getBrands().put(brand2, 5);
+		searchHistory.getCategories().put(compact, 4);
+
 		Brand br = new Brand();
 		br.setId(3l);
 		br.setName("ZASTAVA");
@@ -159,7 +157,8 @@ public class SearchRecommendationTest {
 
 		kieSession.fireAllRules();
 		kieSession.dispose();
-		
+
+		System.out.println(recommendations.getMap().values());
 		System.out.println(recommendations);
 
 		LinkedHashMap<Vehicle, Integer> sortedMap = 

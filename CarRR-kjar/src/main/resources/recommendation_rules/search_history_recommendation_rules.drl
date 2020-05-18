@@ -15,7 +15,7 @@ import main.facts.SearchHistory;
 import main.facts.SearchRecommendations;
 
 
-rule "Search history rule"
+rule "Search history brand rule"
 no-loop true
 lock-on-active true
     when
@@ -23,9 +23,49 @@ lock-on-active true
         SearchHistory($searchBrands: brands) from $searchHistory
         
         $sr: SearchRecommendations()
-        $vehicle: Vehicle($brand: brand) 
+        $vehicle: Vehicle($brand: brand)
     then
         modify ($sr) {addHits($vehicle, $searchBrands.get($brand))}
-    
 
+
+end
+
+rule "Search history category rule"
+no-loop true
+lock-on-active true
+    when
+        Customer($searchHistory: searchHistory)
+        SearchHistory($searchCategories: categories) from $searchHistory
+
+        $sr: SearchRecommendations()
+        $vehicle: Vehicle($categories: categories)
+        Number($preferencesHit : intValue) from accumulate(
+            $c: Category() from $categories
+            ,
+            init(int count = 0;),
+            action(count += ($searchCategories.get($c)!=null) ? (int)$searchCategories.get($c) : 0;),
+            result(count)
+        )
+    then
+        modify ($sr) {addHits($vehicle, $preferencesHit)}
+end
+
+rule "Search history tag rule"
+no-loop true
+lock-on-active true
+    when
+        Customer($searchHistory: searchHistory)
+        SearchHistory($searchTags: tags) from $searchHistory
+
+        $sr: SearchRecommendations()
+        $vehicle: Vehicle($tags: tags)
+        Number($preferencesHit : intValue) from accumulate(
+            $t: Tag() from $tags
+            ,
+            init(int count = 0;),
+            action(count += ($searchTags.get($t)!=null) ? (int)$searchTags.get($t) : 0;),
+            result(count)
+        )
+    then
+        modify ($sr) {addHits($vehicle, $preferencesHit)}
 end
