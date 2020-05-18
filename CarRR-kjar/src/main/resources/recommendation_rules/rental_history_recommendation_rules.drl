@@ -1,0 +1,14 @@
+//created on: May 18, 2020
+package recommendation_rules
+
+//list any import classes here.
+import main.facts.Customer;
+import main.facts.PreferencesRecommendations;
+import main.facts.Category;
+import main.facts.Tag;
+import main.facts.Brand;
+import main.facts.Fuel;
+import main.facts.Transmission;
+import main.facts.CustomerPreferences;
+import main.facts.Vehicle;
+
