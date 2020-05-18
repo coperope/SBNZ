@@ -11,4 +11,21 @@ import main.facts.Fuel;
 import main.facts.Transmission;
 import main.facts.CustomerPreferences;
 import main.facts.Vehicle;
+import main.facts.SearchHistory;
+import main.facts.SearchRecommendations;
 
+
+rule "Search history rule"
+no-loop true
+lock-on-active true
+    when
+        Customer($searchHistory: searchHistory)
+        SearchHistory($searchBrands: brands) from $searchHistory
+        
+        $sr: SearchRecommendations()
+        $vehicle: Vehicle($brand: brand) 
+    then
+        modify ($sr) {addHits($vehicle, $searchBrands.get($brand))}
+    
+
+end
