@@ -146,7 +146,10 @@ public class SearchRecommendationTest {
 		searchHistory.getSeatsNo().put(2, 2);
 		searchHistory.getDoorNo().put(2, 2);
 		searchHistory.getFuelConsumption().put(12.1, 3);
-		
+
+		searchHistory.getModel().put(model2, 3);
+		searchHistory.getTags().put(tag2, 2);
+		searchHistory.getFuel().put(fuel,4);
 		Brand br = new Brand();
 		br.setId(3l);
 		br.setName("ZASTAVA");
