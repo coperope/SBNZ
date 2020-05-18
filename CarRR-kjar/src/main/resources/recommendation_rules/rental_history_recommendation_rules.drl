@@ -10,13 +10,14 @@ import main.facts.Brand;
 import main.facts.Fuel;
 import main.facts.Transmission;
 import main.facts.Vehicle;
+import main.facts.RentalHistory;
 
 rule "Rental history brand rule"
 no-loop true
 lock-on-active true
     when
         Customer($rentalHistory: rentalHistory)
-        RentalHistory($rentalBrands: brands) from $rentalhHistory
+        RentalHistory($rentalBrands: brands) from $rentalHistory
 
         $rr: RentalRecommendations()
         $vehicle: Vehicle($brand: brand)
@@ -31,7 +32,7 @@ no-loop true
 lock-on-active true
     when
         Customer($rentalHistory: rentalHistory)
-        RentalHistory($rentalCategories: categories) from $rentalhHistory
+        RentalHistory($rentalCategories: categories) from $rentalHistory
 
         $rr: RentalRecommendations()
         $vehicle: Vehicle($categories: categories)
@@ -51,7 +52,7 @@ no-loop true
 lock-on-active true
     when
         Customer($rentalHistory: rentalHistory)
-        RentalHistory($rentalTags: tags) from $rentalhHistory
+        RentalHistory($rentalTags: tags) from $rentalHistory
 
         $rr: RentalRecommendations()
         $vehicle: Vehicle($tags: tags)

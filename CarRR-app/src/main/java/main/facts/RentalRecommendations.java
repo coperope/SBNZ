@@ -2,7 +2,7 @@ package main.facts;
 
 import java.util.HashMap;
 
-public class RentalRecomendations {
+public class RentalRecommendations {
     HashMap<Vehicle, Integer> map = new HashMap<Vehicle, Integer>();
 
     public HashMap<Vehicle, Integer> getMap() {

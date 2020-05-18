@@ -127,23 +127,23 @@ public class RentalRecommendationTest {
         customer.setSearchHistory(searchHistory);
 
         List<Brand> brands = new ArrayList<Brand>();
-        searchHistory.getBrands().put(brand, 2);
-        searchHistory.getBrands().put(brand2, 5);
-        searchHistory.getCategories().put(compact, 4);
-        searchHistory.getTransmission().put(transmission, 2);
-        searchHistory.getSeatsNo().put(2, 2);
-        searchHistory.getDoorNo().put(2, 2);
-        searchHistory.getFuelConsumption().put(12.1, 3);
+        rentalHistory.getBrands().put(brand, 2);
+        rentalHistory.getBrands().put(brand2, 5);
+        rentalHistory.getCategories().put(compact, 4);
+        rentalHistory.getTransmission().put(transmission, 2);
+        rentalHistory.getSeatsNo().put(2, 2);
+        rentalHistory.getDoorNo().put(2, 2);
+        rentalHistory.getFuelConsumption().put(12.1, 3);
 
-        searchHistory.getModel().put(model2, 3);
-        searchHistory.getTags().put(tag2, 2);
-        searchHistory.getFuel().put(fuel,4);
+        rentalHistory.getModel().put(model2, 3);
+        rentalHistory.getTags().put(tag2, 2);
+        rentalHistory.getFuel().put(fuel,4);
         Brand br = new Brand();
         br.setId(3l);
         br.setName("ZASTAVA");
-        searchHistory.getBrands().put(br, 8);
+        rentalHistory.getBrands().put(br, 8);
 
-        RentalRecomendations recommendations = new RentalRecomendations();
+        RentalRecommendations recommendations = new RentalRecommendations();
 
         kieSession.insert(vehicle);
         kieSession.insert(vehicle2);
