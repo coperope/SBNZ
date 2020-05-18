@@ -69,3 +69,31 @@ lock-on-active true
     then
         modify ($sr) {addHits($vehicle, $preferencesHit)}
 end
+
+rule "Search history model rule"
+no-loop true
+lock-on-active true
+    when
+        Customer($searchHistory: searchHistory)
+        SearchHistory($searchModels: model) from $searchHistory
+
+        $sr: SearchRecommendations()
+        $vehicle: Vehicle($model: model)
+    then
+        modify ($sr) {addHits($vehicle, $searchModels.get($model))}
+
+end
+
+rule "Search history fuel rule"
+no-loop true
+lock-on-active true
+    when
+        Customer($searchHistory: searchHistory)
+        SearchHistory($searchFuel: fuel) from $searchHistory
+
+        $sr: SearchRecommendations()
+        $vehicle: Vehicle($fuel: fuel)
+    then
+        modify ($sr) {addHits($vehicle, $searchFuel.get($fuel))}
+
+end
