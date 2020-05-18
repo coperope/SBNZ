@@ -77,7 +77,7 @@ lock-on-active true
         $rr: RentalRecommendations()
         $vehicle: Vehicle($seatsNo: seatsNo)
     then
-        modify ($rr) {addHits($vehicle, $rentalHistrySeatsNo.get($seatsNo))}
+        modify ($rr) {addHits($vehicle, $rentalHistorySeatsNo.get($seatsNo))}
 end
 
 rule "Rental history doorNo rule"
