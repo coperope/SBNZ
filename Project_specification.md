@@ -40,13 +40,13 @@ adaptacije sistema.
 #### Očekivani ulazi u sistem:
 
 - Podaci o vozilu
-- Podaci o korisniku kao i njegove preferencije i eventualna istorija korišćenja
+- Podaci o korisniku kao i njegove preferencije, istorija iznajmljivanja i istorija pretraživanja.
 - Povratna informacija korisnika
 - Oznake pri pretrazi (npr. jeftin, porodični, niska potrošnja)
 
 #### Očekivani izlazi sistema:
 
-- Oznake nastale pri kategorizaciji automobila
+- Oznake i kategorije koje se dodeljuju automobilu prilikom njegovog kreiranja.
 - Predlog automobila krajnjem korisniku
 - Predlog biznis plana izdavačima oglasa
 
@@ -66,7 +66,7 @@ navođenjem preferencija i želja od strane korisnika.
 
 1. Prilikom kreiranja oglasa za automobil unose se njegovi osnovni podaci na osnovu kojih mu se
 dodeljuju oznake (npr. ekonomska klasa, niska potrošnja, veličina prtljažnika, prostor za
-putnike...) i na osnovu toga se vrši kategorizacija istog.
+putnike...) i na osnovu toga se vrši kategorizacija istog -> videti konkretne uslove za dodeljivanje kategorije ili oznake u sekciji Pravila.
 2. Korisnik unosi preferencije i želje prilikom registracije (moguće naknadne izmene) na osnovu
 kojih sistem predlaže oglase. Nakon izvesne aktivnosti korisnika kreiraju se događaji koji utiču
 na korekciju predloga oglasa.
@@ -112,6 +112,23 @@ Sport -> <= 14 litres/100km and >= 10 litres/100km and l < 5m and w < 1.9m and h
 Coupe -> <= 12 litres/100km and >= 10 litres/100km and l < 5m and w < 2m and h < 1.6m and seatsNo >= 2 and cargoVolume + passengerAreaVolume < 2200 and seatsNo == 2 and doorNo == 2 and 80 < pricePerDay < 400 <br />
 Passenger van -> <= 20 litres/100km and >= 15 litres/100km and l < 5.5m  and h > 2m and seatsNo >= 10 and seatsNo <= 15 and cargoVolume + passengerAreaVolume > 5000 and doorNo == 4 and 80 < pricePerDay < 400 <br />
 Pick up -> <= 20 litres/100km and >= 15 litres/100km and l < 5.5m  and h > 2m and seatsNo == 5 and cargoVolume > 2000 and doorNo == 4 <br />
+
+#### Personalizovani predlog vozila korisniku na osnovu njegovih preferencija.
+Korisnik unosi sledeće podatke (prilikom registracije) koji najbolje opisuju njegov željeni automobil:
+
+- Listu kategorija
+- Listu oznaka
+- Moguću količinu pređenih kilometara bez dodatnog plaćanja
+- Listu brendova automobila
+- Listu tipova goriva
+- Listu tipova izmenjivog prenosa snage (menjača)
+- Broj sedišta
+- Broj vrata
+- Potrošnju
+
+Za svaki od prethodno navedenih podataka postoji pravilo koje pronalazi vozila koja se podudaraju. Vozila koja imaju podudaranja se pamte i sortiraju prema broju podudaranja čime dobijamo listu onih koja su najsličnija korisnikovim željama. 
+Sistem na zahtev korisnika (potencijalno i automatski), obrađuje unete podatke i pronalazi automobile sa najviše podudaranja. Takvi automobili se onda prosleđuju korisniku ("Recommended for you, based on your preferences").
+
 ### Literatura:
 
 [1] [The Design of Web Based Car Recommendation System using Hybrid Recommender Algorithm](https://www.researchgate.net/publication/332683028_The_Design_of_Web_Based_Car_Recommendation_System_using_Hybrid_Recommender_Algorithm)
