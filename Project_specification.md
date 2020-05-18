@@ -113,6 +113,11 @@ Coupe -> <= 12 litres/100km and >= 10 litres/100km and l < 5m and w < 2m and h <
 Passenger van -> <= 20 litres/100km and >= 15 litres/100km and l < 5.5m  and h > 2m and seatsNo >= 10 and seatsNo <= 15 and cargoVolume + passengerAreaVolume > 5000 and doorNo == 4 and 80 < pricePerDay < 400 <br />
 Pick up -> <= 20 litres/100km and >= 15 litres/100km and l < 5.5m  and h > 2m and seatsNo == 5 and cargoVolume > 2000 and doorNo == 4 <br />
 
+#### Čuvanje istorije korisnikovog rentiranja i pretraživanja oglasa.
+Prilikom rentiranja vozila čuvaju se svi podaci vozila na osnovu čega se popunjava istorija rentiranja korisnika.
+
+Kao i kod rentiranja tako i kod pretrage nakon sto korisnik pretrazi ili udje u oglas/vozilo podaci pretrage se vezuju za korisnika i cuvaju u istoriji pretraga.
+
 #### Personalizovani predlog vozila korisniku na osnovu njegovih preferencija.
 Korisnik unosi sledeće podatke (prilikom registracije) koji najbolje opisuju njegov željeni automobil:
 
