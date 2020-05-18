@@ -3,7 +3,7 @@ package recommendation_rules
 
 //list any import classes here.
 import main.facts.Customer;
-import main.facts.PreferencesRecommendations;
+import main.facts.RentalRecommendations;
 import main.facts.Category;
 import main.facts.Tag;
 import main.facts.Brand;
@@ -11,142 +11,45 @@ import main.facts.Fuel;
 import main.facts.Transmission;
 import main.facts.CustomerPreferences;
 import main.facts.Vehicle;
+import main.facts.RentalHistory;
 
-rule "Search history brand rule"
+
+rule "Rental history seatsNo rule"
 no-loop true
 lock-on-active true
     when
-        Customer($searchHistory: searchHistory)
-        SearchHistory($searchBrands: brands) from $searchHistory
+        Customer($rentalHistory: rentalHistory)
+        RentalHistory($rentalHistorySeatsNo: seatsNo) from $rentalHistory
 
-        $sr: SearchRecommendations()
-        $vehicle: Vehicle($brand: brand)
-    then
-        modify ($sr) {addHits($vehicle, $searchBrands.get($brand))}
-
-
-end
-
-rule "Search history category rule"
-no-loop true
-lock-on-active true
-    when
-        Customer($searchHistory: searchHistory)
-        SearchHistory($searchCategories: categories) from $searchHistory
-
-        $sr: SearchRecommendations()
-        $vehicle: Vehicle($categories: categories)
-        Number($preferencesHit : intValue) from accumulate(
-            $c: Category() from $categories
-            ,
-            init(int count = 0;),
-            action(count += ($searchCategories.get($c)!=null) ? (int)$searchCategories.get($c) : 0;),
-            result(count)
-        )
-    then
-        modify ($sr) {addHits($vehicle, $preferencesHit)}
-end
-
-rule "Search history tag rule"
-no-loop true
-lock-on-active true
-    when
-        Customer($searchHistory: searchHistory)
-        SearchHistory($searchTags: tags) from $searchHistory
-
-        $sr: SearchRecommendations()
-        $vehicle: Vehicle($tags: tags)
-        Number($preferencesHit : intValue) from accumulate(
-            $t: Tag() from $tags
-            ,
-            init(int count = 0;),
-            action(count += ($searchTags.get($t)!=null) ? (int)$searchTags.get($t) : 0;),
-            result(count)
-        )
-    then
-        modify ($sr) {addHits($vehicle, $preferencesHit)}
-end
-
-rule "Search history transmission rule"
-no-loop true
-lock-on-active true
-    when
-        Customer($searchHistory: searchHistory)
-        SearchHistory($searchTransmission: transmission) from $searchHistory
-
-        $sr: SearchRecommendations()
-        $vehicle: Vehicle($transmission: transmission)
-    then
-        modify ($sr) {addHits($vehicle, $searchTransmission.get($transmission))}
-
-end
-
-rule "Search history seatsNo rule"
-no-loop true
-lock-on-active true
-    when
-        Customer($searchHistory: searchHistory)
-        SearchHistory($searchSeatsNo: seatsNo) from $searchHistory
-
-        $sr: SearchRecommendations()
+        $rr: RentalRecommendations()
         $vehicle: Vehicle($seatsNo: seatsNo)
     then
-        modify ($sr) {addHits($vehicle, $searchSeatsNo.get($seatsNo))}
-
+        modify ($rr) {addHits($vehicle, $rentalHistrySeatsNo.get($seatsNo))}
 end
 
-rule "Search history doorNo rule"
+rule "Rental history doorNo rule"
 no-loop true
 lock-on-active true
     when
-        Customer($searchHistory: searchHistory)
-        SearchHistory($searchDoorNo: doorNo) from $searchHistory
+        Customer($rentalHistory: rentalHistory)
+        RentalHistory($rentalHistoryDoorNo: doorNo) from $rentalHistory
 
-        $sr: SearchRecommendations()
+        $rr: RentalRecommendations()
         $vehicle: Vehicle($doorNo: doorNo)
     then
-        modify ($sr) {addHits($vehicle, $searchDoorNo.get($doorNo))}
-
+        modify ($rr) {addHits($vehicle, $rentalHistoryDoorNo.get($doorNo))}
 end
 
-rule "Search history Fuel Consumption rule"
+rule "Rental history Fuel Consumption rule"
 no-loop true
 lock-on-active true
     when
-        Customer($searchHistory: searchHistory)
-        SearchHistory($searchFuelConsumption: fuelConsumption) from $searchHistory
+        Customer($rentalHistory: rentalHistory)
+        RentalHistory($rentalHistoryFuelConsumption: fuelConsumption) from $rentalHistory
 
-        $sr: SearchRecommendations()
+        $rr: RentalRecommendations()
         $vehicle: Vehicle($fuelConsumption: fuelConsumption)
     then
-        modify ($sr) {addHits($vehicle, $searchFuelConsumption.get($fuelConsumption))}
-
+        modify ($rr) {addHits($vehicle, $rentalHistoryFuelConsumption.get($fuelConsumption))}
 end
 
-rule "Search history model rule"
-no-loop true
-lock-on-active true
-    when
-        Customer($searchHistory: searchHistory)
-        SearchHistory($searchModels: model) from $searchHistory
-
-        $sr: SearchRecommendations()
-        $vehicle: Vehicle($model: model)
-    then
-        modify ($sr) {addHits($vehicle, $searchModels.get($model))}
-
-end
-
-rule "Search history fuel rule"
-no-loop true
-lock-on-active true
-    when
-        Customer($searchHistory: searchHistory)
-        SearchHistory($searchFuel: fuel) from $searchHistory
-
-        $sr: SearchRecommendations()
-        $vehicle: Vehicle($fuel: fuel)
-    then
-        modify ($sr) {addHits($vehicle, $searchFuel.get($fuel))}
-
-end
