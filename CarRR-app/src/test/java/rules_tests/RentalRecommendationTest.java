@@ -143,7 +143,7 @@ public class RentalRecommendationTest {
         br.setName("ZASTAVA");
         rentalHistory.getBrands().put(br, 8);
 
-        RentalRecomendations recommendations = new RentalRecomendations();
+        RentalRecommendations recommendations = new RentalRecommendations();
 
         kieSession.insert(vehicle);
         kieSession.insert(vehicle2);
