@@ -12,3 +12,141 @@ import main.facts.Transmission;
 import main.facts.CustomerPreferences;
 import main.facts.Vehicle;
 
+rule "Search history brand rule"
+no-loop true
+lock-on-active true
+    when
+        Customer($searchHistory: searchHistory)
+        SearchHistory($searchBrands: brands) from $searchHistory
+
+        $sr: SearchRecommendations()
+        $vehicle: Vehicle($brand: brand)
+    then
+        modify ($sr) {addHits($vehicle, $searchBrands.get($brand))}
+
+
+end
+
+rule "Search history category rule"
+no-loop true
+lock-on-active true
+    when
+        Customer($searchHistory: searchHistory)
+        SearchHistory($searchCategories: categories) from $searchHistory
+
+        $sr: SearchRecommendations()
+        $vehicle: Vehicle($categories: categories)
+        Number($preferencesHit : intValue) from accumulate(
+            $c: Category() from $categories
+            ,
+            init(int count = 0;),
+            action(count += ($searchCategories.get($c)!=null) ? (int)$searchCategories.get($c) : 0;),
+            result(count)
+        )
+    then
+        modify ($sr) {addHits($vehicle, $preferencesHit)}
+end
+
+rule "Search history tag rule"
+no-loop true
+lock-on-active true
+    when
+        Customer($searchHistory: searchHistory)
+        SearchHistory($searchTags: tags) from $searchHistory
+
+        $sr: SearchRecommendations()
+        $vehicle: Vehicle($tags: tags)
+        Number($preferencesHit : intValue) from accumulate(
+            $t: Tag() from $tags
+            ,
+            init(int count = 0;),
+            action(count += ($searchTags.get($t)!=null) ? (int)$searchTags.get($t) : 0;),
+            result(count)
+        )
+    then
+        modify ($sr) {addHits($vehicle, $preferencesHit)}
+end
+
+rule "Search history transmission rule"
+no-loop true
+lock-on-active true
+    when
+        Customer($searchHistory: searchHistory)
+        SearchHistory($searchTransmission: transmission) from $searchHistory
+
+        $sr: SearchRecommendations()
+        $vehicle: Vehicle($transmission: transmission)
+    then
+        modify ($sr) {addHits($vehicle, $searchTransmission.get($transmission))}
+
+end
+
+rule "Search history seatsNo rule"
+no-loop true
+lock-on-active true
+    when
+        Customer($searchHistory: searchHistory)
+        SearchHistory($searchSeatsNo: seatsNo) from $searchHistory
+
+        $sr: SearchRecommendations()
+        $vehicle: Vehicle($seatsNo: seatsNo)
+    then
+        modify ($sr) {addHits($vehicle, $searchSeatsNo.get($seatsNo))}
+
+end
+
+rule "Search history doorNo rule"
+no-loop true
+lock-on-active true
+    when
+        Customer($searchHistory: searchHistory)
+        SearchHistory($searchDoorNo: doorNo) from $searchHistory
+
+        $sr: SearchRecommendations()
+        $vehicle: Vehicle($doorNo: doorNo)
+    then
+        modify ($sr) {addHits($vehicle, $searchDoorNo.get($doorNo))}
+
+end
+
+rule "Search history Fuel Consumption rule"
+no-loop true
+lock-on-active true
+    when
+        Customer($searchHistory: searchHistory)
+        SearchHistory($searchFuelConsumption: fuelConsumption) from $searchHistory
+
+        $sr: SearchRecommendations()
+        $vehicle: Vehicle($fuelConsumption: fuelConsumption)
+    then
+        modify ($sr) {addHits($vehicle, $searchFuelConsumption.get($fuelConsumption))}
+
+end
+
+rule "Search history model rule"
+no-loop true
+lock-on-active true
+    when
+        Customer($searchHistory: searchHistory)
+        SearchHistory($searchModels: model) from $searchHistory
+
+        $sr: SearchRecommendations()
+        $vehicle: Vehicle($model: model)
+    then
+        modify ($sr) {addHits($vehicle, $searchModels.get($model))}
+
+end
+
+rule "Search history fuel rule"
+no-loop true
+lock-on-active true
+    when
+        Customer($searchHistory: searchHistory)
+        SearchHistory($searchFuel: fuel) from $searchHistory
+
+        $sr: SearchRecommendations()
+        $vehicle: Vehicle($fuel: fuel)
+    then
+        modify ($sr) {addHits($vehicle, $searchFuel.get($fuel))}
+
+end
