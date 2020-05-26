@@ -113,6 +113,11 @@ Coupe -> <= 12 litres/100km and >= 10 litres/100km and l < 5m and w < 2m and h <
 Passenger van -> <= 20 litres/100km and >= 15 litres/100km and l < 5.5m  and h > 2m and seatsNo >= 10 and seatsNo <= 15 and cargoVolume + passengerAreaVolume > 5000 and doorNo == 4 and 80 < pricePerDay < 400 <br />
 Pick up -> <= 20 litres/100km and >= 15 litres/100km and l < 5.5m  and h > 2m and seatsNo == 5 and cargoVolume > 2000 and doorNo == 4 <br />
 
+#### Čuvanje istorije korisnikovog rentiranja i pretraživanja oglasa.
+Prilikom rentiranja vozila čuvaju se svi podaci vozila na osnovu čega se popunjava istorija rentiranja korisnika.
+
+Kao i kod rentiranja tako i kod pretrage nakon sto korisnik pretrazi ili udje u oglas/vozilo podaci pretrage se vezuju za korisnika i cuvaju u istoriji pretraga.
+
 #### Personalizovani predlog vozila korisniku na osnovu njegovih preferencija.
 Korisnik unosi sledeće podatke (prilikom registracije) koji najbolje opisuju njegov željeni automobil:
 
@@ -128,6 +133,32 @@ Korisnik unosi sledeće podatke (prilikom registracije) koji najbolje opisuju nj
 
 Za svaki od prethodno navedenih podataka postoji pravilo koje pronalazi vozila koja se podudaraju. Vozila koja imaju podudaranja se pamte i sortiraju prema broju podudaranja čime dobijamo listu onih koja su najsličnija korisnikovim željama. 
 Sistem na zahtev korisnika (potencijalno i automatski), obrađuje unete podatke i pronalazi automobile sa najviše podudaranja. Takvi automobili se onda prosleđuju korisniku ("Recommended for you, based on your preferences").
+
+#### Personalizovani predlog vozila korisniku na osnovu njegovog ranijeg pretraživanja vozila.
+Korisnik upotrebom opcije pretrage šalje podatke:
+
+- Listu kategorija
+- Listu oznaka
+- Listu brendova automobila
+- Listu modela automobila
+- Listu tipova goriva
+- Listu tipova izmenjivog prenosa snage (menjača)
+- Listu željenih brojeva sedišta
+- Listu željenih brojeva vrata
+- Listu željene potrošnju
+
+Ovi podaci se čuvaju u bazi za svakog pojedinačnog korisnika i to u obliku ključ-vrednost. Ključ predstavlja jednu instancu entiteta pretrage (npr. model "Zastava") dok je vrednost broj koji predstavlja koliko puta se taj entitet pretražio. Takođe se vodi evidencija i o zahtevu za detaljnim pregledom vozila. Ta akcija je značajnija te se polje vrednosti povećava sa određenim faktorom skaliranja.
+
+Za svaki od prethodno navedenih podataka postoji pravilo koje pronalazi vozila koja se podudaraju sa korisničkim pretragama. Vozila koja imaju podudaranja se pamte i sortiraju prema ukupnom broju broju pretraga svih entiteta vozila koja se podudaraju sa korisničkim pretragama. Time dobijamo listu vozila koja su najsličnija onima koje je korisnik ranije pretraživao ili pregledao.
+Sistem na zahtev korisnika (potencijalno i automatski), obrađuje unete podatke i pronalazi automobile sa najviše podudaranja. Takvi automobili se onda prosleđuju korisniku ("Recommended for you, based on your previous searches and views").
+
+#### Personalizovani predlog vozila korisniku na osnovu njegovog ranijeg rentiranja vozila.
+Prilikom rentiranja vozila, za korisnika se vezuje istorija rentiranja i čuvaju svi podaci vozila.
+
+Ovi podaci se čuvaju u bazi za svakog pojedinačnog korisnika i to u obliku ključ-vrednost. Ključ predstavlja jednu instancu entiteta pretrage (npr. model "Zastava") dok je vrednost broj koji predstavlja koliko puta se vozilo sa tim entitetom rentiralo.
+
+Za svaki od prethodno navedenih podataka postoji pravilo koje pronalazi vozila koja poseduju entitete sačuvane u prethodno navenom obliku. Vozila koja imaju podudaranja se pamte i sortiraju prema ukupnom broju broju podudaranja. Time dobijamo listu vozila koja su najsličnija onima koje je korisnik ranije rentirao. Sistem na zahtev korisnika (potencijalno i automatski), obrađuje unete podatke i pronalazi automobile sa najviše podudaranja. Takvi automobili se onda prosleđuju korisniku ("Recommended for you, based on your previous rentals").
+
 
 ### Literatura:
 
