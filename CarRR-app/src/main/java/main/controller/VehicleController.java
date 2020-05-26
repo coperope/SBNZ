@@ -6,11 +6,9 @@ import main.service.VehicleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,9 +31,12 @@ public class VehicleController {
                 .collect(Collectors.toList()), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<String> addVehicle(VehicleDTO vehicleDTO){
-        vehicleService.addVehicle(convertDTOToVehicle(vehicleDTO));
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> addVehicle(@RequestBody VehicleDTO vehicleDTO){
+        System.out.println(vehicleDTO);
+        Vehicle v = convertDTOToVehicle(vehicleDTO);
+
+        vehicleService.addVehicle(v);
         return ResponseEntity.ok("more");
     }
 
