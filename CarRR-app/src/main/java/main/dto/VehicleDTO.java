@@ -72,6 +72,9 @@ public class VehicleDTO {
 
     private int numberOfReviews;
 
+    public VehicleDTO(){
+
+    }
     public Long getId() {
         return id;
     }
@@ -270,5 +273,36 @@ public class VehicleDTO {
 
     public void setNumberOfReviews(int numberOfReviews) {
         this.numberOfReviews = numberOfReviews;
+    }
+
+    @Override
+    public String toString() {
+        return "VehicleDTO{" +
+                "id=" + id +
+                ", brand=" + brand +
+                ", model=" + model +
+                ", fuel=" + fuel +
+                ", transmission=" + transmission +
+                ", seatsNo=" + seatsNo +
+                ", doorNo=" + doorNo +
+                ", fuelConsumption=" + fuelConsumption +
+                ", ac=" + ac +
+                ", categories=" + categories +
+                ", tags=" + tags +
+                ", features=" + features +
+                ", mileageLimit=" + mileageLimit +
+                ", mileagePrice=" + mileagePrice +
+                ", power=" + power +
+                ", weight=" + weight +
+                ", cargoVolume=" + cargoVolume +
+                ", passengerAreaVolume=" + passengerAreaVolume +
+                ", width=" + width +
+                ", height=" + height +
+                ", length=" + length +
+                ", tankVolume=" + tankVolume +
+                ", pricePerDay=" + pricePerDay +
+                ", numberOfStars=" + numberOfStars +
+                ", numberOfReviews=" + numberOfReviews +
+                '}';
     }
 }
