@@ -1,5 +1,5 @@
 <template>
-  <div align="center" justify="center" class = "mt-3">
+  <div align="center" justify="center" class="mt-3">
     <v-col class="shadow-lg" cols="10" align="center" justify="center">
       <v-row>
         <v-col cols="2">
@@ -109,18 +109,17 @@
             persistent-hint
           ></v-select>
         </v-col>
-        
       </v-row>
-      <v-row align="center" justify="center">
-           <b-button variant="outline-dark" @click="search">Search</b-button>
-        
-        </v-row>
+      <v-row align="center" justify="end" class="text-right mr-2">
+        <b-button variant="outline-dark" @click="search">Search</b-button>
+      </v-row>
     </v-col>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+// import Vue from "vue"
 
 export default {
   data() {
@@ -135,7 +134,7 @@ export default {
       selectedDoorNo: null,
       selectedFuelConsumptions: null,
       brands: null,
-      models: null,
+      models: [],
       fuels: null,
       categories: null,
       transmissions: null,
@@ -162,22 +161,64 @@ export default {
         15,
         16,
         17
-      ]
+      ],
+      searchParam: {
+        categories: [],
+        tags: [],
+        brands: [],
+        models: [],
+        fuels: [],
+        transmissions: [],
+        seatsNo: [],
+        doorNo: [],
+        fuelConsumptions: []
+      }
     };
   },
   watch: {
     selectedBrand(val) {
+      this.models = [];
       this.brands.forEach(element => {
         if (element.name == val) {
-          this.models = element.models;
+          this.models.push(...element.models);
           return;
         }
       });
     }
   },
   methods: {
-    search(){
+    search() {
+      this.searchParam.categories = this.categories.filter(
+        x => this.selectedCategory?.includes(x.name)
+      );
+      this.searchParam.tags = this.tags.filter(
+        x => this.selectedTag?.includes(x.name)
+      );
+      this.searchParam.brands = this.brands.filter(
+        x => this.selectedBrand?.includes(x.name)
+      );
+      this.searchParam.models = this.models.filter(
+        x => this.selectedModel?.includes(x.name)
+      );
+      this.searchParam.fuels = this.fuels.filter(
+        x => this.selectedFuel?.includes(x.name)
+      );
+      this.searchParam.transmissions = this.transmissions.filter(
+        x => this.selectedTransmission?.includes(x.name)
+      );
+      this.searchParam.seatsNo = this.selectedSeatsNo;
+      this.searchParam.doorNo = this.selectedDoorNo;
+      this.searchParam.fuelConsumptions = this.selectedFuelConsumptions;
 
+      console.log(this.searchParam);
+      axios
+        .post("vehicle/search", this.searchParam)
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   mounted() {

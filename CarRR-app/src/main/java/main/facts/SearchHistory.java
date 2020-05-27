@@ -4,21 +4,21 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
+import main.dto.BrandDTO;
+import main.dto.CarModelDTO;
 import main.dto.SearchDTO;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 public class SearchHistory implements Serializable {
+
+	@Autowired
+	@Transient
+	ModelMapper modelMapper;
+
 	@Id
 	@SequenceGenerator(name = "search_history_id_seq", sequenceName = "search_history_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "search_history_id_seq")
@@ -182,7 +182,6 @@ public class SearchHistory implements Serializable {
 	}
 
 	public void updateSearchHistory(SearchDTO searchParam) {
-
 		Integer factor = searchParam.getScaleFactor();
 
 		// Category update
@@ -206,22 +205,22 @@ public class SearchHistory implements Serializable {
 		}
 		
 		// Brand update
-		for (Brand brand : searchParam.getBrands()) {
-			Integer brandValue = this.brands.get(brand);
+		for (BrandDTO brandDTO : searchParam.getBrands()) {
+			Integer brandValue = this.brands.get(modelMapper.map(brandDTO, Brand.class));
 			if (brandValue != null) {
 				brandValue += factor;
 			} else {
-				this.brands.put(brand, factor);
+				this.brands.put(modelMapper.map(brandDTO, Brand.class), factor);
 			}
 		}
 
 		// Model update
-		for (CarModel model : searchParam.getModels()) {
-			Integer modelValue = this.model.get(model);
+		for (CarModelDTO modelDTO : searchParam.getModels()) {
+			Integer modelValue = this.model.get(modelMapper.map(modelDTO, CarModel.class));
 			if (modelValue != null) {
 				modelValue += factor;
 			} else {
-				this.model.put(model, factor);
+				this.model.put(modelMapper.map(modelDTO, CarModel.class), factor);
 			}
 		}
 

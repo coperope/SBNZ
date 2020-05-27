@@ -1,6 +1,7 @@
 package main.facts;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -29,7 +30,7 @@ public class Brand implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
-    Set<CarModel> models;
+    List<CarModel> models;
 
     public Brand(){
 
@@ -55,11 +56,11 @@ public class Brand implements Serializable {
         this.name = name;
     }
 
-    public Set<CarModel> getModels() {
+    public List<CarModel> getModels() {
         return models;
     }
 
-    public void setModels(Set<CarModel> models) {
+    public void setModels(List<CarModel> models) {
         this.models = models;
     }
 

@@ -17,8 +17,8 @@ public class SearchDTO {
 	private UserDTO customer;
 	private List<Category> categories;
 	private List<Tag> tags;
-	private List<Brand> brands;
-	private List<CarModel> models;
+	private List<BrandDTO> brands;
+	private List<CarModelDTO> models;
 	private List<Fuel> fuels;
 	private List<Transmission> transmissions;
 	private List<Integer> seatsNo;
@@ -30,8 +30,8 @@ public class SearchDTO {
 		super();
 		this.categories = new ArrayList<Category>();
 		this.tags = new ArrayList<Tag>();
-		this.brands = new ArrayList<Brand>();
-		this.models = new ArrayList<CarModel>();
+		this.brands = new ArrayList<BrandDTO>();
+		this.models = new ArrayList<CarModelDTO>();
 		this.fuels = new ArrayList<Fuel>();
 		this.transmissions = new ArrayList<Transmission>();
 		this.seatsNo = new ArrayList<Integer>();
@@ -40,8 +40,8 @@ public class SearchDTO {
 		this.scaleFactor = 1;
 	}
 	
-	public SearchDTO(UserDTO customer, List<Category> categories, List<Tag> tags, List<Brand> brands,
-			List<CarModel> models, List<Fuel> fuels, List<Transmission> transmissions, List<Integer> seatsNo,
+	public SearchDTO(UserDTO customer, List<Category> categories, List<Tag> tags, List<BrandDTO> brands,
+			List<CarModelDTO> models, List<Fuel> fuels, List<Transmission> transmissions, List<Integer> seatsNo,
 			List<Integer> doorNo, List<Double> fuelConsumptions, Integer scaleFactor) {
 		super();
 		this.customer = customer;
@@ -49,6 +49,7 @@ public class SearchDTO {
 		this.tags = tags;
 		this.brands = brands;
 		this.models = models;
+
 		this.fuels = fuels;
 		this.transmissions = transmissions;
 		this.seatsNo = seatsNo;
@@ -83,19 +84,19 @@ public class SearchDTO {
 		this.tags = tags;
 	}
 
-	public List<Brand> getBrands() {
+	public List<BrandDTO> getBrands() {
 		return brands;
 	}
 
-	public void setBrands(List<Brand> brands) {
+	public void setBrands(List<BrandDTO> brands) {
 		this.brands = brands;
 	}
 
-	public List<CarModel> getModels() {
+	public List<CarModelDTO> getModels() {
 		return models;
 	}
 
-	public void setModels(List<CarModel> models) {
+	public void setModels(List<CarModelDTO> models) {
 		this.models = models;
 	}
 
@@ -149,6 +150,18 @@ public class SearchDTO {
 
 	@Override
 	public String toString() {
-		return "SearchDTO [customer=" + customer + "]";
+		return "SearchDTO{" +
+				"customer=" + customer +
+				", categories=" + categories +
+				", tags=" + tags +
+				", brands=" + brands +
+				", models=" + models +
+				", fuels=" + fuels +
+				", transmissions=" + transmissions +
+				", seatsNo=" + seatsNo +
+				", doorNo=" + doorNo +
+				", fuelConsumptions=" + fuelConsumptions +
+				", scaleFactor=" + scaleFactor +
+				'}';
 	}
 }
