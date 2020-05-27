@@ -206,9 +206,9 @@ export default {
       this.searchParam.transmissions = this.transmissions.filter(
         x => this.selectedTransmission?.includes(x.name)
       );
-      this.searchParam.seatsNo = this.selectedSeatsNo;
-      this.searchParam.doorNo = this.selectedDoorNo;
-      this.searchParam.fuelConsumptions = this.selectedFuelConsumptions;
+      this.searchParam.seatsNo = this.selectedSeatsNo == null ? [] : this.selectedSeatsNo;
+      this.searchParam.doorNo = this.selectedDoorNo == null ? [] : this.selectedDoorNo;
+      this.searchParam.fuelConsumptions = this.selectedFuelConsumptions == null ? [] : this.selectedFuelConsumptions;
 
       console.log(this.searchParam);
       axios
