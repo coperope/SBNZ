@@ -47,7 +47,7 @@ public class UserController {
         }
         UserDTO created = new UserDTO();
         try{
-            userService.registerUser(registrationDTO);
+            created =  userService.registerUser(registrationDTO);
         }catch (ValidationException e){
             return new ResponseEntity<>("Request with same email already exists.", HttpStatus.CONFLICT);
         }

@@ -1,11 +1,16 @@
 package main.service;
 
+import main.dto.BrandDTO;
+import main.dto.CarModelDTO;
+import main.dto.VehicleDTO;
 import main.facts.*;
 import main.repository.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class VehiclePartsService {
@@ -28,9 +33,13 @@ public class VehiclePartsService {
     @Autowired
     private CarModelRepo carModelRepo;
 
-    public Brand addBrand(Brand brand) {
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public BrandDTO addBrand(BrandDTO brandDTO) {
+        Brand brand = modelMapper.map(brandDTO,Brand.class);
         brandRepo.save(brand);
-        return brand;
+        return brandDTO;
     }
 
     public Tag addTag(Tag tag) {
@@ -43,9 +52,10 @@ public class VehiclePartsService {
         return fuel;
     }
 
-    public CarModel addCarModel(CarModel carModel) {
+    public CarModelDTO addCarModel(CarModelDTO carModelDTO) {
+        CarModel carModel = modelMapper.map(carModelDTO, CarModel.class);
         carModelRepo.save(carModel);
-        return carModel;
+        return carModelDTO;
     }
 
     public Transmission addTransmission(Transmission transmission) {
@@ -58,8 +68,15 @@ public class VehiclePartsService {
        return  category;
     }
 
+    public List<BrandDTO> getAllBrands(){
+        List<Brand> brands = brandRepo.findAll();
+        return brands
+                .stream()
+                .map(this::convertBrandToDTO)
+                .collect(Collectors.toList());
+    }
     public List<Tag> getAllTags(){
-        return tagRepo.findAll();
+        return  tagRepo.findAll();
     }
 
     public List<Fuel> getAllFuelTypes(){
@@ -74,9 +91,13 @@ public class VehiclePartsService {
         return transmissionRepo.findAll();
     }
 
-    public List<CarModel> getAllCarModelsByBrand(Long brandID){
+    public List<CarModelDTO> getAllCarModelsByBrand(Long brandID){
         Brand brand = brandRepo.getOne(brandID);
-        return carModelRepo.getAllByBrand(brand);
+        List<CarModel> carModels = carModelRepo.getAllByBrand(brand);
+        return carModels
+                .stream()
+                .map(this::convertCarModelToDTO)
+                .collect(Collectors.toList());
     }
 
     public void removeBrand(){
@@ -101,5 +122,17 @@ public class VehiclePartsService {
 
     public void removeTransmission(){
 
+    }
+
+    private Object convertEntityToDTO(Object entity, Class objectClass){
+        return modelMapper.map(entity, objectClass);
+    }
+
+    private BrandDTO convertBrandToDTO(Brand brand){
+        return modelMapper.map(brand, BrandDTO.class);
+    }
+
+    private CarModelDTO convertCarModelToDTO(CarModel carModel){
+        return modelMapper.map(carModel, CarModelDTO.class);
     }
 }

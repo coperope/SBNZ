@@ -72,6 +72,8 @@ public class VehicleDTO {
 
     private int numberOfReviews;
 
+    private UserDTO owner;
+
     public VehicleDTO(){
 
     }
