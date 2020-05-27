@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/register")
-    public ResponseEntity addUser(@RequestBody UserDTO registrationDTO, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity addUser(@RequestBody UserDTO registrationDTO) {
 
         User existUser = this.userService.findByEmail(registrationDTO.getEmail());
         if (existUser != null) {
@@ -47,7 +47,7 @@ public class UserController {
         }
         UserDTO created = new UserDTO();
         try{
-            userService.registerUser(registrationDTO);
+            created =  userService.registerUser(registrationDTO);
         }catch (ValidationException e){
             return new ResponseEntity<>("Request with same email already exists.", HttpStatus.CONFLICT);
         }
