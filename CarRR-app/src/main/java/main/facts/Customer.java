@@ -17,6 +17,10 @@ public class Customer extends User {
     @JoinColumn(name = "customer_search_history_id")
     private SearchHistory searchHistory;
 
+	@OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "recommendation_id")
+	Recommendations recommendations;
+
     public Customer(){
 	}
 	public CustomerPreferences getPreferences() {
