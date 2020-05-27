@@ -6,18 +6,55 @@
           <v-toolbar-title>Sign Up</v-toolbar-title>
         </v-toolbar>
         <v-card-text>
-          <v-form>
-            <v-text-field label="Name" name="name" prepend-icon="person" type="text" v-model="user.name"></v-text-field>
-            <v-text-field label="Surname" name="surname" prepend-icon="person" type="text" v-model="user.surname"></v-text-field>
-            <v-text-field label="E-mail" name="e-mail" prepend-icon="mail" type="mail" v-model="user.email"></v-text-field>
-            <v-text-field label="Password" name="password" prepend-icon="lock" type="password" v-model="user.password"></v-text-field>
+          <v-form v-model="rules.valid">
+            <v-text-field
+              label="Name"
+              name="name"
+              prepend-icon="person"
+              type="text"
+              v-model="user.name"
+              :rules="rules.name"
+            ></v-text-field>
+            <v-text-field
+              label="Surname"
+              name="surname"
+              prepend-icon="person"
+              type="text"
+              v-model="user.surname"
+              :rules="rules.surname"
+            ></v-text-field>
+            <v-text-field
+              label="E-mail"
+              name="e-mail"
+              prepend-icon="mail"
+              type="mail"
+              v-model="user.email"
+              :rules="rules.email"
+            ></v-text-field>
+            <v-text-field
+              label="Password"
+              name="password"
+              prepend-icon="lock"
+              type="password"
+              v-model="user.password"
+              :rules="rules.password"
+            ></v-text-field>
             <v-text-field
               label="Confirm Password"
               name="password"
               prepend-icon="lock"
               type="password"
+              v-model="confirmPassword"
+              :rules="rules.password"
             ></v-text-field>
-            <v-text-field label="Phone Number" name="phoneNumber" prepend-icon="phone" type="text" v-model="user.phoneNumber"></v-text-field>
+            <v-text-field
+              label="Phone Number"
+              name="phoneNumber"
+              prepend-icon="phone"
+              type="text"
+              v-model="user.phoneNumber"
+              :rules="rules.phoneNumber"
+            ></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -35,15 +72,30 @@ export default {
   data() {
     return {
       user: {
-        name: String,
-        surname: String,
-        email: String,
-        password: String,
-        phoneNumber: String
+        name: null,
+        surname: null,
+        email: null,
+        password: null,
+        phoneNumber: null
+      },
+      confirmPassword: null,
+      rules: {
+        valid: false,
+        name: [v => !!v || "Name is required"],
+        surname: [v => !!v || "Surname is required"],
+        email: [v => !!v || "E-mail is required"],
+        password: [v => !!v || "Password is required"],
+        phoneNumber: [v => !!v || "Phone Numer is required"]
       }
     };
   },
-  methods: {}
+  methods: {
+    register() {
+      this.axios.register("").then(response => {
+        console.log(response.data);
+      });
+    }
+  }
 };
 </script>
 
