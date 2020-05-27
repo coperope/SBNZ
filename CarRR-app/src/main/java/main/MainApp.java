@@ -17,7 +17,9 @@ import org.springframework.context.annotation.Bean;
 public class MainApp {
 
 	private static Logger log = LoggerFactory.getLogger(MainApp.class);
-
+//	public static KieSession taggingAndCategorisation;
+	
+    
 	public static void main(String[] args) {
 		ApplicationContext ctx = SpringApplication.run(MainApp.class, args);
 
@@ -30,6 +32,36 @@ public class MainApp {
 		}
 		log.info(sb.toString());
 	}
+	
+//	@Autowired
+//	CategoryRepo categoryRepo;
+//
+//    @Autowired
+//    TagRepo tagRepo;
+    
+//	@PostConstruct
+//    public void listen() { 
+//		Timer timer = new Timer();
+//	    TimerTask delayedThreadStartTask = new TimerTask() {
+//	    	
+//	    	@Override
+//	        public void run() {
+//	        	List<Category> categories = categoryRepo.findAll();
+//	            List<Tag> tags = tagRepo.findAll();
+//	            
+//	        	for (Category c: categories) {
+//	        		System.out.println(c);
+//	        		taggingAndCategorisation.insert(c);
+//				}
+//				for (Tag t: tags) {
+//					taggingAndCategorisation.insert(t);
+//				}
+//				taggingAndCategorisation.fireUntilHalt();
+//	    	}
+//	    };
+//		
+//	    timer.schedule(delayedThreadStartTask, 20 * 1000);
+//    }
 
 	@Bean
 	public KieContainer kieContainer() {
@@ -38,6 +70,10 @@ public class MainApp {
 				.newKieContainer(ks.newReleaseId("sbnz.integracija", "CarRR-kjar", "0.0.1-SNAPSHOT"));
 		KieScanner kScanner = ks.newKieScanner(kContainer);
 		kScanner.start(10000);
+		
+
+//		taggingAndCategorisation = kContainer.newKieSession("categorisation_tagging_session");
+		
 		return kContainer;
 	}
 
