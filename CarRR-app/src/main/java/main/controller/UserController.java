@@ -1,5 +1,6 @@
 package main.controller;
 
+import main.dto.CustomerPreferencesDTO;
 import main.dto.UserDTO;
 import main.facts.User;
 import main.service.UserService;
@@ -39,7 +40,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/register")
-    public ResponseEntity addUser(@RequestBody UserDTO registrationDTO, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity addUser(@RequestBody UserDTO registrationDTO) {
 
         User existUser = this.userService.findByEmail(registrationDTO.getEmail());
         if (existUser != null) {
@@ -47,10 +48,20 @@ public class UserController {
         }
         UserDTO created = new UserDTO();
         try{
-            userService.registerUser(registrationDTO);
+            created =  userService.registerUser(registrationDTO);
         }catch (ValidationException e){
             return new ResponseEntity<>("Request with same email already exists.", HttpStatus.CONFLICT);
         }
         return new ResponseEntity<UserDTO>(created , HttpStatus.CREATED);
+    }
+
+    @PostMapping(path = "/user/{id}/preferences", consumes = "application/json", produces= "application/json")
+    public ResponseEntity addUserPreferences(@RequestBody CustomerPreferencesDTO customerPreferencesDTO, @PathVariable("id") Long userID){
+        try {
+            CustomerPreferencesDTO retVal = userService.addCustomerPreferences(customerPreferencesDTO, userID);
+            return new ResponseEntity<>(retVal, HttpStatus.OK);
+        }catch (ValidationException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 }

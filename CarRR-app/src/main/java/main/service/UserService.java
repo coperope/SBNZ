@@ -1,16 +1,28 @@
 package main.service;
 
+import main.dto.CustomerPreferencesDTO;
 import main.dto.UserDTO;
+import main.facts.Customer;
+import main.facts.CustomerPreferences;
 import main.facts.User;
+import main.repository.CustomerRepo;
 import main.repository.UserRepo;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.validation.ValidationException;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private CustomerRepo customerRepo;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     public User findByEmail(String email)  {
         User u = userRepo.findByEmail(email);
@@ -19,12 +31,35 @@ public class UserService {
 
     public UserDTO registerUser(UserDTO userDTO) {
         User user = new User();
+        if(userDTO.isCustomer()){
+            user = new Customer();
+        }
         user.setName(userDTO.getName());
         user.setSurname(userDTO.getSurname());
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
         user.setPhoneNumber(userDTO.getPhoneNumber());
-        userRepo.save(user);
+        user.setCustomer(userDTO.isCustomer());
+        user.setCustomer(userDTO.isCustomer());
+        if(user.isCustomer()){
+            customerRepo.save((Customer)user);
+        }else{
+            userRepo.save(user);
+        }
         return userDTO;
+    }
+
+    public CustomerPreferencesDTO addCustomerPreferences(CustomerPreferencesDTO customerPreferencesDTO, Long userID){
+        Customer customer = customerRepo.findById(userID).orElse(null);
+        if (customer == null){
+            throw new ValidationException("User with given ID does not exist");
+        }
+        customer.setPreferences(customerPreferencesDTOtoEntity(customerPreferencesDTO));
+        customerRepo.save(customer);
+        return customerPreferencesDTO;
+    }
+
+    public CustomerPreferences customerPreferencesDTOtoEntity(CustomerPreferencesDTO customerPreferencesDTO){
+        return modelMapper.map(customerPreferencesDTO, CustomerPreferences.class);
     }
 }

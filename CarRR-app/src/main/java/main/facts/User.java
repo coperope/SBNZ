@@ -31,6 +31,9 @@ public class User implements Serializable {
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
+    @Column(name = "isCustomer")
+    private boolean isCustomer;
+
     public User() {
     }
 
@@ -81,6 +84,14 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    public boolean isCustomer() {
+        return isCustomer;
+    }
+
+    public void setCustomer(boolean customer) {
+        isCustomer = customer;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -90,6 +101,7 @@ public class User implements Serializable {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", isCustomer=" + isCustomer +
                 '}';
     }
 
