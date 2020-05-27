@@ -102,7 +102,6 @@ export default {
       if (this.rules.valid) {
         alert("Validno");
         axios.post("user/register", this.user).then(response => {
-          console.log(JSON.stringify(response.data));
           localStorage.setItem("user", JSON.stringify(response.data))
         }).catch(error => {
         console.log(error.response.data);
