@@ -17,6 +17,11 @@ public class Customer extends User {
     @JoinColumn(name = "customer_search_history_id")
     private SearchHistory searchHistory;
 
+    public Customer(){
+		preferences = new CustomerPreferences();
+		rentalHistory = new RentalHistory();
+		searchHistory = new SearchHistory();
+	}
 	public CustomerPreferences getPreferences() {
 		return preferences;
 	}
