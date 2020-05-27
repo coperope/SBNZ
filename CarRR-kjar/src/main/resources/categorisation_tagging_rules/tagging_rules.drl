@@ -79,6 +79,7 @@ no-loop
     when
         $vehicle: Vehicle(passengerAreaVolume + cargoVolume < 3086, $tags: tags)
         Tag(name=="Family car") from $tags
+        not (exists (Tag(name=="Small family car") from $tags))
         $tag: Tag(name=="Small family car")
     then
     	modify($vehicle){ getTags().add($tag)}
@@ -89,6 +90,7 @@ no-loop
     when
         $vehicle: Vehicle(passengerAreaVolume + cargoVolume >= 3086, $tags: tags)
         Tag(name=="Family car") from $tags
+        not (exists (Tag(name=="Big family car") from $tags))
         $tag: Tag(name=="Big family car")
     then
     	modify($vehicle){ getTags().add($tag)}
