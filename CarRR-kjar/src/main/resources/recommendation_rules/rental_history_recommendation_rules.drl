@@ -19,7 +19,7 @@ lock-on-active true
         Customer($rentalHistory: rentalHistory)
         RentalHistory($rentalBrands: brands) from $rentalHistory
 
-        $rr: RentalRecommendations()
+        $rr: Recommendations()
         $vehicle: Vehicle($brand: brand)
     then
         modify ($rr) {addHits($vehicle, $rentalBrands.get($brand))}
