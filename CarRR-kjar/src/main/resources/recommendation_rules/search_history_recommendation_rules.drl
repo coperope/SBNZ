@@ -25,7 +25,7 @@ lock-on-active true
         
         $vehicle: Vehicle($brand: brand)
     then
-		modify ($recommendations) {addSearchHits($vehicle, $searchBrands.get($brand))}
+    	modify ($recommendations) {addSearchHits($vehicle, $searchBrands.get($brand))}
 end
 
 rule "Search history category rule"
@@ -45,7 +45,7 @@ lock-on-active true
             result(count)
         )
     then
-		modify ($recommendations) {addSearchHits($vehicle, $preferencesHit)}
+    	modify ($recommendations) {addSearchHits($vehicle, $preferencesHit)}
 end
 
 rule "Search history tag rule"
@@ -65,7 +65,7 @@ lock-on-active true
             result(count)
         )
     then
-		modify ($recommendations) {addSearchHits($vehicle, $preferencesHit)}
+    	modify ($recommendations) {addSearchHits($vehicle, $preferencesHit)}
 end
 
 rule "Search history transmission rule"
@@ -78,7 +78,7 @@ lock-on-active true
 
         $vehicle: Vehicle($transmission: transmission)
     then
-		modify ($recommendations) {addSearchHits($vehicle, $searchTransmission.get($transmission))}
+        modify ($recommendations) {addSearchHits($vehicle, $searchTransmission.get($transmission))}
 end
 
 rule "Search history seatsNo rule"
@@ -91,7 +91,7 @@ lock-on-active true
 
         $vehicle: Vehicle($seatsNo: seatsNo)
     then
-		modify ($recommendations) {addSearchHits($vehicle, $searchSeatsNo.get($seatsNo))}
+        modify ($recommendations) {addSearchHits($vehicle, $searchSeatsNo.get($seatsNo))}
 end
 
 rule "Search history doorNo rule"
@@ -104,7 +104,7 @@ lock-on-active true
 
         $vehicle: Vehicle($doorNo: doorNo)
     then
-		modify ($recommendations) {addSearchHits($vehicle, $searchDoorNo.get($doorNo))}
+        modify ($recommendations) {addSearchHits($vehicle, $searchDoorNo.get($doorNo))}
 end
 
 rule "Search history Fuel Consumption rule"
@@ -117,7 +117,7 @@ lock-on-active true
 
         $vehicle: Vehicle($fuelConsumption: fuelConsumption)
     then
-		modify ($recommendations) {addSearchHits($vehicle, $searchFuelConsumption.get($fuelConsumption))}
+        modify ($recommendations) {addSearchHits($vehicle, $searchFuelConsumption.get($fuelConsumption))}
 end
 
 rule "Search history model rule"
@@ -130,7 +130,7 @@ lock-on-active true
 
         $vehicle: Vehicle($model: model)
     then
-		modify ($recommendations) {addSearchHits($vehicle, $searchModels.get($model))}
+        modify ($recommendations) {addSearchHits($vehicle, $searchModels.get($model))}
 end
 
 rule "Search history fuel rule"
@@ -143,5 +143,5 @@ lock-on-active true
 
         $vehicle: Vehicle($fuel: fuel)
     then
-		modify ($recommendations) {addSearchHits($vehicle, $searchFuel.get($fuel))}
+        modify ($recommendations) {addSearchHits($vehicle, $searchFuel.get($fuel))}
 end

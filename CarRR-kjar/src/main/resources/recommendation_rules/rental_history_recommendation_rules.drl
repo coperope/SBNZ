@@ -138,7 +138,6 @@ lock-on-active true
         Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalFuel: fuel) from $rentalHistory
 
-        $rr: RentalRecommendations()
         $vehicle: Vehicle($fuel: fuel)
     then
         modify ($recommendations) {addRentalHits($vehicle, $rentalFuel.get($fuel))}
