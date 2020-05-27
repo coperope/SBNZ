@@ -8,11 +8,10 @@ public class UserDTO {
     private String name;
     private String surname;
     private String phoneNumber;
-
+    private boolean isCustomer;
     public UserDTO(){
 
     }
-
 
     public String getEmail() {
         return email;
@@ -55,9 +54,19 @@ public class UserDTO {
         this.phoneNumber = phoneNumber;
     }
 
-
     public Long getId() {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public boolean isCustomer() {
+        return isCustomer;
+    }
+
+    public void setCustomer(boolean customer) {
+        isCustomer = customer;
+    }
 }
