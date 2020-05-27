@@ -1,6 +1,9 @@
 <template>
   <b-container class="mt-4">
-    <b-jumbotron header="Welcome to CarRR" lead="Best site for Car Rental Recommendations">
+    <b-jumbotron
+      header="Welcome to CarRR"
+      lead="Best site for Car Rental Recommendations"
+    >
       <p>Coming Soon...</p>
     </b-jumbotron>
   </b-container>
@@ -8,6 +11,6 @@
 
 <script>
 export default {
-  name: "Home"
+  name: "Home",
 };
 </script>
