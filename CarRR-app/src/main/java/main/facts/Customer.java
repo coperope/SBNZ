@@ -46,4 +46,12 @@ public class Customer extends User {
 	public void setSearchHistory(SearchHistory searchHistory) {
 		this.searchHistory = searchHistory;
 	}
+	
+	public Recommendations getRecommendations() {
+		return recommendations;
+	}
+	
+	public void setRecommendations(Recommendations recommendations) {
+		this.recommendations = recommendations;
+	}
 }

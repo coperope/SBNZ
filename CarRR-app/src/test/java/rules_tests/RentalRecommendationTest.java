@@ -125,6 +125,8 @@ public class RentalRecommendationTest {
         SearchHistory searchHistory = new SearchHistory();
         searchHistory.setId(1L);
         customer.setSearchHistory(searchHistory);
+        Recommendations recommendations = new Recommendations();
+    	customer.setRecommendations(recommendations);
 
         List<Brand> brands = new ArrayList<Brand>();
         rentalHistory.getBrands().put(brand, 2);
@@ -143,25 +145,26 @@ public class RentalRecommendationTest {
         br.setName("ZASTAVA");
         rentalHistory.getBrands().put(br, 8);
 
-        RentalRecommendations recommendations = new RentalRecommendations();
-
+        
         kieSession.insert(vehicle);
         kieSession.insert(vehicle2);
         kieSession.insert(customer);
         kieSession.insert(recommendations);
-
+    	kieSession.getAgenda().getAgendaGroup("rentals").setFocus();
         kieSession.fireAllRules();
         kieSession.dispose();
 
-        System.out.println(recommendations.getMap().values());
-        System.out.println(recommendations);
+		System.out.println(customer.getRecommendations().getRentalMap());
 
         LinkedHashMap<Vehicle, Integer> sortedMap =
-                recommendations.getMap().entrySet().stream()
+                recommendations.getRentalMap().entrySet().stream()
                         .sorted(Map.Entry.<Vehicle, Integer>comparingByValue().reversed())
                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                                 (e1, e2) -> e1, LinkedHashMap::new));
+        
         System.out.println(sortedMap);
+		System.out.println(sortedMap.values());
+		
         assertEquals(new Long(2), ( (Vehicle)sortedMap.keySet().toArray()[0]).getId());
 
     }

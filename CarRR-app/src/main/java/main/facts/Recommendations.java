@@ -73,11 +73,35 @@ public class Recommendations {
         this.preferencesMap = preferencesMap;
     }
 
-    public void addHitsPreferences(Vehicle vehicle, int hits) {
+    public void addPreferencesHits(Vehicle vehicle, int hits) {
         if(preferencesMap.containsKey(vehicle)) {
             preferencesMap.put(vehicle, preferencesMap.get(vehicle) + hits);
         } else {
             preferencesMap.put(vehicle, hits);
         }
     }
+    
+    public void addRentalHits(Vehicle vehicle, Object hits) {
+        if (hits == null) {
+            return;
+        }
+        Integer hitsInt = (Integer) hits;
+        if(rentalMap.containsKey(vehicle)) {
+        	rentalMap.put(vehicle, rentalMap.get(vehicle) + hitsInt);
+        } else {
+        	rentalMap.put(vehicle, hitsInt);
+        }
+    }
+    
+    public void addSearchHits(Vehicle vehicle, Object hits) {
+		if (hits == null) {
+			return;
+		}
+		Integer hitsInt = (Integer) hits;
+		if(searchMap.containsKey(vehicle)) {
+			searchMap.put(vehicle, searchMap.get(vehicle) + hitsInt);
+		} else {
+			searchMap.put(vehicle, hitsInt);
+		}
+	}
 }

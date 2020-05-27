@@ -16,28 +16,26 @@ import main.facts.SearchRecommendations;
 
 
 rule "Search history brand rule"
+agenda-group "search"
 no-loop true
 lock-on-active true
     when
-        Customer($searchHistory: searchHistory)
+        Customer($searchHistory: searchHistory, $recommendations: recommendations)
         SearchHistory($searchBrands: brands) from $searchHistory
         
-        $sr: SearchRecommendations()
         $vehicle: Vehicle($brand: brand)
     then
-        modify ($sr) {addHits($vehicle, $searchBrands.get($brand))}
-
-
+		modify ($recommendations) {addSearchHits($vehicle, $searchBrands.get($brand))}
 end
 
 rule "Search history category rule"
+agenda-group "search"
 no-loop true
 lock-on-active true
     when
-        Customer($searchHistory: searchHistory)
+        Customer($searchHistory: searchHistory, $recommendations: recommendations)
         SearchHistory($searchCategories: categories) from $searchHistory
 
-        $sr: SearchRecommendations()
         $vehicle: Vehicle($categories: categories)
         Number($preferencesHit : intValue) from accumulate(
             $c: Category() from $categories
@@ -47,17 +45,17 @@ lock-on-active true
             result(count)
         )
     then
-        modify ($sr) {addHits($vehicle, $preferencesHit)}
+		modify ($recommendations) {addSearchHits($vehicle, $preferencesHit)}
 end
 
 rule "Search history tag rule"
+agenda-group "search"
 no-loop true
 lock-on-active true
     when
-        Customer($searchHistory: searchHistory)
+        Customer($searchHistory: searchHistory, $recommendations: recommendations)
         SearchHistory($searchTags: tags) from $searchHistory
 
-        $sr: SearchRecommendations()
         $vehicle: Vehicle($tags: tags)
         Number($preferencesHit : intValue) from accumulate(
             $t: Tag() from $tags
@@ -67,89 +65,83 @@ lock-on-active true
             result(count)
         )
     then
-        modify ($sr) {addHits($vehicle, $preferencesHit)}
+		modify ($recommendations) {addSearchHits($vehicle, $preferencesHit)}
 end
 
 rule "Search history transmission rule"
+agenda-group "search"
 no-loop true
 lock-on-active true
     when
-        Customer($searchHistory: searchHistory)
+        Customer($searchHistory: searchHistory, $recommendations: recommendations)
         SearchHistory($searchTransmission: transmission) from $searchHistory
 
-        $sr: SearchRecommendations()
         $vehicle: Vehicle($transmission: transmission)
     then
-        modify ($sr) {addHits($vehicle, $searchTransmission.get($transmission))}
-
+		modify ($recommendations) {addSearchHits($vehicle, $searchTransmission.get($transmission))}
 end
 
 rule "Search history seatsNo rule"
+agenda-group "search"
 no-loop true
 lock-on-active true
     when
-        Customer($searchHistory: searchHistory)
+        Customer($searchHistory: searchHistory, $recommendations: recommendations)
         SearchHistory($searchSeatsNo: seatsNo) from $searchHistory
 
-        $sr: SearchRecommendations()
         $vehicle: Vehicle($seatsNo: seatsNo)
     then
-        modify ($sr) {addHits($vehicle, $searchSeatsNo.get($seatsNo))}
-
+		modify ($recommendations) {addSearchHits($vehicle, $searchSeatsNo.get($seatsNo))}
 end
 
 rule "Search history doorNo rule"
+agenda-group "search"
 no-loop true
 lock-on-active true
     when
-        Customer($searchHistory: searchHistory)
+        Customer($searchHistory: searchHistory, $recommendations: recommendations)
         SearchHistory($searchDoorNo: doorNo) from $searchHistory
 
-        $sr: SearchRecommendations()
         $vehicle: Vehicle($doorNo: doorNo)
     then
-        modify ($sr) {addHits($vehicle, $searchDoorNo.get($doorNo))}
-
+		modify ($recommendations) {addSearchHits($vehicle, $searchDoorNo.get($doorNo))}
 end
 
 rule "Search history Fuel Consumption rule"
+agenda-group "search"
 no-loop true
 lock-on-active true
     when
-        Customer($searchHistory: searchHistory)
+        Customer($searchHistory: searchHistory, $recommendations: recommendations)
         SearchHistory($searchFuelConsumption: fuelConsumption) from $searchHistory
 
-        $sr: SearchRecommendations()
         $vehicle: Vehicle($fuelConsumption: fuelConsumption)
     then
-        modify ($sr) {addHits($vehicle, $searchFuelConsumption.get($fuelConsumption))}
-
+		modify ($recommendations) {addSearchHits($vehicle, $searchFuelConsumption.get($fuelConsumption))}
 end
 
 rule "Search history model rule"
+agenda-group "search"
 no-loop true
 lock-on-active true
     when
-        Customer($searchHistory: searchHistory)
+        Customer($searchHistory: searchHistory, $recommendations: recommendations)
         SearchHistory($searchModels: model) from $searchHistory
 
-        $sr: SearchRecommendations()
         $vehicle: Vehicle($model: model)
     then
-        modify ($sr) {addHits($vehicle, $searchModels.get($model))}
-
+		modify ($recommendations) {addSearchHits($vehicle, $searchModels.get($model))}
 end
 
 rule "Search history fuel rule"
+agenda-group "search"
 no-loop true
 lock-on-active true
     when
-        Customer($searchHistory: searchHistory)
+        Customer($searchHistory: searchHistory, $recommendations: recommendations)
         SearchHistory($searchFuel: fuel) from $searchHistory
 
-        $sr: SearchRecommendations()
         $vehicle: Vehicle($fuel: fuel)
     then
-        modify ($sr) {addHits($vehicle, $searchFuel.get($fuel))}
-
+		modify ($recommendations) {addSearchHits($vehicle, $searchFuel.get($fuel))}
 end
