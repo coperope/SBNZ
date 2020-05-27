@@ -26,6 +26,9 @@ public class UserService {
 
     public User findByEmail(String email)  {
         User u = userRepo.findByEmail(email);
+        if (u == null){
+            u = customerRepo.findByEmail(email);
+        }
         return u;
     }
 
@@ -39,7 +42,6 @@ public class UserService {
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
         user.setPhoneNumber(userDTO.getPhoneNumber());
-        user.setCustomer(userDTO.isCustomer());
         user.setCustomer(userDTO.isCustomer());
         if(user.isCustomer()){
             customerRepo.save((Customer)user);

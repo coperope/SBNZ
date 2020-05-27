@@ -6,6 +6,7 @@
         <b-navbar-nav>
           <router-link to="/search" tag="b-nav-item">Search</router-link>
           <router-link to="/about" tag="b-nav-item">About</router-link>
+          <b-nav-item class="ml-12" @click="logout">Logout</b-nav-item>
         </b-navbar-nav>
       </template>
     </b-container>
@@ -19,12 +20,20 @@ export default {
 
     }
   },
+  methods: {
+    logout(){
+      localStorage.removeItem("user");
+      this.$store.state.user = null;
+      this.$router.push("/login");
+    }
+  },
   computed: {
     userSignedIn(){
-      return localStorage.getItem('user');
+      return this.$store.state.user;
     }
   }
 };
 </script>
 
-<style></style>
+<style scoped>
+</style>

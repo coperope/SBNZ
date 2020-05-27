@@ -8,7 +8,7 @@ public class UserDTO {
     private String name;
     private String surname;
     private String phoneNumber;
-    private boolean isCustomer;
+    private boolean customer;
     public UserDTO(){
 
     }
@@ -63,10 +63,10 @@ public class UserDTO {
     }
 
     public boolean isCustomer() {
-        return isCustomer;
+        return customer;
     }
 
     public void setCustomer(boolean customer) {
-        isCustomer = customer;
+        this.customer = customer;
     }
 }
