@@ -17,7 +17,7 @@ public class CarModel implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Brand brand;
 
     public CarModel(){
@@ -58,7 +58,6 @@ public class CarModel implements Serializable {
         return "CarModel{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", brand=" + brand +
                 '}';
     }
 

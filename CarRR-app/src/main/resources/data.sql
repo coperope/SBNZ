@@ -75,7 +75,7 @@ INSERT INTO public.brand(id, name)
 	VALUES (nextval('brand_id_seq'), 'Audi');
 INSERT INTO public.brand(id, name)
 	VALUES (nextval('brand_id_seq'), 'Mercedes');
-	
+
 -- Car Model
 INSERT INTO public.car_model(id, name, brand_id)
 	VALUES (nextval('model_id_seq'), 'X5', 1);
@@ -91,7 +91,7 @@ INSERT INTO public.car_model(id, name, brand_id)
 	VALUES (nextval('model_id_seq'), 'S220', 4);
 INSERT INTO public.car_model(id, name, brand_id)
 	VALUES (nextval('model_id_seq'), 'C501', 4);
-	
+
 -- Fuel
 INSERT INTO public.fuel(id, name)
 	VALUES (nextval('fuel_id_seq'), 'Diesel');
@@ -99,13 +99,13 @@ INSERT INTO public.fuel(id, name)
 	VALUES (nextval('fuel_id_seq'), 'Gasoline');
 INSERT INTO public.fuel(id, name)
 	VALUES (nextval('fuel_id_seq'), 'Electric');
-	
+
 -- Transmission
 INSERT INTO public.transmission(id, name)
 	VALUES (nextval('transmission_id_seq'), 'Automatic');
 INSERT INTO public.transmission(id, name)
 	VALUES (nextval('transmission_id_seq'), 'Manual');
-	
+
 -- Vehicle
 INSERT INTO public.vehicle( -- BWM X1
 	id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
