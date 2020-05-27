@@ -5,7 +5,7 @@ package main.dto;
 public class CarModelDTO {
     private Long id;
     private String name;
-    private BrandDTO brand;
+//    private BrandDTO brand;
 
     public CarModelDTO() {
     }
@@ -26,20 +26,19 @@ public class CarModelDTO {
         this.name = name;
     }
 
-    public BrandDTO getBrand() {
-        return brand;
-    }
-
-    public void setBrand(BrandDTO brand) {
-        this.brand = brand;
-    }
+//    public BrandDTO getBrand() {
+//        return brand;
+//    }
+//
+//    public void setBrand(BrandDTO brand) {
+//        this.brand = brand;
+//    }
 
     @Override
     public String toString() {
         return "CarModelDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", brand=" + brand +
                 '}';
     }
 }

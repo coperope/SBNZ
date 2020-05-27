@@ -55,10 +55,21 @@ public class Brand implements Serializable {
         this.name = name;
     }
 
+    public Set<CarModel> getModels() {
+        return models;
+    }
+
+    public void setModels(Set<CarModel> models) {
+        this.models = models;
+    }
+
     @Override
     public String toString() {
-        return "id=" + id +
-                ", name='" + name + '\'';
+        return "Brand{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", models=" + models +
+                '}';
     }
 
     @Override

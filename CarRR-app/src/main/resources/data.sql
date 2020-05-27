@@ -1,6 +1,6 @@
 -- Customer
-INSERT INTO public.customer(id, name, surname, email, password, phone_number)
-	VALUES (nextval('users_id_seq'), 'Vladimir', 'Lenjin', 'customer@gmail.com', '123456', '061265978');
+INSERT INTO public.customer(id, name, surname, email, password, phone_number, is_customer)
+	VALUES (nextval('users_id_seq'), 'Vladimir', 'Lenjin', 'customer@gmail.com', '123456', '061265978', true);
 
 -- Categories
 INSERT INTO public.category(id, name)

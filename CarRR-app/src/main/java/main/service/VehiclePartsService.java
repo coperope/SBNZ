@@ -132,7 +132,9 @@ public class VehiclePartsService {
     }
 
     private BrandDTO convertBrandToDTO(Brand brand){
-        return modelMapper.map(brand, BrandDTO.class);
+        BrandDTO bdto = modelMapper.map(brand, BrandDTO.class);
+        //bdto.setModels(brand.getModels());
+        return bdto;
     }
 
     private CarModelDTO convertCarModelToDTO(CarModel carModel){
