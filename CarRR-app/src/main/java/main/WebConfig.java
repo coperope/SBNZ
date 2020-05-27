@@ -1,27 +1,25 @@
 package main;
 
-import java.io.IOException;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.container.ContainerResponseFilter;
-import javax.ws.rs.ext.Provider;
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
 
-@Provider
-public class CorsFilter implements ContainerResponseFilter {
- 
     @Override
-    public void filter(ContainerRequestContext requestContext, 
-      ContainerResponseContext responseContext) throws IOException {
-          responseContext.getHeaders().add(
-            "Access-Control-Allow-Origin", "*");
-          responseContext.getHeaders().add(
-            "Access-Control-Allow-Credentials", "true");
-          responseContext.getHeaders().add(
-           "Access-Control-Allow-Headers",
-           "*");
-          responseContext.getHeaders().add(
-            "Access-Control-Allow-Methods", 
-            "*");
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedOrigins("http://localhost:8081");
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        //registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
+        registry
+                .addResourceHandler("/assets/images/**")
+                .setCachePeriod(0)
+                .addResourceLocations("classpath:/static/assets/images/");
     }
 }
+
