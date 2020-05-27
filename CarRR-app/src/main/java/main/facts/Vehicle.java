@@ -114,7 +114,10 @@ public class Vehicle implements Serializable {
 
     @Column(name = "numberOfReviews")
     private int numberOfReviews;
-    
+
+    @Column(name = "owner")
+    private User owner;
+
     public Vehicle(){
 
     }

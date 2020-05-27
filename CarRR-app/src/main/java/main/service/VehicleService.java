@@ -13,11 +13,13 @@ import org.junit.experimental.categories.Categories;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class VehicleService {
@@ -35,8 +37,11 @@ public class VehicleService {
     @Autowired
     TagRepo tagRepo;
 
+    @Autowired
+    ModelMapper modelMapper;
+
     // Add a new vehicle and determine it's categories and tags.
-    public Vehicle addVehicle(Vehicle vehicle) {
+    public VehicleDTO addVehicle(VehicleDTO vehicleDTO) {
         kieSession = kieContainer.newKieSession("categorisation_tagging_session");
         List<Category> categories = categoryRepo.findAll();
         List<Tag> tags = tagRepo.findAll();
@@ -48,6 +53,7 @@ public class VehicleService {
         }
 
         // Initialize vehicles tags and categories as empty.
+        Vehicle vehicle = convertDTOToVehicle(vehicleDTO);
         vehicle.setTags(new ArrayList<Tag>());
         vehicle.setCategories(new ArrayList<Category>());
 
@@ -56,11 +62,23 @@ public class VehicleService {
         kieSession.dispose();
 
         vehicleRepo.save(vehicle);
-        return vehicle;
+        return vehicleDTO;
     }
 
-    public List<Vehicle> getAllVehicles(){
-        return vehicleRepo.findAll();
+    public List<VehicleDTO> getAllVehicles(){
+        List<Vehicle> vehicles = vehicleRepo.findAll();
+        return vehicles
+                .stream()
+                .map(this::convertVehicleToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private VehicleDTO convertVehicleToDTO(Vehicle vehicle){
+        return modelMapper.map(vehicle, VehicleDTO.class);
+    }
+
+    private Vehicle convertDTOToVehicle(VehicleDTO vehicleDTO){
+        return modelMapper.map(vehicleDTO, Vehicle.class);
     }
 
 }
