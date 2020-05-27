@@ -18,9 +18,6 @@ public class Customer extends User {
     private SearchHistory searchHistory;
 
     public Customer(){
-		preferences = new CustomerPreferences();
-		rentalHistory = new RentalHistory();
-		searchHistory = new SearchHistory();
 	}
 	public CustomerPreferences getPreferences() {
 		return preferences;
