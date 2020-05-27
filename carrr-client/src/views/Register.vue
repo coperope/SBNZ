@@ -102,7 +102,8 @@ export default {
       if (this.rules.valid) {
         alert("Validno");
         axios.post("user/register", this.user).then(response => {
-          localStorage.setItem("user", JSON.stringify(response.data))
+          localStorage.setItem("user", JSON.stringify(response.data));
+          this.$router.push("/");
         }).catch(error => {
         console.log(error.response.data);
       });

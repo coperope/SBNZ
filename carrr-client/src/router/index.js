@@ -47,9 +47,14 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-
+  console.log("Usao");
   if (from.path === "/register" && localStorage.getItem('user')) {
-    JSON.parse(localStorage.getItem("user"))
+    console.log("Usao1");
+    let user = JSON.parse(localStorage.getItem("user"))
+    if (user.isCustomer) {
+      console.log("Usao2");
+      alert("Bira preference")
+    }
   }
 
   if (to.meta.requiresAuth == false) {
