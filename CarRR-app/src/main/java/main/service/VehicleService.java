@@ -1,15 +1,12 @@
 package main.service;
 
 import main.dto.VehicleDTO;
-import main.facts.Brand;
 import main.facts.Category;
 import main.facts.Tag;
 import main.facts.Vehicle;
-import main.repository.CarModelRepo;
 import main.repository.CategoryRepo;
 import main.repository.TagRepo;
 import main.repository.VehicleRepo;
-import org.junit.experimental.categories.Categories;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;

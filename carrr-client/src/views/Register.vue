@@ -45,7 +45,7 @@
               prepend-icon="lock"
               type="password"
               v-model="confirmPassword"
-              :rules="rules.password"
+              :rules="rules.confirmPassword"
             ></v-text-field>
             <v-text-field
               label="Phone Number"
@@ -60,7 +60,7 @@
         <v-card-actions>
           <router-link to="/login" tag="a" class="ml-4">Sign In</router-link>
           <v-spacer></v-spacer>
-          <v-btn class="mr-2" color="light-blue lighten-2" dark>Sign up</v-btn>
+          <v-btn class="mr-2" color="light-blue lighten-2" dark @click="register">Sign up</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -68,6 +68,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -85,15 +87,24 @@ export default {
         surname: [v => !!v || "Surname is required"],
         email: [v => !!v || "E-mail is required"],
         password: [v => !!v || "Password is required"],
+        confirmPassword: [
+          v => !!v || "Password is required",
+          v => this.user.password === v || "Passwords don't match"
+        ],
         phoneNumber: [v => !!v || "Phone Numer is required"]
       }
     };
   },
   methods: {
     register() {
-      this.axios.register("").then(response => {
-        console.log(response.data);
-      });
+      if (this.rules.valid) {
+        alert("Validno");
+        axios.post("user/register", this.user).then(response => {
+          console.log(response.data);
+        });
+      } else {
+        alert("Nevalidno");
+      }
     }
   }
 };

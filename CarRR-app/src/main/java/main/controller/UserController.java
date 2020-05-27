@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/register")
-    public ResponseEntity addUser(@RequestBody UserDTO registrationDTO, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity addUser(@RequestBody UserDTO registrationDTO) {
 
         User existUser = this.userService.findByEmail(registrationDTO.getEmail());
         if (existUser != null) {

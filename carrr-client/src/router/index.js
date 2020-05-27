@@ -48,6 +48,10 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
 
+  if (from.path === "/register" && localStorage.getItem('user')) {
+    alert("Dodavanje preferenci");
+  }
+
   if (to.meta.requiresAuth == false) {
     next();
   } else if (localStorage.getItem('user')) {
