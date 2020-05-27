@@ -25,16 +25,16 @@ public class Vehicle implements Serializable {
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="vehicle_id_seq")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     private Brand brand;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     private CarModel model;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     private Fuel fuel;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     private Transmission transmission;
 
     @Column(name = "seatsNo")

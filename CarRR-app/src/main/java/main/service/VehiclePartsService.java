@@ -1,5 +1,6 @@
 package main.service;
 
+import main.MainApp;
 import main.facts.*;
 import main.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class VehiclePartsService {
 
     public Tag addTag(Tag tag) {
         tagRepo.save(tag);
+        MainApp.taggingAndCategorisation.insert(tag);
         return tag;
     }
 
@@ -55,6 +57,7 @@ public class VehiclePartsService {
 
     public Category addCategory(Category category){
        categoryRepo.save(category);
+       MainApp.taggingAndCategorisation.insert(category);
        return  category;
     }
 
