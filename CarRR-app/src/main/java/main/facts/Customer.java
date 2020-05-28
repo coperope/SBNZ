@@ -13,7 +13,7 @@ public class Customer extends User {
     @JoinColumn(name = "customer_rental_history_id")
     private RentalHistory rentalHistory;
     
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_search_history_id")
     private SearchHistory searchHistory;
 

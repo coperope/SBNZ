@@ -13,18 +13,35 @@ import main.facts.CustomerPreferences;
 import main.facts.Vehicle;
 import main.facts.SearchHistory;
 import main.facts.SearchRecommendations;
+import main.facts.User;
 
+rule "test"
+agenda-group "search"
+    when
+        $u: User()
+        $vehicle: Vehicle($brand: brand)
+    then
+    	System.out.println("FAK JU");
+    	System.out.println($u.getId());
+    	System.out.println($vehicle.getId());
+    	
+    	delete((Customer)$u); // use this after saving in database
+    	delete($vehicle); // use this after saving in database
+end
 
 rule "Search history brand rule"
 agenda-group "search"
+salience 10
 no-loop true
 lock-on-active true
     when
-        Customer($searchHistory: searchHistory, $recommendations: recommendations)
+    	User($id: id)
+        Customer(id == $id, $searchHistory: searchHistory, $recommendations: recommendations)
         SearchHistory($searchBrands: brands) from $searchHistory
         
         $vehicle: Vehicle($brand: brand)
     then
+    	System.out.println("Stigaegasgeao");
     	modify ($recommendations) {addSearchHits($vehicle, $searchBrands.get($brand))}
 end
 

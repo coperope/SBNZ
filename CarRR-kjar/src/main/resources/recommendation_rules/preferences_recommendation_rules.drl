@@ -51,8 +51,6 @@ lock-on-active true
         Vehicle(mileageLimit == -1, $preferedMileageLimit == -1 ) from $vehicle
         or
         Vehicle(mileageLimit != -1, $preferedMileageLimit != -1, mileageLimit >= $preferedMileageLimit) from $vehicle
-
-        //$pr: PreferencesRecommendations()
     then
     	modify ($recommendations) {addPreferencesHits($vehicle, 1)}
 end
@@ -66,7 +64,6 @@ lock-on-active true
         Customer($preferences: preferences, $recommendations: recommendations)
         CustomerPreferences($preferedTags: tagList) from $preferences
 
-        //$pr: PreferencesRecommendations()
         $vehicle: Vehicle($tags: tags)
 
         Number($preferencesHit : intValue) from accumulate(
@@ -90,7 +87,6 @@ lock-on-active true
         Customer($preferences: preferences, $recommendations: recommendations)
         CustomerPreferences($preferedBrands: brandList) from $preferences
 
-        //$pr: PreferencesRecommendations()
         $vehicle: Vehicle($brand: brand)
         Brand(name == $brand.name) from $preferedBrands
     then
@@ -105,7 +101,6 @@ lock-on-active true
         Customer($preferences: preferences, $recommendations: recommendations)
         CustomerPreferences($preferedFuels: fuelList) from $preferences
 
-        //$pr: PreferencesRecommendations()
         $vehicle: Vehicle($fuel: fuel)
         Fuel(name == $fuel.name) from $preferedFuels
     then
@@ -121,7 +116,6 @@ lock-on-active true
         Customer($preferences: preferences, $recommendations: recommendations)
         CustomerPreferences($preferedTransmissions: transmissionList) from $preferences
 
-        //$pr: PreferencesRecommendations()
         $vehicle: Vehicle($transmission: transmission)
         Transmission(name == $transmission.name) from $preferedTransmissions
     then
@@ -136,7 +130,6 @@ lock-on-active true
         Customer($preferences: preferences, $recommendations: recommendations)
         CustomerPreferences($preferedSeatsNo: seatsNo) from $preferences
 
-        //$pr: PreferencesRecommendations()
         $vehicle: Vehicle($preferedSeatsNo == seatsNo)
     then
     	modify ($recommendations) {addPreferencesHits($vehicle, 1)}
@@ -150,7 +143,6 @@ lock-on-active true
         Customer($preferences: preferences, $recommendations: recommendations)
         CustomerPreferences($preferedDoorNo: doorNo) from $preferences
 
-        //$pr: PreferencesRecommendations()
         $vehicle: Vehicle($preferedDoorNo == doorNo)
     then
     	modify ($recommendations) {addPreferencesHits($vehicle, 1)}
@@ -164,7 +156,6 @@ lock-on-active true
         Customer($preferences: preferences, $recommendations: recommendations)
         CustomerPreferences($preferedFuelConsumption: fuelConsumption) from $preferences
 
-        //$pr: PreferencesRecommendations()
         $vehicle: Vehicle($preferedFuelConsumption >= fuelConsumption)
     then
     	modify ($recommendations) {addPreferencesHits($vehicle, 1)}
