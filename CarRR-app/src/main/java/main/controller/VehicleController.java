@@ -1,5 +1,6 @@
 package main.controller;
 
+import main.dto.SearchDTO;
 import main.dto.VehicleDTO;
 import main.facts.Vehicle;
 import main.service.VehicleService;
@@ -33,5 +34,9 @@ public class VehicleController {
         return ResponseEntity.ok("more");
     }
 
-
+    @PostMapping(path = "/search", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Vehicle>> searchVehicle(@RequestBody SearchDTO searchDTO) {
+        System.out.println(searchDTO);
+        return new ResponseEntity<>(vehicleService.searchVehicles(searchDTO), HttpStatus.OK);
+    }
 }

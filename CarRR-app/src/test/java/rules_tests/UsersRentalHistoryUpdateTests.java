@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.dto.BrandDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.kie.api.KieServices;
@@ -23,6 +24,10 @@ import main.facts.SearchHistory;
 import main.facts.Tag;
 import main.facts.Transmission;
 import main.facts.Vehicle;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.Transient;
 
 public class UsersRentalHistoryUpdateTests {
 
@@ -33,6 +38,8 @@ public class UsersRentalHistoryUpdateTests {
 	
 	private Customer customer;
 	private Vehicle vehicle;
+
+	private ModelMapper modelMapper = new ModelMapper();
 
 	@Before
 	public void init() {
@@ -118,8 +125,8 @@ public class UsersRentalHistoryUpdateTests {
 	public void testSearchHistory() {		
 		
 		SearchDTO searchParam = new SearchDTO();
-			List<Brand> brands = new ArrayList<Brand>();
-			Brand brand = new Brand();
+			List<BrandDTO> brands = new ArrayList<BrandDTO>();
+			BrandDTO brand = new BrandDTO();
 			brand.setId(1L);
 			brand.setName("Audi");
 			brands.add(brand);
