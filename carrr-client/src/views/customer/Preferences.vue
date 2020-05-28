@@ -294,7 +294,13 @@ export default {
           "user/user/" + this.$store.state.user.id + "/preferences",
           this.preferences
         )
-        .then(() => {})
+        .then(() => {
+          if (this.preferences.mileageLimit === 1) {
+              this.preferences.mileageLimit = true;
+            }else{
+              this.preferences.mileageLimit = false;
+            }
+        })
         .catch(error => {
           console.log(error.response.data);
         });
@@ -308,8 +314,13 @@ export default {
         axios
           .get("user/user/" + this.$route.params.customerId + "/preferences")
           .then(response => {
-            console.log(JSON.parse(response.data));
+            console.log(response.data);
             this.preferences = response.data;
+            if (response.data.mileageLimit === 1) {
+              this.preferences.mileageLimit = true;
+            }else{
+              this.preferences.mileageLimit = false;
+            }
           })
           .catch(error => {
             alert("Error");

@@ -1,7 +1,5 @@
 package main.dto;
 
-
-
 public class CarModelDTO {
     private Long id;
     private String name;

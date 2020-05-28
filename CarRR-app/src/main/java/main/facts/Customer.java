@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class Customer extends User {
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_preferences_id")
     private CustomerPreferences preferences;
 

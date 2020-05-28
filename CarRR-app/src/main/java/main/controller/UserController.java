@@ -74,7 +74,6 @@ public class UserController {
     public ResponseEntity getUserPreferences(@PathVariable("id") Long userID) {
         Customer customer = userService.findCustomerById(userID);
 
-        System.out.println("AAAAAAAAAAAAAAAAAA" + customer.getPreferences());
         return new ResponseEntity<>(customer.getPreferences(), HttpStatus.OK);
     }
 }

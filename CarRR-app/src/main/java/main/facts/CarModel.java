@@ -45,10 +45,6 @@ public class CarModel implements Serializable {
         this.name = name;
     }
 
-    public Brand getBrand() {
-        return brand;
-    }
-
     public void setBrand(Brand brand) {
         this.brand = brand;
     }
@@ -67,12 +63,11 @@ public class CarModel implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         CarModel carModel = (CarModel) o;
         return getId().equals(carModel.getId()) &&
-                getName().equals(carModel.getName()) &&
-                getBrand().equals(carModel.getBrand());
+                getName().equals(carModel.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getBrand());
+        return Objects.hash(getId(), getName());
     }
 }
