@@ -62,11 +62,11 @@ public class UserDTO {
         this.id = id;
     }
 
-    public boolean isCustomer() {
-        return customer;
-    }
+	public boolean isCustomer() {
+		return customer;
+	}
 
-    public void setCustomer(boolean customer) {
-        this.customer = customer;
-    }
+	public void setCustomer(boolean customer) {
+		this.customer = customer;
+	}
 }

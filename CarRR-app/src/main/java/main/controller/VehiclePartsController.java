@@ -2,9 +2,7 @@ package main.controller;
 
 import main.dto.BrandDTO;
 import main.dto.CarModelDTO;
-import main.facts.Category;
-import main.facts.Fuel;
-import main.facts.Transmission;
+import main.facts.*;
 import main.service.VehiclePartsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +31,10 @@ public class VehiclePartsController {
     @GetMapping(path="/brand" ,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<BrandDTO>> getBrandTypes(){
+        List<BrandDTO> brands = vehiclePartsService.getAllBrands();
+        for (BrandDTO b : brands) {
+            System.out.println(b);
+        }
         return new ResponseEntity<>(vehiclePartsService.getAllBrands(), HttpStatus.OK);
     }
 
@@ -46,6 +48,12 @@ public class VehiclePartsController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Category>> getCategoryTypes(){
         return new ResponseEntity<>(vehiclePartsService.getAllCategories(), HttpStatus.OK);
+    }
+
+    @GetMapping(path="/tag" ,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Tag>> getTagTypes(){
+        return new ResponseEntity<>(vehiclePartsService.getAllTags(), HttpStatus.OK);
     }
 
     @GetMapping(path="/transmission" ,

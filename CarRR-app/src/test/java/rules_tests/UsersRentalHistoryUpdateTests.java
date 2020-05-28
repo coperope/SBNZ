@@ -124,7 +124,7 @@ public class UsersRentalHistoryUpdateTests {
 			brand.setName("Audi");
 			brands.add(brand);
 		searchParam.setBrands(brands);
-		searchParam.setCustomer(this.customer);
+		//searchParam.setCustomer(this.customer);
 
 		kieSession.insert(this.customer);
 		kieSession.insert(searchParam);

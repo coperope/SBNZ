@@ -41,6 +41,14 @@ const routes = [
     }
   },
   {
+    path: "/preferences/:customerId",
+    name: "Preferences",
+    component: Preferences,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: "/about",
     name: "About",
     // route level code-splitting

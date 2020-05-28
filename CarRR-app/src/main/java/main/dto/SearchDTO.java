@@ -14,7 +14,7 @@ import main.facts.Transmission;
 
 public class SearchDTO {
 
-	private Customer customer;
+	private UserDTO customer;
 	private List<Category> categories;
 	private List<Tag> tags;
 	private List<Brand> brands;
@@ -40,7 +40,7 @@ public class SearchDTO {
 		this.scaleFactor = 1;
 	}
 	
-	public SearchDTO(Customer customer, List<Category> categories, List<Tag> tags, List<Brand> brands,
+	public SearchDTO(UserDTO customer, List<Category> categories, List<Tag> tags, List<Brand> brands,
 			List<CarModel> models, List<Fuel> fuels, List<Transmission> transmissions, List<Integer> seatsNo,
 			List<Integer> doorNo, List<Double> fuelConsumptions, Integer scaleFactor) {
 		super();
@@ -59,11 +59,11 @@ public class SearchDTO {
 
 
 
-	public Customer getCustomer() {
+	public UserDTO getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(Customer customer) {
+	public void setCustomer(UserDTO customer) {
 		this.customer = customer;
 	}
 

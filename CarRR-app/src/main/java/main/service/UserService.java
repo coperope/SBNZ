@@ -24,6 +24,12 @@ public class UserService {
     @Autowired
     private ModelMapper modelMapper;
 
+    public Customer findCustomerById(Long id)  {
+        Customer customer = customerRepo.findById(id).orElse(null);
+
+        return customer;
+    }
+
     public User findByEmail(String email)  {
         User u = userRepo.findByEmail(email);
         if (u == null){

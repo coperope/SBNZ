@@ -1,9 +1,19 @@
 package main.facts;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Brand implements Serializable {
@@ -45,10 +55,21 @@ public class Brand implements Serializable {
         this.name = name;
     }
 
+    public Set<CarModel> getModels() {
+        return models;
+    }
+
+    public void setModels(Set<CarModel> models) {
+        this.models = models;
+    }
+
     @Override
     public String toString() {
-        return "id=" + id +
-                ", name='" + name + '\'';
+        return "Brand{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", models=" + models +
+                '}';
     }
 
     @Override

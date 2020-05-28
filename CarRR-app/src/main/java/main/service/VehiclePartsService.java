@@ -1,5 +1,6 @@
 package main.service;
 
+//import main.MainApp;
 import main.dto.BrandDTO;
 import main.dto.CarModelDTO;
 import main.dto.VehicleDTO;
@@ -44,6 +45,7 @@ public class VehiclePartsService {
 
     public Tag addTag(Tag tag) {
         tagRepo.save(tag);
+        //MainApp.taggingAndCategorisation.insert(tag);
         return tag;
     }
 
@@ -65,6 +67,7 @@ public class VehiclePartsService {
 
     public Category addCategory(Category category){
        categoryRepo.save(category);
+       //MainApp.taggingAndCategorisation.insert(category);
        return  category;
     }
 
@@ -129,7 +132,9 @@ public class VehiclePartsService {
     }
 
     private BrandDTO convertBrandToDTO(Brand brand){
-        return modelMapper.map(brand, BrandDTO.class);
+        BrandDTO bdto = modelMapper.map(brand, BrandDTO.class);
+        //bdto.setModels(brand.getModels());
+        return bdto;
     }
 
     private CarModelDTO convertCarModelToDTO(CarModel carModel){

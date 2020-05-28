@@ -1,5 +1,6 @@
 package main.service;
 
+import main.MainApp;
 import main.dto.VehicleDTO;
 import main.facts.Category;
 import main.facts.Tag;
@@ -11,6 +12,7 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.modelmapper.ModelMapper;
+import org.kie.api.runtime.rule.FactHandle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,9 +56,19 @@ public class VehicleService {
         vehicle.setTags(new ArrayList<Tag>());
         vehicle.setCategories(new ArrayList<Category>());
 
+        //FactHandle handle = MainApp.taggingAndCategorisation.insert(vehicle);
+
         kieSession.insert(vehicle);
         kieSession.fireAllRules();
         kieSession.dispose();
+
+        // try {
+		//	Thread.sleep(150); // kind of stupid... should we do this or create session, insert, fire, dispose...
+		// } catch (InterruptedException e) {
+		//	e.printStackTrace();
+		// }
+        // remove from kiesession
+        // MainApp.taggingAndCategorisation.delete(handle); // cant delete handles of deleted tags and categories...
 
         vehicleRepo.save(vehicle);
         return vehicleDTO;

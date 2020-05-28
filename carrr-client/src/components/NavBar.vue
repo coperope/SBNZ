@@ -6,6 +6,7 @@
         <b-navbar-nav>
           <router-link to="/search" tag="b-nav-item">Search</router-link>
           <router-link to="/about" tag="b-nav-item">About</router-link>
+          <router-link :to="'/preferences/'+this.$store.state.user.id" tag="b-nav-item">Preferences</router-link>
           <b-nav-item class="ml-12" @click="logout">Logout</b-nav-item>
         </b-navbar-nav>
       </template>
