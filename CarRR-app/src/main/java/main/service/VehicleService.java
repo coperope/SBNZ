@@ -1,7 +1,10 @@
 package main.service;
 
 import main.MainApp;
+import main.dto.BrandDTO;
+import main.dto.SearchDTO;
 import main.dto.VehicleDTO;
+import main.facts.Brand;
 import main.facts.Category;
 import main.facts.NewVehicleEvent;
 import main.facts.Tag;
@@ -96,6 +99,37 @@ public class VehicleService {
                 .stream()
                 .map(this::convertVehicleToDTO)
                 .collect(Collectors.toList());
+    }
+
+    public List<Vehicle> searchVehicles(SearchDTO searchDTO){
+        List<BrandDTO> brandsDTO = searchDTO.getBrands();
+        List<Long> brands = brandsDTO.stream()
+                .map(x -> x.getId())
+                .collect(Collectors.toList());
+        brands = brands.isEmpty() ? null : brands;
+        List<Long> models = searchDTO.getModels().stream()
+                .map(x -> x.getId())
+                .collect(Collectors.toList());
+        models = models.isEmpty() ? null : models;
+        List<Long> fuels = searchDTO.getFuels().stream()
+                .map(x -> x.getId())
+                .collect(Collectors.toList());
+        fuels = fuels.isEmpty() ? null : fuels;
+        List<Long> transmissions = searchDTO.getTransmissions().stream()
+                .map(x -> x.getId())
+                .collect(Collectors.toList());
+        transmissions = transmissions.isEmpty() ? null : transmissions;
+        System.out.println(brands);
+        System.out.println(brandsDTO);
+        System.out.println(searchDTO);
+        List<Category> categories = searchDTO.getCategories();
+        return vehicleRepo.getBySearchParams(brands, models, fuels, transmissions, searchDTO.getDoorNo().isEmpty() ? null : searchDTO.getDoorNo() , searchDTO.getSeatsNo().isEmpty() ? null : searchDTO.getSeatsNo());
+    }
+
+    private Brand convertDTOtoBrand(BrandDTO brand){
+        Brand b = modelMapper.map(brand, Brand.class);
+        //bdto.setModels(brand.getModels());
+        return b;
     }
 
     private VehicleDTO convertVehicleToDTO(Vehicle vehicle){

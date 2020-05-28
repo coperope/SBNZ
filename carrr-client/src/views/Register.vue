@@ -101,11 +101,14 @@ export default {
     register() {
       if (this.rules.valid) {
         alert("Validno");
-        axios.post("user/register", this.user).then(response => {
-          localStorage.setItem("user", JSON.stringify(response.data))
-        }).catch(error => {
-        console.log(error.response.data);
-      });
+        axios
+          .post("user/register", this.user)
+          .then(response => {
+            localStorage.setItem("user", JSON.stringify(response.data));
+          })
+          .catch(error => {
+            console.log(error.response.data);
+          });
       } else {
         alert("Nevalidno");
       }
