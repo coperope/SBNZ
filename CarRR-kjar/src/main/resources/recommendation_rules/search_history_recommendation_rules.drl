@@ -1,7 +1,6 @@
 //created on: May 18, 2020
 package recommendation_rules
 
-//list any import classes here.
 import main.facts.Customer;
 import main.facts.PreferencesRecommendations;
 import main.facts.Category;
@@ -14,20 +13,10 @@ import main.facts.Vehicle;
 import main.facts.SearchHistory;
 import main.facts.SearchRecommendations;
 import main.facts.User;
+import main.facts.Recommendations;
 
-rule "test"
-agenda-group "search"
-    when
-        $u: User()
-        $vehicle: Vehicle($brand: brand)
-    then
-    	System.out.println("FAK JU");
-    	System.out.println($u.getId());
-    	System.out.println($vehicle.getId());
-    	
-    	delete((Customer)$u); // use this after saving in database
-    	delete($vehicle); // use this after saving in database
-end
+global main.repository.RecommendationsRepo recommendationsRepo;
+
 
 rule "Search history brand rule"
 agenda-group "search"
@@ -35,18 +24,17 @@ salience 10
 no-loop true
 lock-on-active true
     when
-    	User($id: id)
-        Customer(id == $id, $searchHistory: searchHistory, $recommendations: recommendations)
+        Customer( $searchHistory: searchHistory, $recommendations: recommendations)
         SearchHistory($searchBrands: brands) from $searchHistory
         
         $vehicle: Vehicle($brand: brand)
     then
-    	System.out.println("Stigaegasgeao");
     	modify ($recommendations) {addSearchHits($vehicle, $searchBrands.get($brand))}
 end
 
 rule "Search history category rule"
 agenda-group "search"
+salience 10
 no-loop true
 lock-on-active true
     when
@@ -67,6 +55,7 @@ end
 
 rule "Search history tag rule"
 agenda-group "search"
+salience 10
 no-loop true
 lock-on-active true
     when
@@ -87,6 +76,7 @@ end
 
 rule "Search history transmission rule"
 agenda-group "search"
+salience 10
 no-loop true
 lock-on-active true
     when
@@ -100,6 +90,7 @@ end
 
 rule "Search history seatsNo rule"
 agenda-group "search"
+salience 10
 no-loop true
 lock-on-active true
     when
@@ -113,6 +104,7 @@ end
 
 rule "Search history doorNo rule"
 agenda-group "search"
+salience 10
 no-loop true
 lock-on-active true
     when
@@ -126,6 +118,7 @@ end
 
 rule "Search history Fuel Consumption rule"
 agenda-group "search"
+salience 10
 no-loop true
 lock-on-active true
     when
@@ -139,6 +132,7 @@ end
 
 rule "Search history model rule"
 agenda-group "search"
+salience 10
 no-loop true
 lock-on-active true
     when
@@ -152,6 +146,7 @@ end
 
 rule "Search history fuel rule"
 agenda-group "search"
+salience 10
 no-loop true
 lock-on-active true
     when
@@ -161,4 +156,27 @@ lock-on-active true
         $vehicle: Vehicle($fuel: fuel)
     then
         modify ($recommendations) {addSearchHits($vehicle, $searchFuel.get($fuel))}
+end
+
+rule "Save recommendations and remove facts from session"
+agenda-group "search"
+salience 1
+    when
+    	$c: Customer($recommendations: recommendations)
+        $r: Recommendations() from $recommendations
+    then
+        System.out.println("------------- SEARCH RULES: Removing customer and recommendations -------------");
+    	customerRepository.save($c);
+    	delete($c);
+    	delete($r);
+end
+
+rule "Remove vehicle from session"
+agenda-group "search"
+salience 0
+    when
+    	$v: Vehicle()
+    then
+        System.out.println("------------- SEARCH RULES: Removing vehicle -------------");
+    	delete($v);
 end

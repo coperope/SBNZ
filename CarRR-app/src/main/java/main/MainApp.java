@@ -21,14 +21,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+import main.facts.Brand;
 import main.facts.Category;
 import main.facts.Customer;
 import main.facts.ExtraFeatures;
+import main.facts.Recommendations;
 import main.facts.SearchHistory;
 import main.facts.Tag;
 import main.facts.Vehicle;
+import main.repository.BrandRepo;
 import main.repository.CategoryRepo;
 import main.repository.CustomerRepo;
+import main.repository.RecommendationsRepo;
 import main.repository.SearchHistoryRepo;
 import main.repository.TagRepo;
 import main.repository.VehicleRepo;
@@ -69,13 +73,29 @@ public class MainApp {
     @Autowired
     SearchHistoryRepo searchHistoryRepo;
     
+    @Autowired
+    RecommendationsRepo recommendationsRepo;
+    
+    @Autowired
+    BrandRepo brandRepo;
+    
 	@PostConstruct
     public void startSessions() { 
 		for(Customer customer: customerRepo.findAll()) {
 			SearchHistory s = new SearchHistory();
+			Recommendations r = new Recommendations();
+
+			s.getBrands().put(brandRepo.findById(1l).get(), 5);
+			s.getSeatsNo().put(4, 2);
+
 			customer.setSearchHistory(s);
-			searchHistoryRepo.save(s);
+			customer.setRecommendations(r);
+
 			customerRepo.save(customer);
+			
+			recommendationsRepo.save(r);
+			searchHistoryRepo.save(s);
+			
 		}
 		
 		
@@ -113,6 +133,7 @@ public class MainApp {
 		recommendationSession.getAgenda().getAgendaGroup("events-group").setFocus();
 		eventsEntryPoint = recommendationSession.getEntryPoint("events-entry");
 		recommendationSession.setGlobal("customerRepository", customerRepo);
+		recommendationSession.setGlobal("recommendationsRepo", recommendationsRepo);
 
 		recommendationSession.insert(customerRepo);
         new Thread() {

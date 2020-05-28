@@ -11,26 +11,17 @@ import java.util.List;
 global main.repository.CustomerRepo customerRepository;
 
 
-declare NewVehicleEvent
-    @role(event)
-end
-
 rule "New vehicle event"
 agenda-group "events-group"
     when
         $event: NewVehicleEvent($vehicle: vehicle) from entry-point "events-entry"
-        //$customerRepository: CustomerRepo()
     then
-    	System.out.println("STIGAO");
+    	System.out.println("------------- NEW VEHICLE EVENT: Starting recommendation rules -------------");
     	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("search").setFocus();
-    	drools.setFocus( "search" );
     	insert($vehicle);
     	for(Customer customer: customerRepository.findAll()) {
-    	    System.out.println(customer instanceof Customer);
-    	
-    		System.out.println(main.facts.Customer.class.cast(customer));
-    		System.out.println($vehicle);
-    		insert(main.facts.Customer.class.cast(customer));
+    		insert(customer);
+    		insert(customer.getRecommendations());
     	}
 end
 

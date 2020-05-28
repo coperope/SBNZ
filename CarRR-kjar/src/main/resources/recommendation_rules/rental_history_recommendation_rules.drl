@@ -22,7 +22,6 @@ lock-on-active true
 
         $vehicle: Vehicle($brand: brand)
     then
-    	System.out.println("STIIIGAO");
 		modify ($recommendations) {addRentalHits($vehicle, $rentalBrands.get($brand))}
 end
 

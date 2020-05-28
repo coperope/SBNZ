@@ -5,11 +5,11 @@ import javax.persistence.*;
 @Entity
 public class Customer extends User {
 
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_preferences_id")
     private CustomerPreferences preferences;
 
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_rental_history_id")
     private RentalHistory rentalHistory;
     
@@ -17,9 +17,9 @@ public class Customer extends User {
     @JoinColumn(name = "customer_search_history_id")
     private SearchHistory searchHistory;
 
-	@OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "recommendation_id")
-	Recommendations recommendations;
+	private Recommendations recommendations;
 
     public Customer(){
 	}
