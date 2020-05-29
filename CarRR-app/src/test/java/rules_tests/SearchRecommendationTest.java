@@ -19,6 +19,7 @@ import main.facts.CarModel;
 import main.facts.Category;
 import main.facts.Customer;
 import main.facts.Fuel;
+import main.facts.Recommendations;
 import main.facts.RentalHistory;
 import main.facts.SearchHistory;
 import main.facts.SearchRecommendations;
@@ -137,6 +138,8 @@ public class SearchRecommendationTest {
 			SearchHistory searchHistory = new SearchHistory();
 			searchHistory.setId(1L);
 		customer.setSearchHistory(searchHistory);
+		Recommendations recommendations = new Recommendations();
+    	customer.setRecommendations(recommendations);
     	
     	List<Brand> brands = new ArrayList<Brand>();
 		searchHistory.getBrands().put(brand, 2);
@@ -155,25 +158,26 @@ public class SearchRecommendationTest {
 		br.setName("ZASTAVA");
 		searchHistory.getBrands().put(br, 8);
 
-    	SearchRecommendations recommendations = new SearchRecommendations();
-
     	kieSession.insert(vehicle);
     	kieSession.insert(vehicle2);
     	kieSession.insert(customer);
     	kieSession.insert(recommendations);
-
+    	kieSession.getAgenda().getAgendaGroup("search").setFocus();
 		kieSession.fireAllRules();
 		kieSession.dispose();
 
-		System.out.println(recommendations.getMap().values());
-		System.out.println(recommendations);
+		System.out.println(customer.getRecommendations().getSearchMap());
+
 
 		LinkedHashMap<Vehicle, Integer> sortedMap = 
-				recommendations.getMap().entrySet().stream()
+				recommendations.getSearchMap().entrySet().stream()
 			    .sorted(Entry.<Vehicle, Integer>comparingByValue().reversed())
 			    .collect(Collectors.toMap(Entry::getKey, Entry::getValue,
 			                              (e1, e2) -> e1, LinkedHashMap::new));
+		
 		System.out.println(sortedMap);
+		System.out.println(sortedMap.values());
+		
 		assertEquals(new Long(2), ( (Vehicle)sortedMap.keySet().toArray()[0]).getId());
 
     }

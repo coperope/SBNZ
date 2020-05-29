@@ -6,9 +6,11 @@ import main.dto.SearchDTO;
 import main.dto.VehicleDTO;
 import main.facts.Brand;
 import main.facts.Category;
+import main.facts.NewVehicleEvent;
 import main.facts.Tag;
 import main.facts.Vehicle;
 import main.repository.CategoryRepo;
+import main.repository.CustomerRepo;
 import main.repository.TagRepo;
 import main.repository.VehicleRepo;
 import org.kie.api.KieServices;
@@ -16,6 +18,7 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.modelmapper.ModelMapper;
 import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.runtime.rule.EntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +44,9 @@ public class VehicleService {
 
     @Autowired
     ModelMapper modelMapper;
+    
+    @Autowired
+    CustomerRepo customerRepo;
 
     // Add a new vehicle and determine it's categories and tags.
     public VehicleDTO addVehicle(VehicleDTO vehicleDTO) {
@@ -74,6 +80,16 @@ public class VehicleService {
         // MainApp.taggingAndCategorisation.delete(handle); // cant delete handles of deleted tags and categories...
 
         vehicleRepo.save(vehicle);
+        
+        NewVehicleEvent event = new NewVehicleEvent(vehicle);
+        
+        //MainApp.recommendationSession.setGlobal("customerRepository", customerRepo);
+
+        MainApp.recommendationSession.getAgenda().getAgendaGroup("events-group").setFocus();
+        EntryPoint eventsEntryPoint = MainApp.recommendationSession.getEntryPoint("events-entry");
+
+        eventsEntryPoint.insert(event);
+        //eventsEntryPoint.insert(customerRepo);
         return vehicleDTO;
     }
 

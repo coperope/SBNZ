@@ -1,7 +1,8 @@
 package main.repository;
 
-import main.facts.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import main.facts.Customer;
 
 public interface CustomerRepo extends JpaRepository<Customer, Long> {
 }

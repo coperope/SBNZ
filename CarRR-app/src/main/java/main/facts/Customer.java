@@ -5,21 +5,21 @@ import javax.persistence.*;
 @Entity
 public class Customer extends User {
 
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_preferences_id")
     private CustomerPreferences preferences;
 
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_rental_history_id")
     private RentalHistory rentalHistory;
     
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_search_history_id")
     private SearchHistory searchHistory;
 
-	@OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "recommendation_id")
-	Recommendations recommendations;
+	private Recommendations recommendations;
 
     public Customer(){
 	}
@@ -45,5 +45,13 @@ public class Customer extends User {
 
 	public void setSearchHistory(SearchHistory searchHistory) {
 		this.searchHistory = searchHistory;
+	}
+	
+	public Recommendations getRecommendations() {
+		return recommendations;
+	}
+	
+	public void setRecommendations(Recommendations recommendations) {
+		this.recommendations = recommendations;
 	}
 }
