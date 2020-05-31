@@ -5,6 +5,8 @@ import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Search from "../views/Search.vue"
 import Preferences from "../views/customer/Preferences.vue";
+import OwnerVehicles from "../views/owner/OwnerVehicles.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -44,6 +46,14 @@ const routes = [
     path: "/preferences/:customerId",
     name: "Preferences",
     component: Preferences,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/vehicles",
+    name: "Vehicles",
+    component: OwnerVehicles,
     meta: {
       requiresAuth: true
     }

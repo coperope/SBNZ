@@ -5,9 +5,24 @@
       <template v-if="userSignedIn">
         <b-navbar-nav>
           <router-link to="/search" tag="b-nav-item">Search</router-link>
-          <router-link to="/about" tag="b-nav-item">About</router-link>
-          <router-link :to="'/preferences/'+this.$store.state.user.id" tag="b-nav-item">Preferences</router-link>
-          <b-nav-item class="ml-12" @click="logout">Logout</b-nav-item>
+          <router-link to="/about" tag="b-nav-item" class="mr-5">About</router-link>
+
+          <b-nav-item-dropdown right>
+            <template v-slot:button-content>
+              <em>{{ userSignedIn.name }} {{ userSignedIn.surname }}</em>
+            </template>
+            <template v-if="userSignedIn.customer">
+              <router-link
+                :to="'/preferences/'+this.$store.state.user.id"
+                tag="b-dropdown-item"
+              >Preferences</router-link>
+            </template>
+            <template v-else>
+              <router-link to="/vehicles" tag="b-dropdown-item">Vehicles</router-link>
+            </template>
+            <b-dropdown-divider />
+            <b-dropdown-item @click="logout">Logout</b-dropdown-item>
+          </b-nav-item-dropdown>
         </b-navbar-nav>
       </template>
     </b-container>
@@ -16,20 +31,18 @@
 
 <script>
 export default {
-  data(){
-    return{
-
-    }
+  data() {
+    return {};
   },
   methods: {
-    logout(){
+    logout() {
       localStorage.removeItem("user");
       this.$store.state.user = null;
       this.$router.push("/login");
     }
   },
   computed: {
-    userSignedIn(){
+    userSignedIn() {
       return this.$store.state.user;
     }
   }
