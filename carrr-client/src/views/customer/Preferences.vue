@@ -179,10 +179,13 @@ export default {
     };
   },
   watch: {
-    "preferences.brandList": function(val) {
-      this.models = [];
+    "preferences.brandList": function(newVal, oldVal) {
+      if (oldVal.length !== 0) {
+        this.models = [];
+      }
+
       this.brands.forEach(brand => {
-        val.forEach(selectedBrand => {
+        newVal.forEach(selectedBrand => {
           if (brand.name === selectedBrand) {
             brand.models.forEach(model => {
               this.models.push(model);
@@ -194,7 +197,6 @@ export default {
   },
   methods: {
     addPreferences() {
-      console.log("Krenuo");
       let categories = [];
       this.preferences.categoryList.forEach(category => {
         if (category["name"] != undefined) {
@@ -287,19 +289,23 @@ export default {
 
       this.preferences.mileageLimit = this.preferences.mileageLimit ? 1 : -1;
 
-      console.log(this.preferences);
-
       axios
         .post(
           "user/user/" + this.$store.state.user.id + "/preferences",
           this.preferences
         )
         .then(() => {
+          this.preferences.brandList.forEach(brand => {
+            brand.models.forEach(model => {
+              this.models.push(model);
+            });
+          });
+
           if (this.preferences.mileageLimit === 1) {
-              this.preferences.mileageLimit = true;
-            }else{
-              this.preferences.mileageLimit = false;
-            }
+            this.preferences.mileageLimit = true;
+          } else {
+            this.preferences.mileageLimit = false;
+          }
         })
         .catch(error => {
           console.log(error.response.data);
@@ -314,16 +320,21 @@ export default {
         axios
           .get("user/user/" + this.$route.params.customerId + "/preferences")
           .then(response => {
-            console.log(response.data);
             this.preferences = response.data;
+
+            this.preferences.brandList.forEach(brand => {
+              brand.models.forEach(model => {
+                this.models.push(model);
+              });
+            });
+
             if (response.data.mileageLimit === 1) {
               this.preferences.mileageLimit = true;
-            }else{
+            } else {
               this.preferences.mileageLimit = false;
             }
           })
           .catch(error => {
-            alert("Error");
             console.log(error.response.data);
           });
       }

@@ -13,7 +13,8 @@
 	</kbase>
 	
 	<kbase name="recommendation_rules"
+		eventProcessingMode="stream"
 		packages="recommendation_rules">
-		<ksession name="recommendation_rules_session" />
+		<ksession name="recommendation_rules_session" clockType="realtime" />
 	</kbase>
 </kmodule>

@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class Customer extends User {
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_preferences_id")
     private CustomerPreferences preferences;
 
@@ -22,7 +22,6 @@ public class Customer extends User {
 	Recommendations recommendations;
 
     public Customer(){
-
 	}
 	public CustomerPreferences getPreferences() {
 		return preferences;
@@ -46,5 +45,13 @@ public class Customer extends User {
 
 	public void setSearchHistory(SearchHistory searchHistory) {
 		this.searchHistory = searchHistory;
+	}
+
+	public Recommendations getRecommendations() {
+		return recommendations;
+	}
+
+	public void setRecommendations(Recommendations recommendations) {
+		this.recommendations = recommendations;
 	}
 }

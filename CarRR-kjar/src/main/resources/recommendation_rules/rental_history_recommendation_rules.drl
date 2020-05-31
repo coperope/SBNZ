@@ -13,28 +13,26 @@ import main.facts.Vehicle;
 import main.facts.RentalHistory;
 
 rule "Rental history brand rule"
+agenda-group "rentals"
 no-loop true
 lock-on-active true
     when
-        Customer($rentalHistory: rentalHistory)
+        Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalBrands: brands) from $rentalHistory
 
-        $rr: Recommendations()
         $vehicle: Vehicle($brand: brand)
     then
-        modify ($rr) {addHits($vehicle, $rentalBrands.get($brand))}
-
-
+		modify ($recommendations) {addRentalHits($vehicle, $rentalBrands.get($brand))}
 end
 
 rule "Rental history category rule"
+agenda-group "rentals"
 no-loop true
 lock-on-active true
     when
-        Customer($rentalHistory: rentalHistory)
+        Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalCategories: categories) from $rentalHistory
 
-        $rr: RentalRecommendations()
         $vehicle: Vehicle($categories: categories)
         Number($preferencesHit : intValue) from accumulate(
             $c: Category() from $categories
@@ -44,17 +42,17 @@ lock-on-active true
             result(count)
         )
     then
-        modify ($rr) {addHits($vehicle, $preferencesHit)}
+    	modify ($recommendations) {addRentalHits($vehicle, $preferencesHit)}
 end
 
 rule "Rental history tag rule"
+agenda-group "rentals"
 no-loop true
 lock-on-active true
     when
-        Customer($rentalHistory: rentalHistory)
+        Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalTags: tags) from $rentalHistory
 
-        $rr: RentalRecommendations()
         $vehicle: Vehicle($tags: tags)
         Number($preferencesHit : intValue) from accumulate(
             $t: Tag() from $tags
@@ -64,86 +62,83 @@ lock-on-active true
             result(count)
         )
     then
-        modify ($rr) {addHits($vehicle, $preferencesHit)}
+    	modify ($recommendations) {addRentalHits($vehicle, $preferencesHit)}
 end
 
 rule "Rental history seatsNo rule"
+agenda-group "rentals"
 no-loop true
 lock-on-active true
     when
-        Customer($rentalHistory: rentalHistory)
+        Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalHistorySeatsNo: seatsNo) from $rentalHistory
 
-        $rr: RentalRecommendations()
         $vehicle: Vehicle($seatsNo: seatsNo)
     then
-        modify ($rr) {addHits($vehicle, $rentalHistorySeatsNo.get($seatsNo))}
+        modify ($recommendations) {addRentalHits($vehicle, $rentalHistorySeatsNo.get($seatsNo))}
 end
 
 rule "Rental history doorNo rule"
+agenda-group "rentals"
 no-loop true
 lock-on-active true
     when
-        Customer($rentalHistory: rentalHistory)
+        Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalHistoryDoorNo: doorNo) from $rentalHistory
 
-        $rr: RentalRecommendations()
         $vehicle: Vehicle($doorNo: doorNo)
     then
-        modify ($rr) {addHits($vehicle, $rentalHistoryDoorNo.get($doorNo))}
+        modify ($recommendations) {addRentalHits($vehicle, $rentalHistoryDoorNo.get($doorNo))}
 end
 
 rule "Rental history Fuel Consumption rule"
+agenda-group "rentals"
 no-loop true
 lock-on-active true
     when
-        Customer($rentalHistory: rentalHistory)
+        Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalHistoryFuelConsumption: fuelConsumption) from $rentalHistory
 
-        $rr: RentalRecommendations()
         $vehicle: Vehicle($fuelConsumption: fuelConsumption)
     then
-        modify ($rr) {addHits($vehicle, $rentalHistoryFuelConsumption.get($fuelConsumption))}
+        modify ($recommendations) {addRentalHits($vehicle, $rentalHistoryFuelConsumption.get($fuelConsumption))}
 end
 
 rule "Rental history transmission rule"
+agenda-group "rentals"
 no-loop true
 lock-on-active true
     when
-        Customer($rentalHistory: rentalHistory)
+        Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalTransmission: transmission) from $rentalHistory
 
-        $rr: RentalRecommendations()
         $vehicle: Vehicle($transmission: transmission)
     then
-        modify ($rr) {addHits($vehicle, $rentalTransmission.get($transmission))}
-
+        modify ($recommendations) {addRentalHits($vehicle, $rentalTransmission.get($transmission))}
 end
 
 rule "Rental history model rule"
+agenda-group "rentals"
 no-loop true
 lock-on-active true
     when
-        Customer($rentalHistory: rentalHistory)
+        Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalModels: model) from $rentalHistory
 
-        $rr: RentalRecommendations()
         $vehicle: Vehicle($model: model)
     then
-        modify ($rr) {addHits($vehicle, $rentalModels.get($model))}
-
+        modify ($recommendations) {addRentalHits($vehicle, $rentalModels.get($model))}
 end
 
 rule "Rental history fuel rule"
+agenda-group "rentals"
 no-loop true
 lock-on-active true
     when
-        Customer($rentalHistory: rentalHistory)
+        Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalFuel: fuel) from $rentalHistory
 
-        $rr: RentalRecommendations()
         $vehicle: Vehicle($fuel: fuel)
     then
-        modify ($rr) {addHits($vehicle, $rentalFuel.get($fuel))}
-
+        modify ($recommendations) {addRentalHits($vehicle, $rentalFuel.get($fuel))}
 end

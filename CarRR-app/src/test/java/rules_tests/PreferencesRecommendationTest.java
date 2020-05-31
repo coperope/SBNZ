@@ -21,6 +21,7 @@ import main.facts.Customer;
 import main.facts.CustomerPreferences;
 import main.facts.Fuel;
 import main.facts.PreferencesRecommendations;
+import main.facts.Recommendations;
 import main.facts.Tag;
 import main.facts.Transmission;
 import main.facts.Vehicle;
@@ -140,24 +141,28 @@ public class PreferencesRecommendationTest {
 
     	Customer customer = new Customer();
     	customer.setPreferences(preferences);
-    	
-    	PreferencesRecommendations recommendations = new PreferencesRecommendations();
-    	
+    	Recommendations recommendations = new Recommendations();
+    	customer.setRecommendations(recommendations);
+    	    	
     	kieSession.insert(customer);
     	kieSession.insert(recommendations);
     	kieSession.insert(vehicle);
     	kieSession.insert(vehicle2);
+    	kieSession.getAgenda().getAgendaGroup("preferences").setFocus();
 		kieSession.fireAllRules();
 		kieSession.dispose();
 		
-		System.out.println(recommendations);
+		System.out.println(customer.getRecommendations().getPreferencesMap());
 
 		LinkedHashMap<Vehicle, Integer> sortedMap = 
-				recommendations.getMap().entrySet().stream()
+				customer.getRecommendations().getPreferencesMap().entrySet().stream()
 			    .sorted(Entry.<Vehicle, Integer>comparingByValue().reversed())
 			    .collect(Collectors.toMap(Entry::getKey, Entry::getValue,
 			                              (e1, e2) -> e1, LinkedHashMap::new));
+		
 		System.out.println(sortedMap);
+		System.out.println(sortedMap.values());
+
 		assertEquals(new Long(2), ( (Vehicle)sortedMap.keySet().toArray()[0]).getId());
     }
 }

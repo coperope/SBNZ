@@ -3,15 +3,15 @@ package main;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieScanner;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.EntryPoint;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +21,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+import main.facts.Brand;
 import main.facts.Category;
+import main.facts.Customer;
 import main.facts.ExtraFeatures;
+import main.facts.Recommendations;
+import main.facts.SearchHistory;
 import main.facts.Tag;
 import main.facts.Vehicle;
+import main.repository.BrandRepo;
 import main.repository.CategoryRepo;
+import main.repository.CustomerRepo;
+import main.repository.RecommendationsRepo;
+import main.repository.SearchHistoryRepo;
 import main.repository.TagRepo;
 import main.repository.VehicleRepo;
 
@@ -34,7 +42,8 @@ public class MainApp {
 
 	private static Logger log = LoggerFactory.getLogger(MainApp.class);
 //	public static KieSession taggingAndCategorisation;
-	
+	public static EntryPoint eventsEntryPoint;
+    public static KieSession recommendationSession;
     
 	public static void main(String[] args) {
 		ApplicationContext ctx = SpringApplication.run(MainApp.class, args);
@@ -58,8 +67,40 @@ public class MainApp {
     @Autowired 
     VehicleRepo vehicleRepo;
     
+    @Autowired
+    CustomerRepo customerRepo;
+    
+    @Autowired
+    SearchHistoryRepo searchHistoryRepo;
+    
+    @Autowired
+    RecommendationsRepo recommendationsRepo;
+    
+    @Autowired
+    BrandRepo brandRepo;
+    
 	@PostConstruct
-    public void listen() { 
+    public void startSessions() { 
+		for(Customer customer: customerRepo.findAll()) {
+			SearchHistory s = new SearchHistory();
+			Recommendations r = new Recommendations();
+
+			s.getBrands().put(brandRepo.findById(1l).get(), 5);
+			s.getSeatsNo().put(4, 2);
+
+			customer.setSearchHistory(s);
+			customer.setRecommendations(r);
+
+			searchHistoryRepo.save(customer.getSearchHistory());
+			recommendationsRepo.save(customer.getRecommendations());
+			customerRepo.save(customer);
+			
+			recommendationsRepo.save(r);
+			searchHistoryRepo.save(s);
+			
+		}
+		
+		
 		KieServices ks = KieServices.Factory.get();
 	    KieContainer kieContainer = ks.getKieClasspathContainer();
 		KieSession taggingAndCategorisation = kieContainer.newKieSession("categorisation_tagging_session");
@@ -87,6 +128,22 @@ public class MainApp {
 		for (Vehicle v: vehicles) {
 			vehicleRepo.save(v);
 		}
+		
+		
+
+		recommendationSession = kieContainer.newKieSession("recommendation_rules_session");
+		recommendationSession.getAgenda().getAgendaGroup("events-group").setFocus();
+		eventsEntryPoint = recommendationSession.getEntryPoint("events-entry");
+		recommendationSession.setGlobal("customerRepository", customerRepo);
+		recommendationSession.setGlobal("recommendationsRepo", recommendationsRepo);
+
+		recommendationSession.insert(customerRepo);
+        new Thread() {
+            @Override
+            public void run() {
+            	recommendationSession.fireUntilHalt();
+            }
+        }.start();
     }
 
 	@Bean
@@ -114,5 +171,11 @@ public class MainApp {
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
+	}
+	
+	@PreDestroy
+	public void destroy() {
+		recommendationSession.halt();
+		recommendationSession.destroy();
 	}
 }

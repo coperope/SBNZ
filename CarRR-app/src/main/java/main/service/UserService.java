@@ -5,6 +5,7 @@ import main.dto.UserDTO;
 import main.facts.Customer;
 import main.facts.CustomerPreferences;
 import main.facts.User;
+import main.repository.CustomerPreferencesRepo;
 import main.repository.CustomerRepo;
 import main.repository.UserRepo;
 import org.modelmapper.ModelMapper;
@@ -20,6 +21,8 @@ public class UserService {
     private UserRepo userRepo;
     @Autowired
     private CustomerRepo customerRepo;
+    @Autowired
+    private CustomerPreferencesRepo customerPreferencesRepo;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -63,6 +66,8 @@ public class UserService {
             throw new ValidationException("User with given ID does not exist");
         }
         customer.setPreferences(customerPreferencesDTOtoEntity(customerPreferencesDTO));
+
+        customerPreferencesRepo.save(customer.getPreferences());
         customerRepo.save(customer);
         return customerPreferencesDTO;
     }
