@@ -55,7 +55,7 @@
               v-model="user.phoneNumber"
               :rules="rules.phoneNumber"
             ></v-text-field>
-            <v-switch class="ml-3" label="I am a customer." v-model="user.isCustomer"></v-switch>
+            <v-switch class="ml-3" label="I am a customer." v-model="user.customer"></v-switch>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -80,7 +80,7 @@ export default {
         email: null,
         password: null,
         phoneNumber: null,
-        isCustomer: true
+        customer: true
       },
       confirmPassword: null,
       rules: {
@@ -100,17 +100,14 @@ export default {
   methods: {
     register() {
       if (this.rules.valid) {
-        alert("Validno");
-        axios
-          .post("user/register", this.user)
-          .then(response => {
-            localStorage.setItem("user", JSON.stringify(response.data));
-          })
-          .catch(error => {
-            console.log(error.response.data);
-          });
+        axios.post("user/register", this.user).then(response => {
+          localStorage.setItem("user", JSON.stringify(response.data));
+          this.$router.push("/");
+        }).catch(error => {
+        console.log(error.response.data);
+      });
       } else {
-        alert("Nevalidno");
+        alert("Niste pravilno popunili formu");
       }
     }
   }

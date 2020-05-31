@@ -12,6 +12,7 @@ public class CustomerPreferencesDTO {
     private List<Category> categoryList = new ArrayList<Category>();
     private List<Tag> tagList = new ArrayList<Tag>();
     private List<BrandDTO> brandList = new ArrayList<BrandDTO>();
+    private List<CarModelDTO> modelList = new ArrayList<CarModelDTO>();
     private List<Fuel> fuelList = new ArrayList<Fuel>();
     private List<Transmission> transmissionList = new ArrayList<Transmission>();
     // Customer likes <= seatsNo
@@ -27,11 +28,12 @@ public class CustomerPreferencesDTO {
     public CustomerPreferencesDTO() {
     }
 
-    public CustomerPreferencesDTO(Long id, List<Category> categoryList, List<Tag> tagList, List<BrandDTO> brandList, List<Fuel> fuelList, List<Transmission> transmissionList, int seatsNo, int doorNo, double fuelConsumption, boolean ac, int mileageLimit) {
+    public CustomerPreferencesDTO(Long id, List<Category> categoryList, List<Tag> tagList, List<BrandDTO> brandList, List<CarModelDTO> modelList, List<Fuel> fuelList, List<Transmission> transmissionList, int seatsNo, int doorNo, double fuelConsumption, boolean ac, int mileageLimit) {
         this.id = id;
         this.categoryList = categoryList;
         this.tagList = tagList;
         this.brandList = brandList;
+        this.modelList = modelList;
         this.fuelList = fuelList;
         this.transmissionList = transmissionList;
         this.seatsNo = seatsNo;
@@ -71,6 +73,14 @@ public class CustomerPreferencesDTO {
 
     public void setBrandList(List<BrandDTO> brandList) {
         this.brandList = brandList;
+    }
+
+    public List<CarModelDTO> getModelList() {
+        return modelList;
+    }
+
+    public void setModelList(List<CarModelDTO> modelList) {
+        this.modelList = modelList;
     }
 
     public List<Fuel> getFuelList() {

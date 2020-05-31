@@ -2,6 +2,7 @@ package main.controller;
 
 import main.dto.CustomerPreferencesDTO;
 import main.dto.UserDTO;
+import main.facts.Customer;
 import main.facts.User;
 import main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,15 @@ public class UserController {
         return ResponseEntity.ok("UserController");
     }
 
-    @PostMapping(path = "/login", consumes = "application/json", produces= "application/json")
+    @PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
     public ResponseEntity loginUser(@RequestBody UserDTO loginDTO) {
 
         User temp = userService.findByEmail(loginDTO.getEmail());
 
-        if(temp != null) {
+        if (temp != null) {
             if (temp.getPassword().equals(loginDTO.getPassword())) {
+                temp = this.userService.findByEmail(loginDTO.getEmail());
+                loginDTO.setId(temp.getId());
                 return new ResponseEntity<>(loginDTO, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Wrong password!", HttpStatus.UNAUTHORIZED);
@@ -47,21 +50,30 @@ public class UserController {
             return new ResponseEntity<>("Email already exists.", HttpStatus.CONFLICT);
         }
         UserDTO created = new UserDTO();
-        try{
-            created =  userService.registerUser(registrationDTO);
-        }catch (ValidationException e){
+        try {
+            created = userService.registerUser(registrationDTO);
+        } catch (ValidationException e) {
             return new ResponseEntity<>("Request with same email already exists.", HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<UserDTO>(created , HttpStatus.CREATED);
+        existUser = this.userService.findByEmail(registrationDTO.getEmail());
+        created.setId(existUser.getId());
+        return new ResponseEntity<UserDTO>(created, HttpStatus.CREATED);
     }
 
-    @PostMapping(path = "/user/{id}/preferences", consumes = "application/json", produces= "application/json")
-    public ResponseEntity addUserPreferences(@RequestBody CustomerPreferencesDTO customerPreferencesDTO, @PathVariable("id") Long userID){
+    @PostMapping(path = "/user/{id}/preferences", consumes = "application/json", produces = "application/json")
+    public ResponseEntity addUserPreferences(@RequestBody CustomerPreferencesDTO customerPreferencesDTO, @PathVariable("id") Long userID) {
         try {
             CustomerPreferencesDTO retVal = userService.addCustomerPreferences(customerPreferencesDTO, userID);
             return new ResponseEntity<>(retVal, HttpStatus.OK);
-        }catch (ValidationException e){
+        } catch (ValidationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
+    }
+
+    @GetMapping(path = "/user/{id}/preferences", produces = "application/json")
+    public ResponseEntity getUserPreferences(@PathVariable("id") Long userID) {
+        Customer customer = userService.findCustomerById(userID);
+
+        return new ResponseEntity<>(customer.getPreferences(), HttpStatus.OK);
     }
 }

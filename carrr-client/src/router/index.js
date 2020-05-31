@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Search from "../views/Search.vue"
+import Preferences from "../views/customer/Preferences.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -32,6 +33,22 @@ const routes = [
     }
   },
   {
+    path: "/preferences",
+    name: "Preferences",
+    component: Preferences,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/preferences/:customerId",
+    name: "Preferences",
+    component: Preferences,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: "/about",
     name: "About",
     // route level code-splitting
@@ -56,8 +73,15 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
 
-  if (from.path === "/register" && localStorage.getItem('user')) {
-    JSON.parse(localStorage.getItem("user"))
+  var user = null;
+  if (localStorage.getItem('user')) {
+    user = JSON.parse(localStorage.getItem('user'));
+  }
+
+  if (from.path === "/register" && to.path === "/" && user != null) {
+    if (user.customer) {
+      next('/preferences');
+    }
   }
 
   if (to.meta.requiresAuth == false) {

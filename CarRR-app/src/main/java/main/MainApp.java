@@ -91,6 +91,8 @@ public class MainApp {
 			customer.setSearchHistory(s);
 			customer.setRecommendations(r);
 
+			searchHistoryRepo.save(customer.getSearchHistory());
+			recommendationsRepo.save(customer.getRecommendations());
 			customerRepo.save(customer);
 			
 			recommendationsRepo.save(r);

@@ -5,6 +5,7 @@ import main.dto.UserDTO;
 import main.facts.Customer;
 import main.facts.CustomerPreferences;
 import main.facts.User;
+import main.repository.CustomerPreferencesRepo;
 import main.repository.CustomerRepo;
 import main.repository.UserRepo;
 import org.modelmapper.ModelMapper;
@@ -20,12 +21,23 @@ public class UserService {
     private UserRepo userRepo;
     @Autowired
     private CustomerRepo customerRepo;
+    @Autowired
+    private CustomerPreferencesRepo customerPreferencesRepo;
 
     @Autowired
     private ModelMapper modelMapper;
 
+    public Customer findCustomerById(Long id)  {
+        Customer customer = customerRepo.findById(id).orElse(null);
+
+        return customer;
+    }
+
     public User findByEmail(String email)  {
         User u = userRepo.findByEmail(email);
+        if (u == null){
+            u = customerRepo.findByEmail(email);
+        }
         return u;
     }
 
@@ -39,7 +51,6 @@ public class UserService {
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
         user.setPhoneNumber(userDTO.getPhoneNumber());
-        user.setCustomer(userDTO.isCustomer());
         user.setCustomer(userDTO.isCustomer());
         if(user.isCustomer()){
             customerRepo.save((Customer)user);
@@ -55,6 +66,8 @@ public class UserService {
             throw new ValidationException("User with given ID does not exist");
         }
         customer.setPreferences(customerPreferencesDTOtoEntity(customerPreferencesDTO));
+
+        customerPreferencesRepo.save(customer.getPreferences());
         customerRepo.save(customer);
         return customerPreferencesDTO;
     }

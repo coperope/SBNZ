@@ -5,7 +5,7 @@ package recommendation_rules
 import main.facts.NewVehicleEvent;
 import main.facts.Customer;
 import main.repository.CustomerRepo;
-import java.util.ArrayList;  
+import java.util.ArrayList;
 import java.util.List;
 
 global main.repository.CustomerRepo customerRepository;

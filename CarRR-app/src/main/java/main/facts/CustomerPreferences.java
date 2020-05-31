@@ -8,8 +8,8 @@ import java.util.List;
 @Entity
 public class CustomerPreferences implements Serializable {
     @Id
-    @SequenceGenerator(name="customer_preferences_id_seq",sequenceName="customer_preferences_id_seq", allocationSize=1)
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="customer_preferences_id_seq")
+    @SequenceGenerator(name = "customer_preferences_id_seq", sequenceName = "customer_preferences_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_preferences_id_seq")
     private Long id;
 
     @ManyToMany
@@ -23,6 +23,10 @@ public class CustomerPreferences implements Serializable {
     @ManyToMany
     @JoinTable(name = "customer_preferences_brand", joinColumns = @JoinColumn(name = "customer_preferences_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "brand_id", referencedColumnName = "id"))
     private List<Brand> brandList = new ArrayList<Brand>();
+
+    @ManyToMany
+    @JoinTable(name = "customer_preferences_model", joinColumns = @JoinColumn(name = "customer_preferences_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "model_id", referencedColumnName = "id"))
+    private List<CarModel> modelList = new ArrayList<CarModel>();
 
     @ManyToMany
     @JoinTable(name = "customer_preferences_fuel", joinColumns = @JoinColumn(name = "customer_preferences_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "fuel_id", referencedColumnName = "id"))
@@ -77,6 +81,14 @@ public class CustomerPreferences implements Serializable {
 
     public void setBrandList(List<Brand> brandList) {
         this.brandList = brandList;
+    }
+
+    public List<CarModel> getModelList() {
+        return modelList;
+    }
+
+    public void setModelList(List<CarModel> modelList) {
+        this.modelList = modelList;
     }
 
     public List<Fuel> getFuelList() {
