@@ -29,10 +29,13 @@ import java.util.stream.Collectors;
 @Service
 public class VehicleService {
     protected final String ksessionName = "categorisation_tagging_session";
-    private KieServices ks = KieServices.Factory.get();
-    private KieContainer kieContainer = ks.getKieClasspathContainer();
+    //private KieServices ks = KieServices.Factory.get();
+    //private KieContainer kieContainer = ks.getKieClasspathContainer();
     private KieSession kieSession;
 
+    @Autowired
+    KieContainer kieContainer;
+   
     @Autowired
     private VehicleRepo vehicleRepo;
 
