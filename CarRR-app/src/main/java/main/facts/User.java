@@ -2,6 +2,7 @@ package main.facts;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity(name ="users")
@@ -33,6 +34,9 @@ public class User implements Serializable {
 
     @Column(name = "isCustomer")
     private boolean customer;
+
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+    List<Vehicle> vehicle;
 
     public User() {
     }
@@ -90,6 +94,14 @@ public class User implements Serializable {
 
     public void setCustomer(boolean customer) {
         this.customer = customer;
+    }
+
+    public List<Vehicle> getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(List<Vehicle> vehicle) {
+        this.vehicle = vehicle;
     }
 
     @Override

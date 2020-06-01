@@ -3,17 +3,7 @@ package main.facts;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 @Entity
 public class Vehicle implements Serializable {
@@ -115,7 +105,7 @@ public class Vehicle implements Serializable {
     @Column(name = "numberOfReviews")
     private int numberOfReviews;
 
-    @Column(name = "owner")
+	@ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private User owner;
 
     public Vehicle(){
@@ -354,6 +344,18 @@ public class Vehicle implements Serializable {
 
 	public void setNumberOfReviews(int numberOfReviews) {
 		this.numberOfReviews = numberOfReviews;
+	}
+
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
 	}
 
 	@Override

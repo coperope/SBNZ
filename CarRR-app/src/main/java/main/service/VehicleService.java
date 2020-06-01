@@ -4,15 +4,8 @@ import main.MainApp;
 import main.dto.BrandDTO;
 import main.dto.SearchDTO;
 import main.dto.VehicleDTO;
-import main.facts.Brand;
-import main.facts.Category;
-import main.facts.NewVehicleEvent;
-import main.facts.Tag;
-import main.facts.Vehicle;
-import main.repository.CategoryRepo;
-import main.repository.CustomerRepo;
-import main.repository.TagRepo;
-import main.repository.VehicleRepo;
+import main.facts.*;
+import main.repository.*;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -48,6 +41,9 @@ public class VehicleService {
     @Autowired
     CustomerRepo customerRepo;
 
+    @Autowired
+    ExtraFeaturesRepo extraFeaturesRepo;
+
     // Add a new vehicle and determine it's categories and tags.
     public VehicleDTO addVehicle(VehicleDTO vehicleDTO) {
         kieSession = kieContainer.newKieSession("categorisation_tagging_session");
@@ -78,6 +74,12 @@ public class VehicleService {
 		// }
         // remove from kiesession
         // MainApp.taggingAndCategorisation.delete(handle); // cant delete handles of deleted tags and categories...
+
+        for (ExtraFeatures feature: vehicle.getFeatures()) {
+            extraFeaturesRepo.save(feature);
+        }
+
+
 
         vehicleRepo.save(vehicle);
         

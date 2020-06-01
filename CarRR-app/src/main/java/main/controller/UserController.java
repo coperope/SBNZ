@@ -34,6 +34,12 @@ public class UserController {
             if (temp.getPassword().equals(loginDTO.getPassword())) {
                 temp = this.userService.findByEmail(loginDTO.getEmail());
                 loginDTO.setId(temp.getId());
+                loginDTO.setName(temp.getName());
+                loginDTO.setSurname(temp.getSurname());
+                loginDTO.setPhoneNumber(temp.getPhoneNumber());
+                loginDTO.setCustomer(temp.isCustomer());
+
+                loginDTO.setPassword("**********");
                 return new ResponseEntity<>(loginDTO, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Wrong password!", HttpStatus.UNAUTHORIZED);
@@ -57,6 +63,7 @@ public class UserController {
         }
         existUser = this.userService.findByEmail(registrationDTO.getEmail());
         created.setId(existUser.getId());
+        created.setPassword("**********");
         return new ResponseEntity<UserDTO>(created, HttpStatus.CREATED);
     }
 
