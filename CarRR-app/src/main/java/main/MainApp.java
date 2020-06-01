@@ -1,12 +1,20 @@
 package main;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.apache.maven.shared.invoker.DefaultInvocationRequest;
+import org.apache.maven.shared.invoker.DefaultInvoker;
+import org.apache.maven.shared.invoker.InvocationRequest;
+import org.apache.maven.shared.invoker.Invoker;
+import org.apache.maven.shared.invoker.MavenInvocationException;
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieScanner;
 import org.kie.api.runtime.KieContainer;
@@ -21,7 +29,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import main.facts.Brand;
 import main.facts.Category;
 import main.facts.Customer;
 import main.facts.ExtraFeatures;
@@ -42,8 +49,9 @@ public class MainApp {
 
 	private static Logger log = LoggerFactory.getLogger(MainApp.class);
 //	public static KieSession taggingAndCategorisation;
-	public static EntryPoint eventsEntryPoint;
+	//public static EntryPoint eventsEntryPoint;
     public static KieSession recommendationSession;
+    public static String kjarPath;
     
 	public static void main(String[] args) {
 		ApplicationContext ctx = SpringApplication.run(MainApp.class, args);
@@ -56,6 +64,9 @@ public class MainApp {
 			sb.append(beanName + "\n");
 		}
 		log.info(sb.toString());
+		
+		kjarPath = args[0];
+		System.out.println("Kjar path: " + kjarPath);
 	}
 	
 	@Autowired
@@ -128,12 +139,10 @@ public class MainApp {
 		for (Vehicle v: vehicles) {
 			vehicleRepo.save(v);
 		}
-		
-		
 
 		recommendationSession = kieContainer.newKieSession("recommendation_rules_session");
 		recommendationSession.getAgenda().getAgendaGroup("events-group").setFocus();
-		eventsEntryPoint = recommendationSession.getEntryPoint("events-entry");
+		//eventsEntryPoint = recommendationSession.getEntryPoint("events-entry");
 		recommendationSession.setGlobal("customerRepository", customerRepo);
 		recommendationSession.setGlobal("recommendationsRepo", recommendationsRepo);
 
