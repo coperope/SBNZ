@@ -11,7 +11,7 @@
       <h3>Ovde ce se prikazivati korisnikova vozila</h3>
     </v-col>
 
-   <AddVehicleDialog :dialog="dialog" @close-dialog="closeDialog"/>
+   <AddVehicleDialog :dialog="dialog" @close-dialog="closeDialog" v-if="dialog"/>
   </v-container>
 </template>
 

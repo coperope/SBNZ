@@ -277,6 +277,14 @@ public class VehicleDTO {
         this.numberOfReviews = numberOfReviews;
     }
 
+    public UserDTO getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserDTO owner) {
+        this.owner = owner;
+    }
+
     @Override
     public String toString() {
         return "VehicleDTO{" +
@@ -305,6 +313,7 @@ public class VehicleDTO {
                 ", pricePerDay=" + pricePerDay +
                 ", numberOfStars=" + numberOfStars +
                 ", numberOfReviews=" + numberOfReviews +
+                ", OWNER=" + owner +
                 '}';
     }
 }
