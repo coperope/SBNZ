@@ -1,6 +1,10 @@
 -- Customer
-INSERT INTO public.customer(id, name, surname, email, password, phone_number, is_customer)
-	VALUES (nextval('users_id_seq'), 'Vladimir', 'Lenjin', 'customer@gmail.com', '123456', '061265978', true);
+INSERT INTO public.customer(id, name, surname, email, password, phone_number, is_customer, no_of_rentals)
+	VALUES (nextval('users_id_seq'), 'Vladimir', 'Lenjin', 'customer@gmail.com', '123456', '061265978', true, -1);
+
+-- Owner
+INSERT INTO public.users(id, name, surname, email, password, phone_number, is_customer, no_of_rentals)
+	VALUES (nextval('users_id_seq'), 'Ernesto', 'Guevara', 'che@gmail.com', '123456', '061265978', false, 1);
 
 -- Categories
 INSERT INTO public.category(id, name)

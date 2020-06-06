@@ -16,7 +16,8 @@ import main.facts.User;
 import main.facts.Recommendations;
 
 global main.repository.RecommendationsRepo recommendationsRepo;
-
+global main.repository.CustomerRepo customerRepository;
+global main.repository.VehicleRepo vehicleRepo;
 
 rule "Search history brand rule"
 agenda-group "search"
@@ -162,9 +163,7 @@ rule "Rental - Save recommendations and remove facts from session"
 agenda-group "search"
 salience 2
     when
-        not{
-            Bundle()
-        }
+        not Bundle()
     	$c: Customer($recommendations: recommendations)
         $r: Recommendations() from $recommendations
     then
@@ -178,9 +177,7 @@ rule "Search - Remove vehicle from session"
 agenda-group "search"
 salience 1
     when
-        not{
-            Bundle()
-        }
+        not Bundle()
     	$v: Vehicle()
     then
         System.out.println("------------- SEARCH RULES: Removing vehicle -------------");

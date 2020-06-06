@@ -14,6 +14,9 @@ import main.facts.Vehicle;
 import main.facts.Recommendations;
 
 //declare any global variables here
+global main.repository.RecommendationsRepo recommendationsRepo;
+global main.repository.CustomerRepo customerRepository;
+global main.repository.VehicleRepo vehicleRepo;
 
 rule "Category preference rule"
 agenda-group "preferences"
@@ -166,9 +169,7 @@ rule "Preferences - Save recommendations and remove facts from session"
 agenda-group "preferences"
 salience 2
     when
-        not{
-            Bundle()
-        }
+        not Bundle()
     	$c: Customer($recommendations: recommendations)
         $r: Recommendations() from $recommendations
     then
@@ -182,9 +183,7 @@ rule "Preferences - Remove vehicle from session"
 agenda-group "preferences"
 salience 1
     when
-        not{
-            Bundle()
-        }
+        not Bundle()
     	$v: Vehicle()
     then
         System.out.println("------------- PREFERENCES RULES: Removing vehicle -------------");

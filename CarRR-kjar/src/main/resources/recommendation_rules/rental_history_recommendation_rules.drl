@@ -12,6 +12,10 @@ import main.facts.Transmission;
 import main.facts.Vehicle;
 import main.facts.RentalHistory;
 
+global main.repository.RecommendationsRepo recommendationsRepo;
+global main.repository.CustomerRepo customerRepository;
+global main.repository.VehicleRepo vehicleRepo;
+
 rule "Rental history brand rule"
 agenda-group "rentals"
 salience 10
@@ -169,9 +173,7 @@ rule "Rental - Save recommendations and remove facts from session"
 agenda-group "rentals"
 salience 2
     when
-        not{
-            Bundle()
-        }
+        not Bundle()
     	$c: Customer($recommendations: recommendations)
         $r: Recommendations() from $recommendations
     then
@@ -185,9 +187,7 @@ rule "Rental - Remove vehicle from session"
 agenda-group "rentals"
 salience 1
     when
-        not{
-            Bundle()
-        }
+        not Bundle()
     	$v: Vehicle()
     then
         System.out.println("------------- RENTAL RULES: Removing vehicle -------------");
