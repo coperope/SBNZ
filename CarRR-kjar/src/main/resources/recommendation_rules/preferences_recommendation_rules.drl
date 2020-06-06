@@ -208,8 +208,8 @@ salience 1
         $b: Bundle($finishedRules: finishedRules, $vehicleID: vehicleID)
         $v: Vehicle($id: id)
     then
-        System.out.println("------------- PREFERENCES RULES: Search recommendation rules done - increase count -------------");
         if($vehicleID == $id){
+            System.out.println("------------- PREFERENCES RULES: Search recommendation rules done - increase count -------------");
             modify ($b) {increaseFinishedRules()};
         }
 end
