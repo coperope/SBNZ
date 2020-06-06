@@ -10,6 +10,10 @@ import main.facts.Brand;
 import main.facts.Fuel;
 import main.facts.Transmission;
 import main.facts.Vehicle;
+import main.facts.Rental;
+import main.facts.User;
+import main.facts.OwnerStatus;
+import main.facts.Bundle;
 import main.facts.RentalHistory;
 
 global main.repository.RecommendationsRepo recommendationsRepo;
@@ -166,7 +170,9 @@ lock-on-active true
         Rental($owner: owner)
         $user: User(noOfRentals >= 10) from $owner
     then
-        modify ($user) {setStatus(1))}
+        System.out.println("------------- RENTAL RULES: Assing owner status. -------------");
+
+        modify ($user) {setStatus(OwnerStatus.GOLD))}
 end
 
 rule "Rental - Save recommendations and remove facts from session"
@@ -199,21 +205,25 @@ agenda-group "rentals"
 no-loop true
 salience 1
     when
-        $b: Bundle($finishedRules: finishedRules)
+        $b: Bundle($finishedRules: finishedRules, $vehicleID: vehicleID)
+        $v: Vehicle($id: id)
     then
         System.out.println("------------- RENTAL RULES: Search recommendation rules done - increase count -------------");
-        modify ($b) {increaseFinishedRules()}
+        if($vehicleID == $id){
+            modify ($b) {increaseFinishedRules()};
+        }
 end
 
 rule "Rental - remove vehicle from session if all done"
 agenda-group "rentals"
 salience 0
     when
-        $b: Bundle($finishedRules: finishedRules)
-    	$v: Vehicle()
+        $b: Bundle($finishedRules: finishedRules, $vehicleID: vehicleID)
+     	$v: Vehicle($id: id)
     then
-        System.out.println("------------- RENTAL RULES: Removing vehicles if all recommendation rules are done-------------");
-        if($finishedRules >= 3){
+        System.out.println($finishedRules);
+        if($finishedRules >= 3  && $vehicleID == $id){
+             System.out.println("------------- RENTAL RULES: Removing vehicles if all recommendation rules are done-------------");
              delete($v);
         }
 end
@@ -222,13 +232,14 @@ rule "Rental - save recommendations and remove facts from session if all done"
 agenda-group "rentals"
 salience 0
     when
-        $b: Bundle($finishedRules: finishedRules)
+        $b: Bundle($finishedRules: finishedRules, $vehicleID: vehicleID)
     	$c: Customer($recommendations: recommendations)
         $r: Recommendations() from $recommendations
+        $v: Vehicle($id: id)
     then
-        System.out.println("------------- RENTAL RULES: Removing customer and recommendations if all recommendation rules are done-------------");
-
-       if($finishedRules >= 3){
+        System.out.println($finishedRules);
+       if($finishedRules >= 3 && $vehicleID == $id){
+            System.out.println("------------- RENTAL RULES: Removing customer and recommendations if all recommendation rules are done-------------");
             customerRepository.save($c);
             delete($c);
             delete($r);

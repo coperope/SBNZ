@@ -2,8 +2,12 @@ package main.facts;
 
 public class Bundle {
     private int finishedRules;
-
+    private Long vehicleID;
     public Bundle() {
+    }
+
+    public Bundle(Long vehicleID) {
+        this.vehicleID = vehicleID;
     }
 
     public int getFinishedRules() {
@@ -16,5 +20,13 @@ public class Bundle {
 
     public void increaseFinishedRules(){
         this.finishedRules = this.finishedRules +1;
+    }
+
+    public Long getVehicleID() {
+        return vehicleID;
+    }
+
+    public void setVehicleID(Long vehicleID) {
+        this.vehicleID = vehicleID;
     }
 }
