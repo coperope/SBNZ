@@ -38,7 +38,14 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     List<Vehicle> vehicle;
 
+    @Column(name = "noOfRentals")
+    private int noOfRentals;
+
+    @Enumerated(EnumType.STRING)
+    private OwnerStatus status;
+
     public User() {
+        status = OwnerStatus.BASIC;
     }
 
     public Long getId() {
@@ -102,6 +109,23 @@ public class User implements Serializable {
 
     public void setVehicle(List<Vehicle> vehicle) {
         this.vehicle = vehicle;
+    }
+
+    public int getNoOfRentals() {
+        return noOfRentals;
+    }
+
+    public void setNoOfRentals(int noOfRentals) {
+        this.noOfRentals = noOfRentals;
+    }
+
+
+    public OwnerStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OwnerStatus status) {
+        this.status = status;
     }
 
     @Override

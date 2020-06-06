@@ -160,3 +160,74 @@ lock-on-active true
     then
     	modify ($recommendations) {addPreferencesHits($vehicle, 1)}
 end
+
+
+rule "Preferences - Save recommendations and remove facts from session"
+agenda-group "preferences"
+salience 2
+    when
+        not{
+            Bundle()
+        }
+    	$c: Customer($recommendations: recommendations)
+        $r: Recommendations() from $recommendations
+    then
+        System.out.println("------------- PREFERENCES RULES: Removing customer and recommendations -------------");
+    	customerRepository.save($c);
+    	delete($c);
+    	delete($r);
+end
+
+rule "Preferences - Remove vehicle from session"
+agenda-group "preferences"
+salience 1
+    when
+        not{
+            Bundle()
+        }
+    	$v: Vehicle()
+    then
+        System.out.println("------------- PREFERENCES RULES: Removing vehicle -------------");
+    	delete($v);
+end
+
+rule "Preferences - increase number of finished recommendation rules"
+agenda-group "preferences"
+no-loop true
+salience 1
+    when
+        $b: Bundle($finishedRules: finishedRules)
+    then
+        System.out.println("------------- PREFERENCES RULES: Search recommendation rules done - increase count -------------");
+        modify ($b) {increaseFinishedRules()}
+end
+
+rule "Preferences - remove vehicle from session if all done"
+agenda-group "preferences"
+salience 0
+    when
+        $b: Bundle($finishedRules: finishedRules)
+    	$v: Vehicle()
+    then
+        System.out.println("------------- PREFERENCES RULES: Removing vehicles if all recommendation rules are done-------------");
+        if($finishedRules >= 3){
+             delete($v);
+        }
+end
+
+rule "Preferences - save recommendations and remove facts from session if all done"
+agenda-group "preferences"
+salience 0
+    when
+        $b: Bundle($finishedRules: finishedRules)
+    	$c: Customer($recommendations: recommendations)
+        $r: Recommendations() from $recommendations
+    then
+        System.out.println("------------- PREFERENCES RULES: Removing customer and recommendations if all recommendation rules are done-------------");
+
+       if($finishedRules >= 3){
+            customerRepository.save($c);
+            delete($c);
+            delete($r);
+       }
+end

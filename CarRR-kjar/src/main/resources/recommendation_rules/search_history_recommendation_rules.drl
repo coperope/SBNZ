@@ -158,10 +158,13 @@ lock-on-active true
         modify ($recommendations) {addSearchHits($vehicle, $searchFuel.get($fuel))}
 end
 
-rule "Save recommendations and remove facts from session"
+rule "Rental - Save recommendations and remove facts from session"
 agenda-group "search"
-salience 1
+salience 2
     when
+        not{
+            Bundle()
+        }
     	$c: Customer($recommendations: recommendations)
         $r: Recommendations() from $recommendations
     then
@@ -171,12 +174,57 @@ salience 1
     	delete($r);
 end
 
-rule "Remove vehicle from session"
+rule "Search - Remove vehicle from session"
 agenda-group "search"
-salience 0
+salience 1
     when
+        not{
+            Bundle()
+        }
     	$v: Vehicle()
     then
         System.out.println("------------- SEARCH RULES: Removing vehicle -------------");
     	delete($v);
 end
+
+rule "Search - increase number of finished recommendation rules"
+agenda-group "search"
+no-loop true
+salience 1
+    when
+        $b: Bundle($finishedRules: finishedRules)
+    then
+        System.out.println("------------- SEARCH RULES: Search recommendation rules done - increase count -------------");
+        modify ($b) {increaseFinishedRules()}
+end
+
+rule "Search - remove vehicle from session if all done"
+agenda-group "search"
+salience 0
+    when
+        $b: Bundle($finishedRules: finishedRules)
+    	$v: Vehicle()
+    then
+    if($finishedRules >= 3){
+         delete($v);
+    }
+end
+
+rule "Search - save recommendations and remove facts from session if all done"
+agenda-group "search"
+salience 0
+    when
+        $b: Bundle($finishedRules: finishedRules)
+    	$c: Customer($recommendations: recommendations)
+        $r: Recommendations() from $recommendations
+    then
+        System.out.println("------------- SEARCH RULES: Removing customer and recommendations if all recommendation rules are done-------------");
+
+       if($finishedRules >= 3){
+            customerRepository.save($c);
+            delete($c);
+            delete($r);
+       }
+end
+
+

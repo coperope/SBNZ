@@ -1,5 +1,9 @@
-package main.facts;
+package main.events;
 
+import main.facts.Vehicle;
+import org.kie.api.definition.type.Role;
+
+@Role(Role.Type.EVENT)
 public class NewVehicleEvent {
 
 	public long timestamp;

@@ -4,13 +4,12 @@ import main.MainApp;
 import main.dto.BrandDTO;
 import main.dto.SearchDTO;
 import main.dto.VehicleDTO;
+import main.events.NewVehicleEvent;
 import main.facts.*;
 import main.repository.*;
-import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.modelmapper.ModelMapper;
-import org.kie.api.runtime.rule.FactHandle;
 import org.kie.api.runtime.rule.EntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,8 +80,6 @@ public class VehicleService {
         for (ExtraFeatures feature: vehicle.getFeatures()) {
             extraFeaturesRepo.save(feature);
         }
-
-
 
         vehicleRepo.save(vehicle);
         

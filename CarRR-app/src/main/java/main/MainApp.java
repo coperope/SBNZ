@@ -144,6 +144,7 @@ public class MainApp {
 		recommendationSession.getAgenda().getAgendaGroup("events-group").setFocus();
 		//eventsEntryPoint = recommendationSession.getEntryPoint("events-entry");
 		recommendationSession.setGlobal("customerRepository", customerRepo);
+		recommendationSession.setGlobal("vehicleRepo", vehicleRepo);
 		recommendationSession.setGlobal("recommendationsRepo", recommendationsRepo);
 
 		recommendationSession.insert(customerRepo);
