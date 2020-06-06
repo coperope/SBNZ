@@ -41,6 +41,12 @@ public class NewRulesController {
     public ResponseEntity<?> newCategorisationRule(@RequestBody CategoryRuleDTO categoryRuleDTO) {
 
         String category = categoryRuleDTO.getCategoryName();
+        
+        Category check = categoryRepo.findByName(category);
+		if (check != null) {
+			return new ResponseEntity<>("Category with this name alreary exists", HttpStatus.BAD_REQUEST);
+		}
+		
         String condition = "";
 		try {
 			condition = getCategorizationConditionString(categoryRuleDTO);
@@ -57,9 +63,15 @@ public class NewRulesController {
 			e.printStackTrace();
 			return new ResponseEntity<>("Cant find template", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-        
+		
+        String featuresCondition = "Number(intValue " + (categoryRuleDTO.getFeatureOperation() != null ? categoryRuleDTO.getFeatureOperation() : ">=")  + " " + categoryRuleDTO.getFeatures() + ") from accumulate(\n"
+        		+ "            ExtraFeatures(\n"
+        		+ "            	$id: id\n"
+        		+ "            ) from $features,\n"
+        		+ "            sum($id)\n"
+        		+ "        )\n";
         DataProvider dataProvider = new ArrayDataProvider(new String[][]{
-            new String[]{category, condition}
+            new String[]{category, featuresCondition, condition}
         });
         DataProviderCompiler converter = new DataProviderCompiler();
         String drl = converter.compile(dataProvider, template);
@@ -82,14 +94,19 @@ public class NewRulesController {
 	private String getCategorizationConditionString(CategoryRuleDTO category) throws Exception {
 		String condition = "";
 		
+		if (category.getConditions().size() == 0) {
+			condition += "$features: features";
+			return condition;
+		}
+		
 		for (int i = 0; i < category.getConditions().size(); i++) {
 			List<String> cond = category.getConditions().get(i);
 			if (cond.size() != 3) {
 				throw new Exception();
 			}
-			condition += cond.get(0) + " " + cond.get(1) + " " + cond.get(2);
-			if (i != category.getConditions().size() - 1) {
-				condition += ", ";
+			condition += cond.get(0) + " " + cond.get(1) + " " + cond.get(2) + ", ";
+			if (i == category.getConditions().size() - 1) {
+				condition += "$features: features";
 			}
 		}
 		return condition;

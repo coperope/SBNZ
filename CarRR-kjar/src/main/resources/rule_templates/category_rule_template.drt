@@ -1,11 +1,13 @@
 template header
 category
+features_condition
 condition
 
 package categorisation_tagging_rule
 
 import main.facts.Vehicle;
 import main.facts.Category;
+import main.facts.ExtraFeatures;
 
 template "categorization-rules"
 
@@ -13,6 +15,7 @@ rule "@{category} category"
 no-loop true
 when
     $vehicle: Vehicle(@{condition})
+    @{features_condition}
     $category: Category(name=="@{category}")
 then
     modify($vehicle){ getCategories().add($category)}

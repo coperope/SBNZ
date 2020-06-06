@@ -14,6 +14,8 @@ public class CategoryRuleDTO {
 	 * 
 	 */
 	List<List<String>> conditions = new ArrayList<List<String>>();
+	int features;
+	String featureOperation;
 	String categoryName;
 	
 	
@@ -36,4 +38,22 @@ public class CategoryRuleDTO {
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
+
+	public int getFeatures() {
+		return features;
+	}
+
+	public void setFeatures(int features) {
+		this.features = features;
+	}
+
+	public String getFeatureOperation() {
+		return featureOperation;
+	}
+
+	public void setFeatureOperation(String featureOperation) {
+		this.featureOperation = featureOperation;
+	}
+	
+	
 }
