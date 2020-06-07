@@ -9,6 +9,7 @@ import javax.persistence.*;
 import main.dto.BrandDTO;
 import main.dto.CarModelDTO;
 import main.dto.SearchDTO;
+import main.repository.BrandRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,6 +19,10 @@ public class SearchHistory implements Serializable {
 	@Autowired
 	@Transient
 	ModelMapper modelMapper;
+
+	@Autowired
+	@Transient
+	BrandRepo brandRepo;
 
 	@Id
 	@SequenceGenerator(name = "search_history_id_seq", sequenceName = "search_history_id_seq", allocationSize = 1)
@@ -206,7 +211,11 @@ public class SearchHistory implements Serializable {
 		
 		// Brand update
 		for (BrandDTO brandDTO : searchParam.getBrands()) {
-			Integer brandValue = this.brands.get(modelMapper.map(brandDTO, Brand.class));
+//			Integer brandValue = this.brands.get(modelMapper.map(brandDTO, Brand.class));
+			System.out.println(this.brands);
+			System.out.println("******************");
+			System.out.println(brandRepo);
+			Integer brandValue = this.brands.get(brandRepo.findById(brandDTO.getId()));
 			if (brandValue != null) {
 				brandValue += factor;
 			} else {

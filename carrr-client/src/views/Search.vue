@@ -180,7 +180,8 @@ export default {
         transmissions: [],
         seatsNo: [],
         doorNo: [],
-        fuelConsumptions: []
+        fuelConsumptions: [],
+        customer: {}
       },
       vehicles: []
     };
@@ -225,6 +226,14 @@ export default {
           ? []
           : this.selectedFuelConsumptions;
 
+      this.searchParam.customer = {
+        id: this.$store.state.user.id,
+        email: this.$store.state.user.email,
+        password: this.$store.state.user.password,
+        name: this.$store.state.user.name,
+        surname: this.$store.state.user.surname,
+        customer: this.$store.state.user.customer
+      }
       console.log(this.searchParam);
       axios
         .post("vehicle/search", this.searchParam)

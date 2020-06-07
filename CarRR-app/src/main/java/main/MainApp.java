@@ -89,24 +89,24 @@ public class MainApp {
     
 	@PostConstruct
     public void startSessions() { 
-//		for(Customer customer: customerRepo.findAll()) {
-//			SearchHistory s = new SearchHistory();
-//			Recommendations r = new Recommendations();
-//
-//			s.getBrands().put(brandRepo.findById(1l).get(), 5);
-//			s.getSeatsNo().put(4, 2);
-//
-//			customer.setSearchHistory(s);
+		for(Customer customer: customerRepo.findAll()) {
+			SearchHistory s = new SearchHistory();
+			Recommendations r = new Recommendations();
+
+			s.getBrands().put(brandRepo.findById(1l).get(), 5);
+			s.getSeatsNo().put(4, 2);
+
+			customer.setSearchHistory(s);
 //			customer.setRecommendations(r);
-//
-//			searchHistoryRepo.save(customer.getSearchHistory());
+
+			searchHistoryRepo.save(customer.getSearchHistory());
 //			recommendationsRepo.save(customer.getRecommendations());
-//			customerRepo.save(customer);
-//
-////			recommendationsRepo.save(r);
-////			searchHistoryRepo.save(s);
-//
-//		}
+			customerRepo.save(customer);
+
+//			recommendationsRepo.save(r);
+//			searchHistoryRepo.save(s);
+
+		}
 		
 		
 		KieServices ks = KieServices.Factory.get();

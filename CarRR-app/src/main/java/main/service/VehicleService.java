@@ -120,7 +120,7 @@ public class VehicleService {
                  .collect(Collectors.toList());
 	}
 
-	public List<Vehicle> searchVehicles(SearchDTO searchDTO) {
+	public List<VehicleDTO> searchVehicles(SearchDTO searchDTO) {
 		List<BrandDTO> brandsDTO = searchDTO.getBrands();
 		List<Long> brands = brandsDTO.stream().map(x -> x.getId()).collect(Collectors.toList());
 		brands = brands.isEmpty() ? null : brands;
@@ -140,6 +140,9 @@ public class VehicleService {
 
 		kieSession.insert(searchDTO);
 		Customer customer = customerRepo.getOne(searchDTO.getCustomer().getId());
+        System.out.println("*****************************************");
+        System.out.println(customer);
+        System.out.println("*****************************************");
 		kieSession.insert(customer);
 		kieSession.fireAllRules();
 		kieSession.dispose();
@@ -152,9 +155,15 @@ public class VehicleService {
 		MainApp.recommendationSession.getAgenda().getAgendaGroup("events-group").setFocus();
 		EntryPoint eventsEntryPoint = MainApp.recommendationSession.getEntryPoint("events-entry");
 		eventsEntryPoint.insert(event);
-		return vehicleRepo.getBySearchParams(brands, models, fuels, transmissions,
-				searchDTO.getDoorNo().isEmpty() ? null : searchDTO.getDoorNo(),
-				searchDTO.getSeatsNo().isEmpty() ? null : searchDTO.getSeatsNo(), categories, tags, searchDTO.getFuelConsumptions().isEmpty() ? null : searchDTO.getFuelConsumptions());
+
+        List<Vehicle> foundVehicles = vehicleRepo.getBySearchParams(brands, models, fuels, transmissions,
+                searchDTO.getDoorNo().isEmpty() ? null : searchDTO.getDoorNo(),
+                searchDTO.getSeatsNo().isEmpty() ? null : searchDTO.getSeatsNo(), categories, tags, searchDTO.getFuelConsumptions().isEmpty() ? null : searchDTO.getFuelConsumptions());
+        List<VehicleDTO> vehicleDTOS = new ArrayList<>();
+        for (Vehicle vehicle: foundVehicles) {
+            vehicleDTOS.add(convertVehicleToDTO(vehicle));
+        }
+		return vehicleDTOS;
 	}
 
     private Brand convertDTOtoBrand(BrandDTO brand){

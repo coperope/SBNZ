@@ -3,8 +3,8 @@ INSERT INTO public.rental_history(id)
 VALUES (nextval('rental_history_id_seq'));
 
 -- Search history
-INSERT INTO public.search_history(id)
-VALUES (nextval('search_history_id_seq'));
+-- INSERT INTO public.search_history(id)
+-- VALUES (nextval('search_history_id_seq'));
 
 -- Search history
 INSERT INTO public.recommendations(id)
@@ -15,8 +15,8 @@ INSERT INTO public.customer_preferences(id, ac, door_no, fuel_consumption, milea
 VALUES (nextval('customer_preferences_id_seq'), true, 4, 10, 100, 4);
 
 -- Customer
-INSERT INTO public.customer(id, name, surname, email, password, phone_number, is_customer, no_of_rentals, customer_preferences_id, customer_rental_history_id, customer_search_history_id, recommendation_id)
-	VALUES (nextval('users_id_seq'), 'Vladimir', 'Lenjin', '1917@gmail.com', '123456', '061265978', true, -1, 1, 1, 1, 1);
+INSERT INTO public.customer(id, name, surname, email, password, phone_number, is_customer, no_of_rentals, customer_preferences_id, customer_rental_history_id, recommendation_id)
+	VALUES (nextval('users_id_seq'), 'Vladimir', 'Lenjin', '1917@gmail.com', '123456', '061265978', true, -1, 1, 1, 1);
 
 -- Owner
 INSERT INTO public.users(id, name, surname, email, password, phone_number, is_customer, no_of_rentals)

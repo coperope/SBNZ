@@ -22,7 +22,7 @@ end
 rule "Update users search history"
     when
     	$customer: Customer()
-        $searchParams: SearchDTO(customer == $customer)
+        $searchParams: SearchDTO(customer.id == $customer.id)
     then
     	
     	System.out.println($customer);
