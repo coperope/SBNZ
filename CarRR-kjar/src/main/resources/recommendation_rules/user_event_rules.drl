@@ -60,7 +60,7 @@ agenda-group "events-group"
 
     then
     	System.out.println("------------- NEW RENTAL EVENT: Starting recommendation rules -------------");
-    	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("rental").setFocus();
+    	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("rentals").setFocus();
     	insert($rental);
     	for(Customer customer: customerRepository.findAll()) {
     		insert(customer);

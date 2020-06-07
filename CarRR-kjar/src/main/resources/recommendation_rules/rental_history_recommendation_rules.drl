@@ -184,7 +184,9 @@ salience 2
         $r: Recommendations() from $recommendations
     then
         System.out.println("------------- RENTAL RULES: Removing customer and recommendations -------------");
-    	customerRepository.save($c);
+    	System.out.println($r);
+        recommendationsRepo.save($r);
+        customerRepository.save($c);
     	delete($c);
     	delete($r);
 end

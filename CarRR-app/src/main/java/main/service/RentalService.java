@@ -4,8 +4,8 @@ import main.MainApp;
 import main.dto.RentalDTO;
 import main.events.NewRentalEvent;
 import main.events.NewVehicleEvent;
-import main.facts.Rental;
-import main.repository.RentalRepo;
+import main.facts.*;
+import main.repository.*;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.rule.EntryPoint;
 import org.modelmapper.ModelMapper;
@@ -24,22 +24,37 @@ public class RentalService {
     RentalRepo rentalRepo;
 
     @Autowired
+    CustomerRepo customerRepo;
+
+    @Autowired
+    VehicleRepo vehicleRepo;
+
+    @Autowired
+    RentalHistoryRepo rentalHistoryRepo;
+
+    @Autowired
+    SearchHistoryRepo searchHistoryRepo;
+
+    @Autowired
     ModelMapper modelMapper;
 
     public RentalDTO addRental(RentalDTO rentalDTO){
+        // For testing purposes
         Rental rental = convertDTOToRental(rentalDTO);
-        Rental rental1 = rentalRepo.save(rental);
+        Customer customer = customerRepo.findById(rentalDTO.getCustomer().getId()).get();
+        Vehicle vehicle = vehicleRepo.getOne(rentalDTO.getVehicle().getId());
+        rental.setCustomer(customer);
+        rental.setVehicle(vehicle);
 
         kieSession = kieContainer.newKieSession("rental_history_update_session");
         //FactHandle handle = MainApp.taggingAndCategorisation.insert(vehicle);
-
+        Rental rental1 = rentalRepo.save(rental);
         kieSession.insert(rental1);
         kieSession.fireAllRules();
         kieSession.dispose();
+        Rental rental2 = rentalRepo.save(rental);
 
-
-
-        NewRentalEvent event = new NewRentalEvent(rental1);
+        NewRentalEvent event = new NewRentalEvent(rental2);
 
         //MainApp.recommendationSession.setGlobal("customerRepository", customerRepo);
 

@@ -4,7 +4,6 @@ package main.facts;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -253,6 +252,17 @@ public class RentalHistory implements Serializable {
 
 	@Override
 	public String toString() {
-		return "RentalHistory [id=" + id + "]";
-	}    
+		return "RentalHistory{" +
+				"id=" + id +
+				", categories=" + categories +
+				", tags=" + tags +
+				", brands=" + brands +
+				", model=" + model +
+				", fuel=" + fuel +
+				", transmission=" + transmission +
+				", seatsNo=" + seatsNo +
+				", doorNo=" + doorNo +
+				", fuelConsumption=" + fuelConsumption +
+				'}';
+	}
 }

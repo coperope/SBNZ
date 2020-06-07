@@ -104,4 +104,15 @@ public class Recommendations {
 			searchMap.put(vehicle, hitsInt);
 		}
 	}
+
+    @Override
+    public String toString() {
+        return "Recommendations{" +
+                "id=" + id +
+                ",\n customer=" + customer +
+                ",\n searchMap=" + searchMap +
+                ",\n rentalMap=" + rentalMap +
+                ",\n preferencesMap=" + preferencesMap +
+                '}';
+    }
 }
