@@ -11,12 +11,14 @@ import main.facts.Fuel;
 import main.facts.Transmission;
 import main.facts.CustomerPreferences;
 import main.facts.Vehicle;
+import main.facts.Bundle;
 import main.facts.Recommendations;
 
-//declare any global variables here
+
 
 rule "Category preference rule"
 agenda-group "preferences"
+salience 10
 no-loop true
 lock-on-active true
     when
@@ -41,6 +43,7 @@ end
 
 rule "Mileage limit preference rule"
 agenda-group "preferences"
+salience 10
 no-loop true
 lock-on-active true
     when
@@ -58,6 +61,7 @@ end
 
 rule "Tag preference rule"
 agenda-group "preferences"
+salience 10
 no-loop
 lock-on-active true
     when
@@ -81,6 +85,7 @@ end
 
 rule "Brand preference rule"
 agenda-group "preferences"
+salience 10
 no-loop
 lock-on-active true
     when
@@ -95,6 +100,7 @@ end
 
 rule "Fuel preference rule"
 agenda-group "preferences"
+salience 10
 no-loop
 lock-on-active true
     when
@@ -110,6 +116,7 @@ end
 
 rule "Transmission preference rule"
 agenda-group "preferences"
+salience 10
 no-loop
 lock-on-active true
     when
@@ -124,6 +131,7 @@ end
 
 rule "Seats number preference rule"
 agenda-group "preferences"
+salience 10
 no-loop
 lock-on-active true
     when
@@ -137,6 +145,7 @@ end
 
 rule "Door number preference rule"
 agenda-group "preferences"
+salience 10
 no-loop
 lock-on-active true
     when
@@ -150,6 +159,7 @@ end
 
 rule "Fuel consumption preference rule"
 agenda-group "preferences"
+salience 10
 no-loop
 lock-on-active true
     when
@@ -159,4 +169,71 @@ lock-on-active true
         $vehicle: Vehicle($preferedFuelConsumption >= fuelConsumption)
     then
     	modify ($recommendations) {addPreferencesHits($vehicle, 1)}
+end
+
+
+rule "Preferences - Save recommendations and remove facts from session"
+agenda-group "preferences"
+salience 3
+    when
+        not Bundle()
+    	$c: Customer($recommendations: recommendations)
+        $r: Recommendations() from $recommendations
+    then
+        System.out.println("------------- PREFERENCES RULES: Removing customer and recommendations -------------");
+    	recommendationsRepo.save($r);
+    	customerRepository.save($c);
+    	delete($c);
+    	delete($r);
+end
+
+rule "Preferences - Remove vehicle from session"
+agenda-group "preferences"
+salience 2
+    when
+        not Bundle()
+    	$v: Vehicle()
+    then
+        System.out.println("------------- PREFERENCES RULES: Removing vehicle -------------");
+    	delete($v);
+end
+
+rule "Preferences - increase number of finished recommendation rules"
+agenda-group "preferences"
+no-loop true
+salience 2
+    when
+        $b: Bundle($vehicleID: vehicleID)
+        $v: Vehicle(id == $vehicleID)
+    then
+        System.out.println("------------- PREFERENCES RULES: Preferences recommendation rules done - increase count -------------");
+        modify ($b) {increaseFinishedRules()};
+end
+
+rule "Preferences - save recommendations and remove facts from session if all done"
+agenda-group "preferences"
+salience 1
+    when
+        $b: Bundle(finishedRules >= 3, $vehicleID: vehicleID)
+        $v: Vehicle(id == $vehicleID)
+    	$c: Customer($recommendations: recommendations)
+        $r: Recommendations() from $recommendations
+    then
+        System.out.println("------------- PREFERENCES RULES: Removing customer and recommendations if all recommendation rules are done-------------");
+        recommendationsRepo.save($r);
+        customerRepository.save($c);
+        delete($c);
+        delete($r);
+end
+
+rule "Preferences - remove vehicle from session if all done"
+agenda-group "preferences"
+salience 0
+    when
+        $b: Bundle(finishedRules >= 3, $vehicleID: vehicleID)
+        $v: Vehicle(id == $vehicleID)
+    then
+		System.out.println("------------- PREFERENCES RULES: Removing vehicles if all recommendation rules are done-------------");
+		delete($v);
+		delete($b);
 end

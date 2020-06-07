@@ -4,13 +4,14 @@ import main.MainApp;
 import main.dto.BrandDTO;
 import main.dto.SearchDTO;
 import main.dto.VehicleDTO;
+import main.events.NewRentalEvent;
+import main.events.NewSearchEvent;
+import main.events.NewVehicleEvent;
 import main.facts.*;
 import main.repository.*;
-import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.modelmapper.ModelMapper;
-import org.kie.api.runtime.rule.FactHandle;
 import org.kie.api.runtime.rule.EntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,8 +86,6 @@ public class VehicleService {
             extraFeaturesRepo.save(feature);
         }
 
-
-
         vehicleRepo.save(vehicle);
         
         NewVehicleEvent event = new NewVehicleEvent(vehicle);
@@ -142,6 +141,24 @@ public class VehicleService {
         System.out.println(brands);
         System.out.println(brandsDTO);
         System.out.println(searchDTO);
+
+        // Update search history
+        kieSession = kieContainer.newKieSession("rental_history_update_session");
+
+        kieSession.insert(searchDTO);
+        Customer customer = customerRepo.getOne(searchDTO.getCustomer().getId());
+        kieSession.insert(customer);
+        kieSession.fireAllRules();
+        kieSession.dispose();
+        Customer customerSaved = customerRepo.save(customer);
+
+        NewSearchEvent event = new NewSearchEvent(searchDTO);
+
+        //MainApp.recommendationSession.setGlobal("customerRepository", customerRepo);
+
+        MainApp.recommendationSession.getAgenda().getAgendaGroup("events-group").setFocus();
+        EntryPoint eventsEntryPoint = MainApp.recommendationSession.getEntryPoint("events-entry");
+        eventsEntryPoint.insert(event);
         List<Category> categories = searchDTO.getCategories();
         return vehicleRepo.getBySearchParams(brands, models, fuels, transmissions, searchDTO.getDoorNo().isEmpty() ? null : searchDTO.getDoorNo() , searchDTO.getSeatsNo().isEmpty() ? null : searchDTO.getSeatsNo());
     }

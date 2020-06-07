@@ -92,24 +92,24 @@ public class MainApp {
     
 	@PostConstruct
     public void startSessions() { 
-		for(Customer customer: customerRepo.findAll()) {
-			SearchHistory s = new SearchHistory();
-			Recommendations r = new Recommendations();
-
-			s.getBrands().put(brandRepo.findById(1l).get(), 5);
-			s.getSeatsNo().put(4, 2);
-
-			customer.setSearchHistory(s);
-			customer.setRecommendations(r);
-
-			searchHistoryRepo.save(customer.getSearchHistory());
-			recommendationsRepo.save(customer.getRecommendations());
-			customerRepo.save(customer);
-			
-			recommendationsRepo.save(r);
-			searchHistoryRepo.save(s);
-			
-		}
+//		for(Customer customer: customerRepo.findAll()) {
+//			SearchHistory s = new SearchHistory();
+//			Recommendations r = new Recommendations();
+//
+//			s.getBrands().put(brandRepo.findById(1l).get(), 5);
+//			s.getSeatsNo().put(4, 2);
+//
+//			customer.setSearchHistory(s);
+//			customer.setRecommendations(r);
+//
+//			searchHistoryRepo.save(customer.getSearchHistory());
+//			recommendationsRepo.save(customer.getRecommendations());
+//			customerRepo.save(customer);
+//
+////			recommendationsRepo.save(r);
+////			searchHistoryRepo.save(s);
+//
+//		}
 		
 		
 		KieServices ks = KieServices.Factory.get();
@@ -144,6 +144,7 @@ public class MainApp {
 		recommendationSession.getAgenda().getAgendaGroup("events-group").setFocus();
 		//eventsEntryPoint = recommendationSession.getEntryPoint("events-entry");
 		recommendationSession.setGlobal("customerRepository", customerRepo);
+		recommendationSession.setGlobal("vehicleRepo", vehicleRepo);
 		recommendationSession.setGlobal("recommendationsRepo", recommendationsRepo);
 
 		recommendationSession.insert(customerRepo);

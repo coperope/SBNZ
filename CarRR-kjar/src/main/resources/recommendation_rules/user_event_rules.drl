@@ -2,26 +2,72 @@
 package recommendation_rules
 
 //list any import classes here.
-import main.facts.NewVehicleEvent;
+import main.events.NewVehicleEvent;
+import main.events.NewSearchEvent;
+import main.events.NewRentalEvent;
 import main.facts.Customer;
+import main.facts.Bundle;
+import main.facts.Vehicle;
 import main.repository.CustomerRepo;
 import java.util.ArrayList;
 import java.util.List;
 
+global main.repository.RecommendationsRepo recommendationsRepo;
 global main.repository.CustomerRepo customerRepository;
-
+global main.repository.VehicleRepo vehicleRepo;
 
 rule "New vehicle event"
 agenda-group "events-group"
     when
         $event: NewVehicleEvent($vehicle: vehicle) from entry-point "events-entry"
+        Vehicle($id: id) from $vehicle
     then
     	System.out.println("------------- NEW VEHICLE EVENT: Starting recommendation rules -------------");
+    	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("preferences").setFocus();
+    	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("rentals").setFocus();
     	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("search").setFocus();
+
     	insert($vehicle);
+    	insert(new Bundle($id));
     	for(Customer customer: customerRepository.findAll()) {
     		insert(customer);
     		insert(customer.getRecommendations());
-    	}
+    	};
+    	System.out.println("------------- HERE -------------");
 end
 
+rule "New Search event"
+agenda-group "events-group"
+    when
+        $event: NewSearchEvent($search: searchDTO) from entry-point "events-entry"
+
+    then
+    	System.out.println("------------- NEW SEARCH EVENT: Starting recommendation rules -------------");
+    	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("search").setFocus();
+    	insert($search);
+    	for(Customer customer: customerRepository.findAll()) {
+    		insert(customer);
+    		insert(customer.getRecommendations());
+    	};
+        for(Vehicle vehicle: vehicleRepo.findAll()) {
+        	insert(vehicle);
+        };
+end
+
+rule "New Rental event"
+agenda-group "events-group"
+    when
+        $event: NewRentalEvent($rental: rental) from entry-point "events-entry"
+
+    then
+    	System.out.println("------------- NEW RENTAL EVENT: Starting recommendation rules -------------");
+    	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("rentals").setFocus();
+    	insert($rental);
+    	for(Customer customer: customerRepository.findAll()) {
+    		insert(customer);
+    		insert(customer.getRecommendations());
+    	};
+    	for(Vehicle vehicle: vehicleRepo.findAll()) {
+    		insert(vehicle);
+        };
+end
