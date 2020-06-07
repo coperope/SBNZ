@@ -6,6 +6,7 @@ import Register from "../views/Register.vue";
 import Search from "../views/Search.vue"
 import Preferences from "../views/customer/Preferences.vue";
 import OwnerVehicles from "../views/owner/OwnerVehicles.vue";
+import NewCategoryRule from "../views/administration/NewCategoryRule.vue";
 
 Vue.use(VueRouter);
 
@@ -56,6 +57,14 @@ const routes = [
     component: OwnerVehicles,
     meta: {
       requiresAuth: true
+    }
+  },
+  {
+    path: "/administration",
+    name: "Administration",
+    component: NewCategoryRule,
+    meta: {
+      requiresAuth: false // change later
     }
   },
   {

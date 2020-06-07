@@ -28,13 +28,11 @@ lock-on-active true
         $vehicle: Vehicle($categories: categories)
         
         Number($preferencesHit : intValue) from accumulate(
-                    $c: Category() from $categories
+                    $c: Category($id: id) from $categories
 					and
 					Category($c.name == name) from $preferedCategories
                     ,
-                    init(int count = 0;),
-                    action(count += 1;),
-                    result(count)
+                    count($id)
                 )
     then
     	modify ($recommendations) {addPreferencesHits($vehicle, $preferencesHit)}
@@ -71,13 +69,11 @@ lock-on-active true
         $vehicle: Vehicle($tags: tags)
 
         Number($preferencesHit : intValue) from accumulate(
-                    $c: Tag() from $tags
+                    $c: Tag($id: id) from $tags
 					and
 					Tag($c.name == name) from $preferedTags
                     ,
-                    init(int count = 0;),
-                    action(count += 1;),
-                    result(count)
+                    count($id)
                 )
     then
     	modify ($recommendations) {addPreferencesHits($vehicle, $preferencesHit)}
