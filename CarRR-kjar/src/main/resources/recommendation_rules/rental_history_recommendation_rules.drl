@@ -167,9 +167,10 @@ salience 10
         Rental($owner: owner)
         $user: User(noOfRentals >= 10) from $owner
     then
-        System.out.println("------------- RENTAL RULES: Assing owner status. -------------");
-
-        modify ($user) {setStatus(OwnerStatus.GOLD))}
+        System.out.println("------------- RENTAL RULES: Assigning owner status. -------------");
+        modify ($user) {setStatus(OwnerStatus.GOLD))};
+        userRepository.save($user);
+        delete($user);
 end
 
 rule "Rental - Save recommendations and remove facts from session"

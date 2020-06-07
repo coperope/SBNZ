@@ -16,11 +16,11 @@ VALUES (nextval('customer_preferences_id_seq'), true, 4, 10, 100, 4);
 
 -- Customer
 INSERT INTO public.customer(id, name, surname, email, password, phone_number, is_customer, no_of_rentals, customer_preferences_id, customer_rental_history_id, customer_search_history_id, recommendation_id)
-	VALUES (nextval('users_id_seq'), 'Vladimir', 'Lenjin', 'customer@gmail.com', '123456', '061265978', true, -1, 1, 1, 1, 1);
+	VALUES (nextval('users_id_seq'), 'Vladimir', 'Lenjin', '1917@gmail.com', '123456', '061265978', true, -1, 1, 1, 1, 1);
 
 -- Owner
 INSERT INTO public.users(id, name, surname, email, password, phone_number, is_customer, no_of_rentals)
-	VALUES (nextval('users_id_seq'), 'Ernesto', 'Guevara', 'che@gmail.com', '123456', '061265978', false, 1);
+	VALUES (nextval('users_id_seq'), 'Ernesto', 'Guevara', 'che@gmail.com', '123456', '061265978', false, 9);
 
 -- Categories
 INSERT INTO public.category(id, name)
@@ -128,32 +128,32 @@ INSERT INTO public.transmission(id, name)
 
 -- Vehicle
 INSERT INTO public.vehicle( -- BWM X1
-	id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
-	VALUES (nextval('vehicle_id_seq'), true, 4, 6, -1, 4, 1, 1, 2, 1, 300, 170, 410, 0, 20, 80 , 3100, 80, 25, 40, 1347, 190);
+	id, owner_id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
+	VALUES (nextval('vehicle_id_seq'), 1, true, 4, 6, -1, 4, 1, 1, 2, 1, 300, 170, 410, 0, 20, 80 , 3100, 80, 25, 40, 1347, 190);
 INSERT INTO public.vehicle( -- BWM X5
-	id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
-	VALUES (nextval('vehicle_id_seq'), true, 4, 9, 100, 5, 1, 2, 1, 1, 400, 180, 435, 0.9, 20, 87 , 3200, 130, 250, 50, 1800, 195);
+	id, owner_id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
+	VALUES (nextval('vehicle_id_seq'), 1, true, 4, 9, 100, 5, 1, 2, 1, 1, 400, 180, 435, 0.9, 20, 87 , 3200, 130, 250, 50, 1800, 195);
 INSERT INTO public.vehicle( -- BWM 206
-	id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
-	VALUES (nextval('vehicle_id_seq'), true, 4, 10, -1, 2, 1, 1, 3, 1, 250, 160, 410, 0, 10, 45 , 2950, 130, 60, 40, 1450, 180);
+	id, owner_id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
+	VALUES (nextval('vehicle_id_seq'), 1, true, 4, 10, -1, 2, 1, 1, 3, 1, 250, 160, 410, 0, 10, 45 , 2950, 130, 60, 40, 1450, 180);
 INSERT INTO public.vehicle( -- Audi R8
-	id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
-	VALUES (nextval('vehicle_id_seq'), true, 4, 12, 120, 4, 3, 2, 4, 1, 250, 170, 430, 1.3, 31, 135 , 3100, 160, 280, 45, 1650, 178);
+	id, owner_id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
+	VALUES (nextval('vehicle_id_seq'), 1, true, 4, 12, 120, 4, 3, 2, 4, 1, 250, 170, 430, 1.3, 31, 135 , 3100, 160, 280, 45, 1650, 178);
 INSERT INTO public.vehicle( -- Audi R3
-	id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
-	VALUES (nextval('vehicle_id_seq'), true, 2, 11, 150, 2, 3, 2, 5, 2, 150, 155, 415, 0.6, 12, 42 , 2000, 130, 150, 43, 1423, 175);
+	id, owner_id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
+	VALUES (nextval('vehicle_id_seq'), 1, true, 2, 11, 150, 2, 3, 2, 5, 2, 150, 155, 415, 0.6, 12, 42 , 2000, 130, 150, 43, 1423, 175);
 INSERT INTO public.vehicle( -- Mercedes S220
-	id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
-	VALUES (nextval('vehicle_id_seq'), true, 4, 11, 100, 5, 4, 1, 6, 1, 450, 172, 425, 1.5, 20, 95 , 3200, 150, 125, 50, 1647, 185);
+	id, owner_id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
+	VALUES (nextval('vehicle_id_seq'), 1, true, 4, 11, 100, 5, 4, 1, 6, 1, 450, 172, 425, 1.5, 20, 95 , 3200, 150, 125, 50, 1647, 185);
 INSERT INTO public.vehicle( -- Mercedes C501
-	id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
-	VALUES (nextval('vehicle_id_seq'), true, 4, 8, -1, 4, 4, 2, 7, 2, 320, 175, 430, 0, 31, 120 , 3000, 100, 25, 40, 1600, 185);
+	id, owner_id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
+	VALUES (nextval('vehicle_id_seq'), 1, true, 4, 8, -1, 4, 4, 2, 7, 2, 320, 175, 430, 0, 31, 120 , 3000, 100, 25, 40, 1600, 185);
 INSERT INTO public.vehicle( -- BWM X1
-	id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
-	VALUES (nextval('vehicle_id_seq'), true, 4, 9, 150, 5, 1, 2, 2, 2, 350, 165, 415, 0.8, 10, 45 , 3100, 120, 115, 50, 1547, 195);
+	id, owner_id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
+	VALUES (nextval('vehicle_id_seq'), 1, true, 4, 9, 150, 5, 1, 2, 2, 2, 350, 165, 415, 0.8, 10, 45 , 3100, 120, 115, 50, 1547, 195);
 INSERT INTO public.vehicle( -- BWM X5
-	id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
-	VALUES (nextval('vehicle_id_seq'), true, 4, 13, 100, 5, 1, 1, 1, 1, 450, 180, 435, 1.3, 28, 126 , 3200, 150, 310, 45, 1747, 198);
+	id, owner_id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
+	VALUES (nextval('vehicle_id_seq'), 1, true, 4, 13, 100, 5, 1, 1, 1, 1, 450, 180, 435, 1.3, 28, 126 , 3200, 150, 310, 45, 1747, 198);
 INSERT INTO public.vehicle( -- BMW 206
-	id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
-	VALUES (nextval('vehicle_id_seq'), true, 4, 7, 150, 4, 1, 2, 3, 2, 250, 165, 402, 0.4, 20, 88 , 3100, 111, 22, 40, 1547, 190);
+	id, owner_id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
+	VALUES (nextval('vehicle_id_seq'), 1, true, 4, 7, 150, 4, 1, 2, 3, 2, 250, 165, 402, 0.4, 20, 88 , 3100, 111, 22, 40, 1547, 190);

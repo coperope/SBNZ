@@ -27,6 +27,9 @@ public class RentalService {
     CustomerRepo customerRepo;
 
     @Autowired
+    UserRepo userRepo;
+    
+    @Autowired
     VehicleRepo vehicleRepo;
 
     @Autowired
@@ -42,17 +45,24 @@ public class RentalService {
         // For testing purposes
         Rental rental = convertDTOToRental(rentalDTO);
         Customer customer = customerRepo.findById(rentalDTO.getCustomer().getId()).get();
+        User owner = userRepo.findById(rentalDTO.getOwner().getId()).get();
         Vehicle vehicle = vehicleRepo.getOne(rentalDTO.getVehicle().getId());
         rental.setCustomer(customer);
         rental.setVehicle(vehicle);
+        rental.setOwner(owner);
 
         kieSession = kieContainer.newKieSession("rental_history_update_session");
         //FactHandle handle = MainApp.taggingAndCategorisation.insert(vehicle);
         Rental rental1 = rentalRepo.save(rental);
+        
+        
         kieSession.insert(rental1);
         kieSession.fireAllRules();
         kieSession.dispose();
         Rental rental2 = rentalRepo.save(rental);
+        
+        owner.setNoOfRentals(owner.getNoOfRentals() + 1);
+        userRepo.save(owner);
 
         NewRentalEvent event = new NewRentalEvent(rental2);
 

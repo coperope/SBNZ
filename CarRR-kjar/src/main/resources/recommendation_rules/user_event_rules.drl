@@ -15,6 +15,7 @@ import java.util.List;
 global main.repository.RecommendationsRepo recommendationsRepo;
 global main.repository.CustomerRepo customerRepository;
 global main.repository.VehicleRepo vehicleRepo;
+global main.repository.UserRepo userRepository;
 
 rule "New vehicle event"
 agenda-group "events-group"
@@ -63,6 +64,7 @@ agenda-group "events-group"
     	System.out.println("------------- NEW RENTAL EVENT: Starting recommendation rules -------------");
     	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("rentals").setFocus();
     	insert($rental);
+    	insert($rental.getOwner());
     	for(Customer customer: customerRepository.findAll()) {
     		insert(customer);
     		insert(customer.getRecommendations());

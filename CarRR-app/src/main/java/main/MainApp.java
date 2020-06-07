@@ -42,6 +42,7 @@ import main.repository.CustomerRepo;
 import main.repository.RecommendationsRepo;
 import main.repository.SearchHistoryRepo;
 import main.repository.TagRepo;
+import main.repository.UserRepo;
 import main.repository.VehicleRepo;
 
 @SpringBootApplication
@@ -71,22 +72,18 @@ public class MainApp {
 	
 	@Autowired
 	CategoryRepo categoryRepo;
-
     @Autowired
     TagRepo tagRepo;
-    
     @Autowired 
     VehicleRepo vehicleRepo;
-    
     @Autowired
     CustomerRepo customerRepo;
-    
+    @Autowired
+    UserRepo userRepo;
     @Autowired
     SearchHistoryRepo searchHistoryRepo;
-    
     @Autowired
     RecommendationsRepo recommendationsRepo;
-    
     @Autowired
     BrandRepo brandRepo;
     
@@ -146,6 +143,8 @@ public class MainApp {
 		recommendationSession.setGlobal("customerRepository", customerRepo);
 		recommendationSession.setGlobal("vehicleRepo", vehicleRepo);
 		recommendationSession.setGlobal("recommendationsRepo", recommendationsRepo);
+		recommendationSession.setGlobal("userRepository", userRepo);
+
 
 		recommendationSession.insert(customerRepo);
         new Thread() {
