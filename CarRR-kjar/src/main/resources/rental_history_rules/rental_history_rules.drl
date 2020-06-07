@@ -13,8 +13,9 @@ rule "Update users rental history"
     when
         Rental($customer: customer, $vehicle: vehicle)
     then
-    	
+    	System.out.println($customer.getRentalHistory());
     	$customer.getRentalHistory().updateRentalHistory($vehicle);
+    	System.out.println($customer.getRentalHistory());
         System.out.println("Rental history updated");
 end
 

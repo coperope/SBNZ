@@ -6,6 +6,7 @@
         <b-navbar-nav>
           <router-link to="/search" tag="b-nav-item">Search</router-link>
           <router-link to="/about" tag="b-nav-item" class="mr-5">About</router-link>
+          <router-link to="/administration" tag="b-nav-item" class="mr-5">Rule administration</router-link>
 
           <b-nav-item-dropdown right>
             <template v-slot:button-content>

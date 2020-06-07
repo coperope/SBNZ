@@ -31,7 +31,7 @@ public class Recommendations {
     @ElementCollection
     @CollectionTable(name = "preferences_recommendation_mapping",
             joinColumns = {@JoinColumn(name = "recommendations_id", referencedColumnName = "id")})
-    @MapKeyColumn(name = "transmission_id")
+    @MapKeyColumn(name = "vehicle_id")
     @Column(name = "no_of_hits")
     Map<Vehicle, Integer> preferencesMap;
 
@@ -104,4 +104,15 @@ public class Recommendations {
 			searchMap.put(vehicle, hitsInt);
 		}
 	}
+
+    @Override
+    public String toString() {
+        return "Recommendations{" +
+                "id=" + id +
+                ",\n customer=" + customer +
+                ",\n searchMap=" + searchMap +
+                ",\n rentalMap=" + rentalMap +
+                ",\n preferencesMap=" + preferencesMap +
+                '}';
+    }
 }

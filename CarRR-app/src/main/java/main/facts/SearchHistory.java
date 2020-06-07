@@ -74,7 +74,7 @@ public class SearchHistory implements Serializable {
 	private Map<Integer, Integer> seatsNo;
 
 	@ElementCollection
-	@CollectionTable(name = "doorNo_mapping", joinColumns = {
+	@CollectionTable(name = "doorNo_search_mapping", joinColumns = {
 			@JoinColumn(name = "search_history_id", referencedColumnName = "id") })
 	@MapKeyColumn(name = "door_id")
 	@Column(name = "no_of_occurrences")

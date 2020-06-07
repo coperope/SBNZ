@@ -58,10 +58,9 @@ no-loop
         $vehicle: Vehicle(fuelConsumption < 14, fuelConsumption > 10, length > 430, height > 170, width > 195, cargoVolume + passengerAreaVolume > 3300, seatsNo >= 5, doorNo >= 4, pricePerDay > 300, $features: features)
         Number(intValue < 2) from accumulate(
                     ExtraFeatures(
+                    	$id: id
                     ) from $features,
-                    init(int count = 0;),
-                    action(count += 1;),
-                    result(count)
+                    count($id)
                 )
         $category: Category(name=="Luxury")
     then
@@ -74,10 +73,9 @@ no-loop
         $vehicle: Vehicle(fuelConsumption < 14, fuelConsumption > 10, seatsNo >= 5, doorNo >= 4, pricePerDay > 80, pricePerDay < 400, $features: features)
         Number(intValue >= 2) from accumulate(
                     ExtraFeatures(
+                    	$id: id
                     ) from $features,
-                    init(int count = 0;),
-                    action(count += 1;),
-                    result(count)
+                    count($id)
                 )
         $category: Category(name=="Premium")
     then
