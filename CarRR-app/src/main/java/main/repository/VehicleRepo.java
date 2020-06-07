@@ -3,6 +3,7 @@ package main.repository;
 import main.dto.SearchDTO;
 import main.facts.Brand;
 import main.facts.Category;
+import main.facts.User;
 import main.facts.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,6 +26,8 @@ public interface VehicleRepo extends JpaRepository<Vehicle, Long> {
                                            @Param("transmissions") List<Long> transmissionID,
                                            @Param("doorNo") List<Integer> doorNo,
                                            @Param("seatsNo") List<Integer> seatsNo);
+
+	public List<Vehicle> findByOwner(User owner);
 }
 //+
 //    "and (vehicle.categories) in (:category)"

@@ -33,6 +33,15 @@ public class VehicleController {
         vehicleService.addVehicle(vehicleDTO);
         return ResponseEntity.ok("more");
     }
+    
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<List<VehicleDTO>> getOwnersVehicles(@PathVariable("id") Long ownersId) {
+        List<VehicleDTO> vehicleDTOS = vehicleService.getOwnersVehicles(ownersId);
+        if (vehicleDTOS == null) {
+        	 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(vehicleDTOS, HttpStatus.OK);
+    }
 
     @PostMapping(path = "/search", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Vehicle>> searchVehicle(@RequestBody SearchDTO searchDTO) {
