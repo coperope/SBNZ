@@ -17,7 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,6 +91,10 @@ public class VehicleService {
         for (ExtraFeatures feature: vehicle.getFeatures()) {
             extraFeaturesRepo.save(feature);
         }
+        
+        User owner = userRepo.findById(vehicleDTO.getOwner().getId()).get();
+        vehicle.setOwner(owner);
+
 
         vehicleRepo.save(vehicle);
         
@@ -162,6 +172,62 @@ public class VehicleService {
         List<Category> categories = searchDTO.getCategories();
         return vehicleRepo.getBySearchParams(brands, models, fuels, transmissions, searchDTO.getDoorNo().isEmpty() ? null : searchDTO.getDoorNo() , searchDTO.getSeatsNo().isEmpty() ? null : searchDTO.getSeatsNo());
     }
+    
+    public LinkedHashMap<Vehicle, Integer> getUserRecommendations(Long userID) {
+    	
+    	Customer customer = customerRepo.findById(userID).orElse(null);
+    	if (customer == null) {
+    		return null;
+    	}
+    	
+    	Recommendations recommendations = customer.getRecommendations();
+    	
+    	Map<Vehicle, Integer> combined = new HashMap<Vehicle, Integer>();
+    	
+    	int i = 0;
+    	for (Vehicle vehicle: recommendations.getRentalMap().keySet()) {
+    		if(combined.containsKey(vehicle)) {
+    			combined.put(vehicle, combined.get(vehicle) + recommendations.getRentalMap().get(vehicle));
+		    } else {
+		    	combined.put(vehicle, recommendations.getRentalMap().get(vehicle));
+		    }
+    		if (++i > 9) {
+    			break;
+    		}
+    	}
+    	i = 0;
+    	for (Vehicle vehicle: recommendations.getSearchMap().keySet()) {
+    		if(combined.containsKey(vehicle)) {
+    			combined.put(vehicle, combined.get(vehicle) + recommendations.getSearchMap().get(vehicle));
+		    } else {
+		    	combined.put(vehicle, recommendations.getSearchMap().get(vehicle));
+		    }
+    		if (++i > 9) {
+    			break;
+    		}
+    	}
+    	i = 0;
+    	for (Vehicle vehicle: recommendations.getPreferencesMap().keySet()) {
+    		if(combined.containsKey(vehicle)) {
+    			combined.put(vehicle, combined.get(vehicle) + recommendations.getPreferencesMap().get(vehicle));
+		    } else {
+		    	combined.put(vehicle, recommendations.getPreferencesMap().get(vehicle));
+		    }
+    		if (++i > 9) {
+    			break;
+    		}
+    	}
+    	
+    	LinkedHashMap<Vehicle, Integer> sortedMap = 
+    			combined.entrySet().stream()
+			    .sorted(Entry.<Vehicle, Integer>comparingByValue().reversed())
+			    .collect(Collectors.toMap(Entry::getKey, Entry::getValue,
+			                              (e1, e2) -> e1, LinkedHashMap::new));
+    	
+    	
+		
+		return sortedMap;
+	}
 
     private Brand convertDTOtoBrand(BrandDTO brand){
         Brand b = modelMapper.map(brand, Brand.class);

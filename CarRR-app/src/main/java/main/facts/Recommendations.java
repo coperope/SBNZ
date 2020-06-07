@@ -1,6 +1,11 @@
 package main.facts;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.Sort;
+import org.hibernate.annotations.SortNatural;
+import org.hibernate.annotations.SortType;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +24,7 @@ public class Recommendations {
             joinColumns = {@JoinColumn(name = "recommendations_id", referencedColumnName = "id")})
     @MapKeyColumn(name = "vehicle_id")
     @Column(name = "no_of_hits")
+    @OrderBy("no_of_hits desc")
     Map<Vehicle, Integer> searchMap;
 
     @ElementCollection
@@ -26,6 +32,7 @@ public class Recommendations {
             joinColumns = {@JoinColumn(name = "recommendations_id", referencedColumnName = "id")})
     @MapKeyColumn(name = "vehicle_id")
     @Column(name = "no_of_hits")
+    @OrderBy("no_of_hits desc")
     Map<Vehicle, Integer> rentalMap;
 
     @ElementCollection
@@ -33,6 +40,7 @@ public class Recommendations {
             joinColumns = {@JoinColumn(name = "recommendations_id", referencedColumnName = "id")})
     @MapKeyColumn(name = "vehicle_id")
     @Column(name = "no_of_hits")
+    @OrderBy("no_of_hits desc")
     Map<Vehicle, Integer> preferencesMap;
 
     public Recommendations() {

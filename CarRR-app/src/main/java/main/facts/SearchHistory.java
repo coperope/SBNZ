@@ -9,6 +9,8 @@ import javax.persistence.*;
 import main.dto.BrandDTO;
 import main.dto.CarModelDTO;
 import main.dto.SearchDTO;
+import main.repository.BrandRepo;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,6 +21,10 @@ public class SearchHistory implements Serializable {
 	@Transient
 	ModelMapper modelMapper;
 
+	//@Autowired
+	//@Transient
+	//BrandRepo brandRepo;
+	
 	@Id
 	@SequenceGenerator(name = "search_history_id_seq", sequenceName = "search_history_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "search_history_id_seq")
@@ -188,7 +194,7 @@ public class SearchHistory implements Serializable {
 		for (Category category : searchParam.getCategories()) {
 			Integer categoryValue = this.categories.get(category);
 			if (categoryValue != null) {
-				categoryValue += factor;
+				this.categories.put(category, categoryValue += factor);
 			} else {
 				this.categories.put(category, factor);
 			}
@@ -198,7 +204,7 @@ public class SearchHistory implements Serializable {
 		for (Tag tag : searchParam.getTags()) {
 			Integer tagValue = this.tags.get(tag);
 			if (tagValue != null) {
-				tagValue += factor;
+				this.tags.put(tag, tagValue += factor);
 			} else {
 				this.tags.put(tag, factor);
 			}
@@ -206,9 +212,10 @@ public class SearchHistory implements Serializable {
 		
 		// Brand update
 		for (BrandDTO brandDTO : searchParam.getBrands()) {
+			// Brand brand = brandRepo.findById(brandDTO.getId()).orElse(null);
 			Integer brandValue = this.brands.get(modelMapper.map(brandDTO, Brand.class));
 			if (brandValue != null) {
-				brandValue += factor;
+				this.brands.put(modelMapper.map(brandDTO, Brand.class), brandValue += factor);
 			} else {
 				this.brands.put(modelMapper.map(brandDTO, Brand.class), factor);
 			}
@@ -218,7 +225,7 @@ public class SearchHistory implements Serializable {
 		for (CarModelDTO modelDTO : searchParam.getModels()) {
 			Integer modelValue = this.model.get(modelMapper.map(modelDTO, CarModel.class));
 			if (modelValue != null) {
-				modelValue += factor;
+				this.model.put(modelMapper.map(modelDTO, CarModel.class), modelValue += factor);
 			} else {
 				this.model.put(modelMapper.map(modelDTO, CarModel.class), factor);
 			}
@@ -228,7 +235,7 @@ public class SearchHistory implements Serializable {
 		for (Fuel fuel : searchParam.getFuels()) {
 			Integer fuelValue = this.fuel.get(fuel);
 			if (fuelValue != null) {
-				fuelValue += factor;
+				this.fuel.put(fuel, fuelValue += factor);
 			} else {
 				this.fuel.put(fuel, factor);
 			}
@@ -238,7 +245,7 @@ public class SearchHistory implements Serializable {
 		for (Transmission transmission : searchParam.getTransmissions()) {
 			Integer transmissionValue = this.transmission.get(transmission);
 			if (transmissionValue != null) {
-				transmissionValue += factor;
+				this.transmission.put(transmission, transmissionValue += factor);
 			} else {
 				this.transmission.put(transmission, factor);
 			}
@@ -248,7 +255,7 @@ public class SearchHistory implements Serializable {
 		for (Integer seatsNo : searchParam.getSeatsNo()) {
 			Integer seatsNoValue = this.seatsNo.get(seatsNo);
 			if (seatsNoValue != null) {
-				seatsNoValue += factor;
+				this.seatsNo.put(seatsNo, seatsNoValue += factor);
 			} else {
 				this.seatsNo.put(seatsNo, factor);
 			}
@@ -258,7 +265,7 @@ public class SearchHistory implements Serializable {
 		for (Integer doorNo : searchParam.getDoorNo()) {
 			Integer doorNoValue = this.doorNo.get(doorNo);
 			if (doorNoValue != null) {
-				doorNoValue += factor;
+				this.doorNo.put(doorNo, doorNoValue += factor);
 			} else {
 				this.doorNo.put(doorNo, factor);
 			}
@@ -268,7 +275,7 @@ public class SearchHistory implements Serializable {
 		for (Double fuelConsumption : searchParam.getFuelConsumptions()) {
 			Integer fuelConsumptionsValue = this.fuelConsumption.get(fuelConsumption);
 			if (fuelConsumptionsValue != null) {
-				fuelConsumptionsValue += factor;
+				this.fuelConsumption.put(fuelConsumption, fuelConsumptionsValue += factor);
 			} else {
 				this.fuelConsumption.put(fuelConsumption, factor);
 			}
