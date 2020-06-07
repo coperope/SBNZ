@@ -12,8 +12,9 @@ import main.repository.CustomerRepo;
 import java.util.ArrayList;
 import java.util.List;
 
+global main.repository.RecommendationsRepo recommendationsRepo;
 global main.repository.CustomerRepo customerRepository;
-
+global main.repository.VehicleRepo vehicleRepo;
 
 rule "New vehicle event"
 agenda-group "events-group"
@@ -49,7 +50,7 @@ agenda-group "events-group"
     		insert(customer.getRecommendations());
     	};
         for(Vehicle vehicle: vehicleRepo.findAll()) {
-                    insert(vehicle);
+        	insert(vehicle);
         };
 end
 
@@ -67,6 +68,6 @@ agenda-group "events-group"
     		insert(customer.getRecommendations());
     	};
     	for(Vehicle vehicle: vehicleRepo.findAll()) {
-            		insert(vehicle);
+    		insert(vehicle);
         };
 end

@@ -177,7 +177,7 @@ public class RentalHistory implements Serializable {
     	for (Category category : vehicle.getCategories()) {
     		Integer categoryValue = categories.get(category);
 			if (categoryValue != null) {
-				categoryValue += 1;
+				categories.put(category, categoryValue += 1);
 			}else {
 				categories.put(category, 1);
 			}
@@ -187,7 +187,7 @@ public class RentalHistory implements Serializable {
     	for (Tag tag : vehicle.getTags()) {
     		Integer tagValue = tags.get(tag);
 			if (tagValue != null) {
-				tagValue += 1;
+				tags.put(tag, tagValue += 1);
 			}else {
 				tags.put(tag, 1);
 			}
@@ -196,7 +196,7 @@ public class RentalHistory implements Serializable {
     	//Brand update
     	Integer brandValue = brands.get(vehicle.getBrand());
     	if (brandValue != null) {
-    		brandValue += 1;
+			brands.put(vehicle.getBrand(), brandValue += 1);
 		}else {
 			brands.put(vehicle.getBrand(), 1);
 		}
@@ -204,7 +204,7 @@ public class RentalHistory implements Serializable {
     	//Model update
     	Integer modelValue = model.get(vehicle.getModel());
     	if (modelValue != null) {
-    		modelValue += 1;
+			model.put(vehicle.getModel(), modelValue += 1);
 		}else {
 			model.put(vehicle.getModel(), 1);
 		}
@@ -212,7 +212,7 @@ public class RentalHistory implements Serializable {
     	//Fuel update
     	Integer fuelValue = fuel.get(vehicle.getFuel());
     	if (fuelValue != null) {
-    		fuelValue += 1;
+			fuel.put(vehicle.getFuel(), fuelValue += 1);
 		}else {
 			fuel.put(vehicle.getFuel(), 1);
 		}
@@ -220,7 +220,7 @@ public class RentalHistory implements Serializable {
     	//Transmission update
     	Integer transmissionValue = transmission.get(vehicle.getTransmission());
     	if (transmissionValue != null) {
-    		transmissionValue += 1;
+			transmission.put(vehicle.getTransmission(), transmissionValue += 1);
 		}else {
 			transmission.put(vehicle.getTransmission(), 1);
 		}
@@ -228,7 +228,7 @@ public class RentalHistory implements Serializable {
     	//Number of seats update
     	Integer seatsNoValue = seatsNo.get(vehicle.getSeatsNo());
     	if (seatsNoValue != null) {
-    		seatsNoValue += 1;
+			seatsNo.put(vehicle.getSeatsNo(), seatsNoValue += 1);
 		}else {
 			seatsNo.put(vehicle.getSeatsNo(), 1);
 		}
@@ -236,7 +236,7 @@ public class RentalHistory implements Serializable {
     	//Number of door update
     	Integer doorNoValue = doorNo.get(vehicle.getDoorNo());
     	if (doorNoValue != null) {
-    		doorNoValue += 1;
+			doorNo.put(vehicle.getDoorNo(), doorNoValue += 1);
 		}else{
 			doorNo.put(vehicle.getDoorNo(), 1);
 		}
@@ -244,7 +244,7 @@ public class RentalHistory implements Serializable {
     	//Fuel consumption update
     	Integer fuelConsumptionValue = fuelConsumption.get(vehicle.getFuelConsumption());
     	if (fuelConsumptionValue != null) {
-    		fuelConsumptionValue += 1;
+			fuelConsumption.put(vehicle.getFuelConsumption(), fuelConsumptionValue += 1);
 		}else{
 			fuelConsumption.put(vehicle.getFuelConsumption(), 1);
 		}

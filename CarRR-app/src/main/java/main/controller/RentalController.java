@@ -19,7 +19,6 @@ public class RentalController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addRental(@RequestBody RentalDTO rentalDTO){
-        System.out.println(rentalDTO);
         rentalService.addRental(rentalDTO);
         return ResponseEntity.ok("more rental");
     }

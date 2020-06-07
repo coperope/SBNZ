@@ -16,15 +16,12 @@ import main.facts.OwnerStatus;
 import main.facts.Bundle;
 import main.facts.RentalHistory;
 
-global main.repository.RecommendationsRepo recommendationsRepo;
-global main.repository.CustomerRepo customerRepository;
-global main.repository.VehicleRepo vehicleRepo;
 
 rule "Rental history brand rule"
 agenda-group "rentals"
 salience 10
-no-loop true
-lock-on-active true
+//no-loop true
+//lock-on-active true
     when
         Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalBrands: brands) from $rentalHistory
@@ -37,8 +34,8 @@ end
 rule "Rental history category rule"
 agenda-group "rentals"
 salience 10
-no-loop true
-lock-on-active true
+//no-loop true
+//lock-on-active true
     when
         Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalCategories: categories) from $rentalHistory
@@ -58,8 +55,8 @@ end
 rule "Rental history tag rule"
 agenda-group "rentals"
 salience 10
-no-loop true
-lock-on-active true
+//no-loop true
+//lock-on-active true
     when
         Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalTags: tags) from $rentalHistory
@@ -79,8 +76,8 @@ end
 rule "Rental history seatsNo rule"
 agenda-group "rentals"
 salience 10
-no-loop true
-lock-on-active true
+//no-loop true
+//lock-on-active true
     when
         Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalHistorySeatsNo: seatsNo) from $rentalHistory
@@ -93,8 +90,8 @@ end
 rule "Rental history doorNo rule"
 agenda-group "rentals"
 salience 10
-no-loop true
-lock-on-active true
+//no-loop true
+//lock-on-active true
     when
         Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalHistoryDoorNo: doorNo) from $rentalHistory
@@ -107,8 +104,8 @@ end
 rule "Rental history Fuel Consumption rule"
 agenda-group "rentals"
 salience 10
-no-loop true
-lock-on-active true
+//no-loop true
+//lock-on-active true
     when
         Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalHistoryFuelConsumption: fuelConsumption) from $rentalHistory
@@ -121,8 +118,8 @@ end
 rule "Rental history transmission rule"
 agenda-group "rentals"
 salience 10
-no-loop true
-lock-on-active true
+//no-loop true
+//lock-on-active true
     when
         Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalTransmission: transmission) from $rentalHistory
@@ -135,8 +132,8 @@ end
 rule "Rental history model rule"
 agenda-group "rentals"
 salience 10
-no-loop true
-lock-on-active true
+//no-loop true
+//lock-on-active true
     when
         Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalModels: model) from $rentalHistory
@@ -149,8 +146,8 @@ end
 rule "Rental history fuel rule"
 agenda-group "rentals"
 salience 10
-no-loop true
-lock-on-active true
+//no-loop true
+//lock-on-active true
     when
         Customer($rentalHistory: rentalHistory, $recommendations: recommendations)
         RentalHistory($rentalFuel: fuel) from $rentalHistory
@@ -164,8 +161,8 @@ end
 rule "Rental owner set status rule"
 agenda-group "rentals"
 salience 10
-no-loop true
-lock-on-active true
+//no-loop true
+//lock-on-active true
     when
         Rental($owner: owner)
         $user: User(noOfRentals >= 10) from $owner
@@ -177,14 +174,13 @@ end
 
 rule "Rental - Save recommendations and remove facts from session"
 agenda-group "rentals"
-salience 2
+salience 3
     when
         not Bundle()
     	$c: Customer($recommendations: recommendations)
         $r: Recommendations() from $recommendations
     then
         System.out.println("------------- RENTAL RULES: Removing customer and recommendations -------------");
-    	System.out.println($r);
         recommendationsRepo.save($r);
         customerRepository.save($c);
     	delete($c);
@@ -193,7 +189,7 @@ end
 
 rule "Rental - Remove vehicle from session"
 agenda-group "rentals"
-salience 1
+salience 2
     when
         not Bundle()
     	$v: Vehicle()
@@ -205,45 +201,40 @@ end
 rule "Rental - increase number of finished recommendation rules"
 agenda-group "rentals"
 no-loop true
+salience 2
+    when
+        $b: Bundle($vehicleID: vehicleID)
+        $v: Vehicle(id == $vehicleID)
+    then
+        System.out.println("------------- RENTAL RULES: Rental recommendation rules done - increase count -------------");
+        modify ($b) {increaseFinishedRules()};
+end
+
+rule "Rental - save recommendations and remove facts from session if all done"
+agenda-group "rentals"
 salience 1
     when
-        $b: Bundle($finishedRules: finishedRules, $vehicleID: vehicleID)
-        $v: Vehicle($id: id)
+        $b: Bundle(finishedRules >= 3, $vehicleID: vehicleID)
+        $v: Vehicle(id == $vehicleID)
+    	$c: Customer($recommendations: recommendations)
+        $r: Recommendations() from $recommendations
     then
-        if($vehicleID == $id){
-            System.out.println("------------- RENTAL RULES: Search recommendation rules done - increase count -------------");
-            modify ($b) {increaseFinishedRules()};
-        }
+        System.out.println("------------- RENTAL RULES: Removing customer and recommendations if all recommendation rules are done-------------");
+        recommendationsRepo.save($r);
+        customerRepository.save($c);
+        delete($c);
+        delete($r);
 end
 
 rule "Rental - remove vehicle from session if all done"
 agenda-group "rentals"
 salience 0
     when
-        $b: Bundle($finishedRules: finishedRules, $vehicleID: vehicleID)
-     	$v: Vehicle($id: id)
+        $b: Bundle(finishedRules >= 3, $vehicleID: vehicleID)
+        $v: Vehicle(id == $vehicleID)
     then
-        System.out.println($finishedRules);
-        if($finishedRules >= 3  && $vehicleID == $id){
-             System.out.println("------------- RENTAL RULES: Removing vehicles if all recommendation rules are done-------------");
-             delete($v);
-        }
+		System.out.println("------------- RENTAL RULES: Removing vehicles if all recommendation rules are done-------------");
+		delete($v);
+		delete($b);
 end
 
-rule "Rental - save recommendations and remove facts from session if all done"
-agenda-group "rentals"
-salience 0
-    when
-        $b: Bundle($finishedRules: finishedRules, $vehicleID: vehicleID)
-    	$c: Customer($recommendations: recommendations)
-        $r: Recommendations() from $recommendations
-        $v: Vehicle($id: id)
-    then
-        System.out.println($finishedRules);
-       if($finishedRules >= 3 && $vehicleID == $id){
-            System.out.println("------------- RENTAL RULES: Removing customer and recommendations if all recommendation rules are done-------------");
-            customerRepository.save($c);
-            delete($c);
-            delete($r);
-       }
-end

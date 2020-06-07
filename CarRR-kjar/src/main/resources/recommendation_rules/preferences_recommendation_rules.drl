@@ -14,10 +14,7 @@ import main.facts.Vehicle;
 import main.facts.Bundle;
 import main.facts.Recommendations;
 
-//declare any global variables here
-global main.repository.RecommendationsRepo recommendationsRepo;
-global main.repository.CustomerRepo customerRepository;
-global main.repository.VehicleRepo vehicleRepo;
+
 
 rule "Category preference rule"
 agenda-group "preferences"
@@ -177,13 +174,14 @@ end
 
 rule "Preferences - Save recommendations and remove facts from session"
 agenda-group "preferences"
-salience 2
+salience 3
     when
         not Bundle()
     	$c: Customer($recommendations: recommendations)
         $r: Recommendations() from $recommendations
     then
         System.out.println("------------- PREFERENCES RULES: Removing customer and recommendations -------------");
+    	recommendationsRepo.save($r);
     	customerRepository.save($c);
     	delete($c);
     	delete($r);
@@ -191,7 +189,7 @@ end
 
 rule "Preferences - Remove vehicle from session"
 agenda-group "preferences"
-salience 1
+salience 2
     when
         not Bundle()
     	$v: Vehicle()
@@ -203,44 +201,39 @@ end
 rule "Preferences - increase number of finished recommendation rules"
 agenda-group "preferences"
 no-loop true
+salience 2
+    when
+        $b: Bundle($vehicleID: vehicleID)
+        $v: Vehicle(id == $vehicleID)
+    then
+        System.out.println("------------- PREFERENCES RULES: Preferences recommendation rules done - increase count -------------");
+        modify ($b) {increaseFinishedRules()};
+end
+
+rule "Preferences - save recommendations and remove facts from session if all done"
+agenda-group "preferences"
 salience 1
     when
-        $b: Bundle($finishedRules: finishedRules, $vehicleID: vehicleID)
-        $v: Vehicle($id: id)
+        $b: Bundle(finishedRules >= 3, $vehicleID: vehicleID)
+        $v: Vehicle(id == $vehicleID)
+    	$c: Customer($recommendations: recommendations)
+        $r: Recommendations() from $recommendations
     then
-        if($vehicleID == $id){
-            System.out.println("------------- PREFERENCES RULES: Search recommendation rules done - increase count -------------");
-            modify ($b) {increaseFinishedRules()};
-        }
+        System.out.println("------------- PREFERENCES RULES: Removing customer and recommendations if all recommendation rules are done-------------");
+        recommendationsRepo.save($r);
+        customerRepository.save($c);
+        delete($c);
+        delete($r);
 end
 
 rule "Preferences - remove vehicle from session if all done"
 agenda-group "preferences"
 salience 0
     when
-        $b: Bundle($finishedRules: finishedRules, $vehicleID: vehicleID)
-    	$v: Vehicle($id: id)
+        $b: Bundle(finishedRules >= 3, $vehicleID: vehicleID)
+        $v: Vehicle(id == $vehicleID)
     then
-        if($finishedRules >= 3  && $vehicleID == $id){
-             System.out.println("------------- PREFERENCES RULES: Removing vehicles if all recommendation rules are done-------------");
-             delete($v);
-        }
-end
-
-rule "Preferences - save recommendations and remove facts from session if all done"
-agenda-group "preferences"
-salience 0
-    when
-        $b: Bundle($finishedRules: finishedRules, $vehicleID: vehicleID)
-    	$c: Customer($recommendations: recommendations)
-        $r: Recommendations() from $recommendations
-        $v: Vehicle($id: id)
-    then
-
-       if($finishedRules >= 3 && $vehicleID == $id){
-            System.out.println("------------- PREFERENCES RULES: Removing customer and recommendations if all recommendation rules are done-------------");
-            customerRepository.save($c);
-            delete($c);
-            delete($r);
-       }
+		System.out.println("------------- PREFERENCES RULES: Removing vehicles if all recommendation rules are done-------------");
+		delete($v);
+		delete($b);
 end
