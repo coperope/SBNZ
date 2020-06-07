@@ -1,0 +1,21 @@
+template header
+category
+condition
+
+package categorisation_tagging_rule
+
+import main.facts.Vehicle;
+import main.facts.Category;
+
+template "categorization-rules"
+
+rule "@{category} category"
+no-loop true
+when
+    $vehicle: Vehicle(@{condition})
+    $category: Category(name=="@{category}")
+then
+    modify($vehicle){ getCategories().add($category)}
+end
+
+end template
