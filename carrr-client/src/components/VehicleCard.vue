@@ -65,7 +65,7 @@
           </label>
         </v-row>
       </v-col>
-      <v-col v-if="vehicle.owner.isCustomer">
+      <v-col v-if="vehicle.owner==null || vehicle.owner.isCustomer">
         <v-row>
           <v-col>
             <b-form-rating stars="5" v-model="vehicle.numberOfStars"></b-form-rating>
