@@ -30,7 +30,7 @@ lock-on-active true
 					and
 					Category($c.name == name) from $preferedCategories
                     ,
-                    sum($id)
+                    count($id)
                 )
     then
     	modify ($recommendations) {addPreferencesHits($vehicle, $preferencesHit)}
@@ -69,7 +69,7 @@ lock-on-active true
 					and
 					Tag($c.name == name) from $preferedTags
                     ,
-                    sum($id)
+                    count($id)
                 )
     then
     	modify ($recommendations) {addPreferencesHits($vehicle, $preferencesHit)}

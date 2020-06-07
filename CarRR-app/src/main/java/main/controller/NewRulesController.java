@@ -17,6 +17,10 @@ import org.apache.maven.shared.invoker.MavenInvocationException;
 import org.drools.template.DataProvider;
 import org.drools.template.DataProviderCompiler;
 import org.drools.template.objects.ArrayDataProvider;
+import org.kie.api.builder.Message;
+import org.kie.api.builder.Results;
+import org.kie.api.io.ResourceType;
+import org.kie.internal.utils.KieHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,7 +72,7 @@ public class NewRulesController {
         		+ "            ExtraFeatures(\n"
         		+ "            	$id: id\n"
         		+ "            ) from $features,\n"
-        		+ "            sum($id)\n"
+        		+ "            count($id)\n"
         		+ "        )\n";
         DataProvider dataProvider = new ArrayDataProvider(new String[][]{
             new String[]{category, featuresCondition, condition}
@@ -76,16 +80,29 @@ public class NewRulesController {
         DataProviderCompiler converter = new DataProviderCompiler();
         String drl = converter.compile(dataProvider, template);
         
+        
+        // Validate rule
+        KieHelper helper = new KieHelper();
+        helper.addContent(drl, ResourceType.DRL);
+        Results result = helper.verify();
+        
+        if (result.hasMessages(Message.Level.WARNING, Message.Level.ERROR)) {
+        	return new ResponseEntity<>("Rule compilation error, check logs", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
         System.out.println(drl);
         
         try {
+        	// Save to file system
 			saveCategorizationRule(drl, category);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return new ResponseEntity<>("Cant save rule", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
+        // Save in database only if rule creation is finished
         createCategoryIfNotExists(category);
+        // Build kjar with new rule
         buildKjar();
         return new ResponseEntity<>("Rule successfuly added", HttpStatus.OK);
     }

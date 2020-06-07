@@ -60,7 +60,7 @@ no-loop
                     ExtraFeatures(
                     	$id: id
                     ) from $features,
-                    sum($id)
+                    count($id)
                 )
         $category: Category(name=="Luxury")
     then
@@ -75,7 +75,7 @@ no-loop
                     ExtraFeatures(
                     	$id: id
                     ) from $features,
-                    sum($id)
+                    count($id)
                 )
         $category: Category(name=="Premium")
     then

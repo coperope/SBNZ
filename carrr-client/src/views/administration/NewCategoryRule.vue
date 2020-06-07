@@ -416,23 +416,23 @@ export default {
 
 
       if (
-        this.parameters.powerToWeightOperation &&
-        this.parameters.powerToWeight
+        this.combinedParameters.powerToWeightOperation &&
+        this.combinedParameters.powerToWeight
       ) {
         rule.conditions.push([
           "power*1000/weight",
-          this.parameters.powerToWeightOperation,
-          this.parameters.powerToWeight
+          this.combinedParameters.powerToWeightOperation,
+          this.combinedParameters.powerToWeight
         ]);
       }
       if (
-        this.parameters.cargoAndPassengerAreaVolumeOperation &&
-        this.parameters.cargoAndPassengerAreaVolume
+        this.combinedParameters.cargoAndPassengerAreaVolumeOperation &&
+        this.combinedParameters.cargoAndPassengerAreaVolume
       ) {
         rule.conditions.push([
           "cargoVolume + passengerAreaVolume",
-          this.parameters.cargoAndPassengerAreaVolumeOperation,
-          this.parameters.cargoAndPassengerAreaVolume
+          this.combinedParameters.cargoAndPassengerAreaVolumeOperation,
+          this.combinedParameters.cargoAndPassengerAreaVolume
         ]);
       }
 
@@ -443,11 +443,7 @@ export default {
           alert(response.data);
         })
         .catch(error => {
-          if (String(error).includes("400")){
-            alert('Category with this name already exists');
-          } else {
-            alert('Error while creating rule');
-          }
+          alert(error.response.data);
         });
     }
   }
