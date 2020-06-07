@@ -196,8 +196,8 @@
           </v-row>
           <v-row>
             <v-col align="center" justify="center">
-              <template v-for="feature in vehicle.features">
-                <label :key="feature.id">{{ feature.name }}</label>
+              <template v-for="(feature,index) in vehicle.features">
+                <label :key="feature.id">{{ feature.name }}<v-icon class="ml-5" @click="deleteFeature(index)">close</v-icon></label>
                 <br :key="feature.id" />
               </template>
             </v-col>
@@ -354,13 +354,26 @@ export default {
         });
     },
     addFeature() {
+      if (this.feature.trim() == "") {
+        return;
+      }
       this.vehicle.features.push({
         name: this.feature
       });
       this.feature = null;
+    },
+    deleteFeature(index){
+      this.vehicle.features.splice(index,1);
     }
   },
   mounted() {
+
+    if (localStorage.getItem("user")) {
+      this.$store.state.user = JSON.parse(localStorage.getItem("user"));
+    }else{
+       this.$store.state.user = null;
+    }
+
     axios
       .get("brand")
       .then(response => {

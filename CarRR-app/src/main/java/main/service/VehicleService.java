@@ -34,6 +34,9 @@ public class VehicleService {
 
     @Autowired
     CategoryRepo categoryRepo;
+    
+    @Autowired
+    UserRepo userRepo;
 
     @Autowired
     TagRepo tagRepo;
@@ -105,6 +108,18 @@ public class VehicleService {
                 .map(this::convertVehicleToDTO)
                 .collect(Collectors.toList());
     }
+    
+    public List<VehicleDTO> getOwnersVehicles(Long ownersId) {
+    	User owner = userRepo.findById(ownersId).orElse(null);
+    	if (owner == null) {
+			return null;
+		}
+    	List<Vehicle> vehicles = vehicleRepo.findByOwner(owner);
+    	return vehicles
+                 .stream()
+                 .map(this::convertVehicleToDTO)
+                 .collect(Collectors.toList());
+	}
 
     public List<Vehicle> searchVehicles(SearchDTO searchDTO){
         List<BrandDTO> brandsDTO = searchDTO.getBrands();
@@ -144,5 +159,4 @@ public class VehicleService {
     private Vehicle convertDTOToVehicle(VehicleDTO vehicleDTO){
         return modelMapper.map(vehicleDTO, Vehicle.class);
     }
-
 }
