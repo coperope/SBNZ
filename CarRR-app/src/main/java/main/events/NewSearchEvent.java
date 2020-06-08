@@ -3,6 +3,7 @@ package main.events;
 import main.dto.SearchDTO;
 import main.facts.Customer;
 import org.kie.api.definition.type.Role;
+import org.kie.api.definition.type.Timestamp;
 
 @Role(Role.Type.EVENT)
 public class NewSearchEvent {

@@ -231,6 +231,13 @@ public class VehicleService {
         return sortedMap;
     }
 
+    public void changeVehicleEventsGlobal(int number){
+        MainApp.recommendationSession.setGlobal("numberOfNewVehicles", number);
+    }
+
+    public void changeSearchEventsGlobal(int number){
+        MainApp.recommendationSession.setGlobal("numberOfNewSearches", number);
+    }
 
     private Brand convertDTOtoBrand(BrandDTO brand){
         Brand b = modelMapper.map(brand, Brand.class);

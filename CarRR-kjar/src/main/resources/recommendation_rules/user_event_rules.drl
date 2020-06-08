@@ -14,6 +14,7 @@ import main.repository.CustomerRepo;
 import main.facts.OwnerStatus;
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.Integer;
 
 global main.repository.RecommendationsRepo recommendationsRepo;
 global main.repository.CustomerRepo customerRepository;
@@ -53,7 +54,6 @@ agenda-group "events-group"
     	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("rentals").setFocus();
     	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("search").setFocus();
 		for (Object event: $events) {
-			System.out.println( ((NewVehicleEvent) event).getVehicle().getId());
 			insert(((NewVehicleEvent) event).getVehicle());
 			insert(new Bundle(((NewVehicleEvent) event).getVehicle().getId()));
 			delete(event);
@@ -69,17 +69,24 @@ rule "New Search event"
 agenda-group "events-group"
     when
         $event: NewSearchEvent($search: searchDTO, $customer: customer) from entry-point "events-entry"
-
+        $events: List(size > 5) from collect (NewSearchEvent($customer.id == customer.id) over window:length(6) from entry-point "events-entry" )
+        not Number(intValue >= 5) from accumulate(
+            $event2: NewSearchEvent(
+                this != $event,
+                customer.id == $customer.id,
+                this meets[15s] $event
+            ) from entry-point "events-entry",
+            count($event2)
+        )
     then
     	System.out.println("------------- NEW SEARCH EVENT: Starting recommendation rules -------------");
     	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("search").setFocus();
-    	insert($search);
-//    	for(Customer customer: customerRepository.findAll()) {
-//    		insert(customer);
-//    		insert(customer.getRecommendations());
-//    	};
+//    	insert($search);
         insert($customer);
         insert($customer.getRecommendations());
+        for (Object event: $events) {
+            delete(event);
+        }
         for(Vehicle vehicle: vehicleRepo.findAll()) {
         	insert(vehicle);
         };
