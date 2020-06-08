@@ -3,9 +3,13 @@ package rules_tests;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import main.dto.BrandDTO;
+import main.dto.CarModelDTO;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.kie.api.KieServices;
@@ -13,6 +17,7 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
 import main.dto.SearchDTO;
+import main.dto.UserDTO;
 import main.facts.Brand;
 import main.facts.CarModel;
 import main.facts.Category;
@@ -129,9 +134,12 @@ public class UsersRentalHistoryUpdateTests {
 			BrandDTO brand = new BrandDTO();
 			brand.setId(1L);
 			brand.setName("Audi");
+			brand.setModels(new HashSet<CarModelDTO>());
 			brands.add(brand);
 		searchParam.setBrands(brands);
-		//searchParam.setCustomer(this.customer);
+		UserDTO customer = new UserDTO();
+		customer.setId(this.customer.getId());
+		searchParam.setCustomer(customer);
 
 		kieSession.insert(this.customer);
 		kieSession.insert(searchParam);

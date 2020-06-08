@@ -6,9 +6,11 @@ import main.events.NewVehicleEvent;
 import main.events.NewSearchEvent;
 import main.events.NewRentalEvent;
 import main.facts.Customer;
+import main.facts.User;
 import main.facts.Bundle;
 import main.facts.Vehicle;
 import main.repository.CustomerRepo;
+import main.facts.OwnerStatus;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +19,13 @@ global main.repository.CustomerRepo customerRepository;
 global main.repository.VehicleRepo vehicleRepo;
 global main.repository.UserRepo userRepository;
 
-rule "New vehicle event"
+rule "New vehicle event gold user"
 agenda-group "events-group"
+salience 10
     when
         $event: NewVehicleEvent($vehicle: vehicle) from entry-point "events-entry"
-        Vehicle($id: id) from $vehicle
+        Vehicle($id: id, $owner: owner) from $vehicle
+        User(status == OwnerStatus.GOLD) from $owner
     then
     	System.out.println("------------- NEW VEHICLE EVENT: Starting recommendation rules -------------");
     	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("preferences").setFocus();
@@ -34,22 +38,46 @@ agenda-group "events-group"
     		insert(customer);
     		insert(customer.getRecommendations());
     	};
+    	System.out.println("------------- GOLD USER -------------");
+    	delete($event);
+end
+
+rule "New vehicle event"
+agenda-group "events-group"
+    when
+    	$events: List(size > 4) from collect (NewVehicleEvent($vehicle: vehicle) over window:length(5) from entry-point "events-entry" )
+    then
+    	System.out.println("------------- NEW VEHICLE EVENT: Starting recommendation rules -------------");
+    	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("preferences").setFocus();
+    	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("rentals").setFocus();
+    	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("search").setFocus();
+		for (Object event: $events) {
+			System.out.println( ((NewVehicleEvent) event).getVehicle().getId());
+			insert(((NewVehicleEvent) event).getVehicle());
+			insert(new Bundle(((NewVehicleEvent) event).getVehicle().getId()));
+		}
+    	for(Customer customer: customerRepository.findAll()) {
+    		insert(customer);
+    		insert(customer.getRecommendations());
+    	};
     	System.out.println("------------- HERE -------------");
 end
 
 rule "New Search event"
 agenda-group "events-group"
     when
-        $event: NewSearchEvent($search: searchDTO) from entry-point "events-entry"
+        $event: NewSearchEvent($search: searchDTO, $customer: customer) from entry-point "events-entry"
 
     then
     	System.out.println("------------- NEW SEARCH EVENT: Starting recommendation rules -------------");
     	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("search").setFocus();
     	insert($search);
-    	for(Customer customer: customerRepository.findAll()) {
-    		insert(customer);
-    		insert(customer.getRecommendations());
-    	};
+//    	for(Customer customer: customerRepository.findAll()) {
+//    		insert(customer);
+//    		insert(customer.getRecommendations());
+//    	};
+        insert($customer);
+        insert($customer.getRecommendations());
         for(Vehicle vehicle: vehicleRepo.findAll()) {
         	insert(vehicle);
         };
@@ -65,10 +93,12 @@ agenda-group "events-group"
     	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("rentals").setFocus();
     	insert($rental);
     	insert($rental.getOwner());
-    	for(Customer customer: customerRepository.findAll()) {
-    		insert(customer);
-    		insert(customer.getRecommendations());
-    	};
+//    	for(Customer customer: customerRepository.findAll()) {
+//    		insert(customer);
+//    		insert(customer.getRecommendations());
+//    	};
+        insert($rental.getCustomer());
+        insert($rental.getCustomer().getRecommendations());
     	for(Vehicle vehicle: vehicleRepo.findAll()) {
     		insert(vehicle);
         };

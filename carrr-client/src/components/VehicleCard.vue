@@ -156,8 +156,9 @@ export default {
           dateTo: this.dates[this.dates.length - 1]
         }
 
+        let params = {'Content-Type': "application/json"}
         axios
-          .post("rental", rental)
+          .post("rental", rental, params)
           .then(() => {
             this.dialog = false;
           })

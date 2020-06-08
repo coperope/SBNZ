@@ -4,13 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import main.facts.Brand;
-import main.facts.CarModel;
-import main.facts.Category;
-import main.facts.Customer;
-import main.facts.Fuel;
-import main.facts.Tag;
-import main.facts.Transmission;
+import main.facts.*;
 
 public class SearchDTO {
 
@@ -25,6 +19,7 @@ public class SearchDTO {
 	private List<Integer> doorNo;
 	private List<Double> fuelConsumptions;
 	private Integer scaleFactor;
+//	private Customer realCustomerForRules;
 
 	public SearchDTO() {
 		super();
@@ -56,9 +51,9 @@ public class SearchDTO {
 		this.doorNo = doorNo;
 		this.fuelConsumptions = fuelConsumptions;
 		this.scaleFactor = scaleFactor;
+
+//		this.realCustomerForRules = realCustomerForRules;
 	}
-
-
 
 	public UserDTO getCustomer() {
 		return customer;
@@ -147,6 +142,14 @@ public class SearchDTO {
 	public void setScaleFactor(Integer scaleFactor) {
 		this.scaleFactor = scaleFactor;
 	}
+
+//	public Customer getRealCustomerForRules() {
+//		return realCustomerForRules;
+//	}
+//
+//	public void setRealCustomerForRules(Customer realCustomerForRules) {
+//		this.realCustomerForRules = realCustomerForRules;
+//	}
 
 	@Override
 	public String toString() {

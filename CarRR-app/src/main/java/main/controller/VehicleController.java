@@ -43,9 +43,9 @@ public class VehicleController {
         return new ResponseEntity<>(vehicleDTOS, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/search", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<VehicleDTO>> searchVehicle(@RequestBody SearchDTO searchDTO) {
-        System.out.println(searchDTO);
+        System.out.println("**********************************");
         return new ResponseEntity<>(vehicleService.searchVehicles(searchDTO), HttpStatus.OK);
     }
 }
