@@ -5,6 +5,7 @@ package recommendation_rules
 import main.events.NewVehicleEvent;
 import main.events.NewSearchEvent;
 import main.events.NewRentalEvent;
+import main.events.NewCustomerPreferencesEvent;
 import main.facts.Customer;
 import main.facts.User;
 import main.facts.Bundle;
@@ -55,6 +56,7 @@ agenda-group "events-group"
 			System.out.println( ((NewVehicleEvent) event).getVehicle().getId());
 			insert(((NewVehicleEvent) event).getVehicle());
 			insert(new Bundle(((NewVehicleEvent) event).getVehicle().getId()));
+			delete(event);
 		}
     	for(Customer customer: customerRepository.findAll()) {
     		insert(customer);
@@ -103,3 +105,18 @@ agenda-group "events-group"
     		insert(vehicle);
         };
 end
+
+rule "New Customer Preferences Event"
+agenda-group "events-group"
+    when
+        $event: NewCustomerPreferencesEvent($customer: customer) from entry-point "events-entry"
+
+    then
+        System.out.println("------------- NEW CUSTOMER PREFERNECES EVENT: Starting recommendation rules -------------");
+        kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("preferences").setFocus();
+        insert($customer);
+        insert($customer.getRecommendations());
+        for(Vehicle vehicle: vehicleRepo.findAll()) {
+            insert(vehicle);
+        };
+    end

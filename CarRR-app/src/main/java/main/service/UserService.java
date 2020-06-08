@@ -1,9 +1,12 @@
 package main.service;
 
+import main.MainApp;
 import main.dto.CustomerPreferencesDTO;
 import main.dto.UserDTO;
+import main.events.NewCustomerPreferencesEvent;
 import main.facts.*;
 import main.repository.*;
+import org.kie.api.runtime.rule.EntryPoint;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,8 +88,18 @@ public class UserService {
         }
         customer.setPreferences(customerPreferencesDTOtoEntity(customerPreferencesDTO));
 
+        customer.getRecommendations().getPreferencesMap().clear();
         customerPreferencesRepo.save(customer.getPreferences());
-        customerRepo.save(customer);
+        recommendationsRepo.save(customer.getRecommendations());
+        Customer savedCustomer = customerRepo.save(customer);
+
+        NewCustomerPreferencesEvent event = new NewCustomerPreferencesEvent();
+        event.setCustomer(savedCustomer);
+
+        MainApp.recommendationSession.getAgenda().getAgendaGroup("events-group").setFocus();
+        EntryPoint eventsEntryPoint = MainApp.recommendationSession.getEntryPoint("events-entry");
+        eventsEntryPoint.insert(event);
+
         return customerPreferencesDTO;
     }
 
