@@ -4,9 +4,9 @@
       <router-link to="/" tag="b-navbar-brand">CarRR</router-link>
       <template v-if="userSignedIn">
         <b-navbar-nav>
-          <router-link to="/search" tag="b-nav-item">Search</router-link>
+          <router-link to="/search" tag="b-nav-item" v-if="userSignedIn.customer">Search</router-link>
           <router-link to="/about" tag="b-nav-item" class="mr-5">About</router-link>
-          <router-link to="/administration" tag="b-nav-item" class="mr-5">Rule administration</router-link>
+          <router-link to="/administration" tag="b-nav-item" class="mr-5" v-if="!userSignedIn.customer">Rule administration</router-link>
 
           <b-nav-item-dropdown right>
             <template v-slot:button-content>
@@ -33,7 +33,8 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+    };
   },
   methods: {
     logout() {
