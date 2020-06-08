@@ -65,7 +65,7 @@
           </label>
         </v-row>
       </v-col>
-      <v-col v-if="vehicle.owner==null || vehicle.owner.customer">
+      <v-col v-if="userSignedIn.customer">
         <v-row>
           <v-col>
             <b-form-rating stars="5" v-model="vehicle.numberOfStars"></b-form-rating>
@@ -167,7 +167,12 @@ export default {
           });
 
       }
-    }
+    },
+    computed: {
+      userSignedIn() {
+        return this.$store.state.user;
+      }
+  }
 };
 </script>
 
