@@ -66,16 +66,18 @@ end
 rule "New Search event"
 agenda-group "events-group"
     when
-        $event: NewSearchEvent($search: searchDTO) from entry-point "events-entry"
+        $event: NewSearchEvent($search: searchDTO, $customer: customer) from entry-point "events-entry"
 
     then
     	System.out.println("------------- NEW SEARCH EVENT: Starting recommendation rules -------------");
     	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("search").setFocus();
     	insert($search);
-    	for(Customer customer: customerRepository.findAll()) {
-    		insert(customer);
-    		insert(customer.getRecommendations());
-    	};
+//    	for(Customer customer: customerRepository.findAll()) {
+//    		insert(customer);
+//    		insert(customer.getRecommendations());
+//    	};
+        insert($customer);
+        insert($customer.getRecommendations());
         for(Vehicle vehicle: vehicleRepo.findAll()) {
         	insert(vehicle);
         };
@@ -91,10 +93,12 @@ agenda-group "events-group"
     	kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("rentals").setFocus();
     	insert($rental);
     	insert($rental.getOwner());
-    	for(Customer customer: customerRepository.findAll()) {
-    		insert(customer);
-    		insert(customer.getRecommendations());
-    	};
+//    	for(Customer customer: customerRepository.findAll()) {
+//    		insert(customer);
+//    		insert(customer.getRecommendations());
+//    	};
+        insert($rental.getCustomer());
+        insert($rental.getCustomer().getRecommendations());
     	for(Vehicle vehicle: vehicleRepo.findAll()) {
     		insert(vehicle);
         };

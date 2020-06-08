@@ -114,11 +114,20 @@
         <b-button variant="outline-dark" @click="search">Search</b-button>
       </v-row>
     </v-col>
+    <v-container>
+      <b-jumbotron header="Results" align="center"></b-jumbotron>
+      <v-col class="shadow-lg" align="center" justify="center">
+        <v-container v-for="vehicle in vehicles" :key="vehicle.id">
+          <VehicleCard :vehicle="vehicle" class="mb-2" />
+        </v-container>
+      </v-col>
+    </v-container>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import VehicleCard from "@/components/VehicleCard.vue";
 // import Vue from "vue"
 
 export default {
@@ -171,8 +180,10 @@ export default {
         transmissions: [],
         seatsNo: [],
         doorNo: [],
-        fuelConsumptions: []
-      }
+        fuelConsumptions: [],
+        customer: {}
+      },
+      vehicles: []
     };
   },
   watch: {
@@ -188,38 +199,54 @@ export default {
   },
   methods: {
     search() {
-      this.searchParam.categories = this.categories.filter(
-        x => this.selectedCategory?.includes(x.name)
+      this.searchParam.categories = this.categories.filter(x =>
+        this.selectedCategory?.includes(x.name)
       );
-      this.searchParam.tags = this.tags.filter(
-        x => this.selectedTag?.includes(x.name)
+      this.searchParam.tags = this.tags.filter(x =>
+        this.selectedTag?.includes(x.name)
       );
-      this.searchParam.brands = this.brands.filter(
-        x => this.selectedBrand?.includes(x.name)
+      this.searchParam.brands = this.brands.filter(x =>
+        this.selectedBrand?.includes(x.name)
       );
-      this.searchParam.models = this.models.filter(
-        x => this.selectedModel?.includes(x.name)
+      this.searchParam.models = this.models.filter(x =>
+        this.selectedModel?.includes(x.name)
       );
-      this.searchParam.fuels = this.fuels.filter(
-        x => this.selectedFuel?.includes(x.name)
+      this.searchParam.fuels = this.fuels.filter(x =>
+        this.selectedFuel?.includes(x.name)
       );
-      this.searchParam.transmissions = this.transmissions.filter(
-        x => this.selectedTransmission?.includes(x.name)
+      this.searchParam.transmissions = this.transmissions.filter(x =>
+        this.selectedTransmission?.includes(x.name)
       );
-      this.searchParam.seatsNo = this.selectedSeatsNo == null ? [] : this.selectedSeatsNo;
-      this.searchParam.doorNo = this.selectedDoorNo == null ? [] : this.selectedDoorNo;
-      this.searchParam.fuelConsumptions = this.selectedFuelConsumptions == null ? [] : this.selectedFuelConsumptions;
+      this.searchParam.seatsNo =
+        this.selectedSeatsNo == null ? [] : this.selectedSeatsNo;
+      this.searchParam.doorNo =
+        this.selectedDoorNo == null ? [] : this.selectedDoorNo;
+      this.searchParam.fuelConsumptions =
+        this.selectedFuelConsumptions == null
+          ? []
+          : this.selectedFuelConsumptions;
 
-      console.log(this.searchParam);
+      this.searchParam.customer = {
+        id: this.$store.state.user.id,
+        email: this.$store.state.user.email,
+        password: this.$store.state.user.password,
+        name: this.$store.state.user.name,
+        surname: this.$store.state.user.surname,
+        customer: this.$store.state.user.customer
+      }
+
       axios
         .post("vehicle/search", this.searchParam)
         .then(response => {
-          console.log(response.data);
+          this.vehicles = response.data;
         })
         .catch(error => {
           console.log(error);
         });
     }
+  },
+   components: {
+    VehicleCard
   },
   mounted() {
     axios

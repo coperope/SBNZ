@@ -10,7 +10,6 @@ import main.dto.BrandDTO;
 import main.dto.CarModelDTO;
 import main.dto.SearchDTO;
 import main.repository.BrandRepo;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,10 +20,6 @@ public class SearchHistory implements Serializable {
 	@Transient
 	ModelMapper modelMapper;
 
-	//@Autowired
-	//@Transient
-	//BrandRepo brandRepo;
-	
 	@Id
 	@SequenceGenerator(name = "search_history_id_seq", sequenceName = "search_history_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "search_history_id_seq")
@@ -187,7 +182,7 @@ public class SearchHistory implements Serializable {
 		this.fuelConsumption = fuelConsumption;
 	}
 
-	public void updateSearchHistory(SearchDTO searchParam) {
+	public void updateSearchHistory(SearchDTO searchParam, ModelMapper modelMapper) {
 		Integer factor = searchParam.getScaleFactor();
 
 		// Category update
@@ -212,7 +207,6 @@ public class SearchHistory implements Serializable {
 		
 		// Brand update
 		for (BrandDTO brandDTO : searchParam.getBrands()) {
-			// Brand brand = brandRepo.findById(brandDTO.getId()).orElse(null);
 			Integer brandValue = this.brands.get(modelMapper.map(brandDTO, Brand.class));
 			if (brandValue != null) {
 				this.brands.put(modelMapper.map(brandDTO, Brand.class), brandValue += factor);

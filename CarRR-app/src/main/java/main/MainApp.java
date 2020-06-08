@@ -1,25 +1,16 @@
 package main;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.apache.maven.shared.invoker.DefaultInvocationRequest;
-import org.apache.maven.shared.invoker.DefaultInvoker;
-import org.apache.maven.shared.invoker.InvocationRequest;
-import org.apache.maven.shared.invoker.Invoker;
-import org.apache.maven.shared.invoker.MavenInvocationException;
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieScanner;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.rule.EntryPoint;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,15 +22,19 @@ import org.springframework.context.annotation.Bean;
 
 import main.facts.Category;
 import main.facts.Customer;
+import main.facts.CustomerPreferences;
 import main.facts.ExtraFeatures;
 import main.facts.Recommendations;
+import main.facts.RentalHistory;
 import main.facts.SearchHistory;
 import main.facts.Tag;
 import main.facts.Vehicle;
 import main.repository.BrandRepo;
 import main.repository.CategoryRepo;
+import main.repository.CustomerPreferencesRepo;
 import main.repository.CustomerRepo;
 import main.repository.RecommendationsRepo;
+import main.repository.RentalHistoryRepo;
 import main.repository.SearchHistoryRepo;
 import main.repository.TagRepo;
 import main.repository.UserRepo;
@@ -83,30 +78,29 @@ public class MainApp {
     @Autowired
     SearchHistoryRepo searchHistoryRepo;
     @Autowired
+    RentalHistoryRepo rentalHistoryRepo;
+    @Autowired
+    CustomerPreferencesRepo customerPreferencesRepo;
+    @Autowired
     RecommendationsRepo recommendationsRepo;
     @Autowired
     BrandRepo brandRepo;
     
 	@PostConstruct
     public void startSessions() { 
-//		for(Customer customer: customerRepo.findAll()) {
-//			SearchHistory s = new SearchHistory();
-//			Recommendations r = new Recommendations();
-//
-//			s.getBrands().put(brandRepo.findById(1l).get(), 5);
-//			s.getSeatsNo().put(4, 2);
-//
-//			customer.setSearchHistory(s);
-//			customer.setRecommendations(r);
-//
-//			searchHistoryRepo.save(customer.getSearchHistory());
-//			recommendationsRepo.save(customer.getRecommendations());
-//			customerRepo.save(customer);
-//
-////			recommendationsRepo.save(r);
-////			searchHistoryRepo.save(s);
-//
-//		}
+		for(Customer customer: customerRepo.findAll()) {
+			SearchHistory s = searchHistoryRepo.save(new SearchHistory());
+			RentalHistory rh = rentalHistoryRepo.save(new RentalHistory());
+			CustomerPreferences cp = customerPreferencesRepo.save(new CustomerPreferences());
+			Recommendations r = recommendationsRepo.save(new Recommendations());
+
+			customer.setSearchHistory(s);
+			customer.setRecommendations(r);
+			customer.setRentalHistory(rh);
+			customer.setPreferences(cp);
+
+			customerRepo.save(customer);
+		}
 		
 		
 		KieServices ks = KieServices.Factory.get();

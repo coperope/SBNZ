@@ -91,7 +91,7 @@ public class VehicleService {
         for (ExtraFeatures feature: vehicle.getFeatures()) {
             extraFeaturesRepo.save(feature);
         }
-        
+
         User owner = userRepo.findById(vehicleDTO.getOwner().getId()).get();
         vehicle.setOwner(owner);
 
@@ -130,104 +130,107 @@ public class VehicleService {
                  .collect(Collectors.toList());
 	}
 
-    public List<Vehicle> searchVehicles(SearchDTO searchDTO){
-        List<BrandDTO> brandsDTO = searchDTO.getBrands();
-        List<Long> brands = brandsDTO.stream()
-                .map(x -> x.getId())
-                .collect(Collectors.toList());
-        brands = brands.isEmpty() ? null : brands;
-        List<Long> models = searchDTO.getModels().stream()
-                .map(x -> x.getId())
-                .collect(Collectors.toList());
-        models = models.isEmpty() ? null : models;
-        List<Long> fuels = searchDTO.getFuels().stream()
-                .map(x -> x.getId())
-                .collect(Collectors.toList());
-        fuels = fuels.isEmpty() ? null : fuels;
-        List<Long> transmissions = searchDTO.getTransmissions().stream()
-                .map(x -> x.getId())
-                .collect(Collectors.toList());
-        transmissions = transmissions.isEmpty() ? null : transmissions;
-        System.out.println(brands);
-        System.out.println(brandsDTO);
-        System.out.println(searchDTO);
+	public List<VehicleDTO> searchVehicles(SearchDTO searchDTO) {
+		List<BrandDTO> brandsDTO = searchDTO.getBrands();
+		List<Long> brands = brandsDTO.stream().map(x -> x.getId()).collect(Collectors.toList());
+		brands = brands.isEmpty() ? null : brands;
+		List<Long> models = searchDTO.getModels().stream().map(x -> x.getId()).collect(Collectors.toList());
+		models = models.isEmpty() ? null : models;
+		List<Long> fuels = searchDTO.getFuels().stream().map(x -> x.getId()).collect(Collectors.toList());
+		fuels = fuels.isEmpty() ? null : fuels;
+		List<Long> transmissions = searchDTO.getTransmissions().stream().map(x -> x.getId())
+				.collect(Collectors.toList());
+		transmissions = transmissions.isEmpty() ? null : transmissions;
+		List<Long> categories = searchDTO.getCategories().stream().map(x -> x.getId()).collect(Collectors.toList());
+		categories = categories.isEmpty() ? null : categories;
+		List<Long> tags = searchDTO.getTags().stream().map(x -> x.getId()).collect(Collectors.toList());
+		tags = tags.isEmpty() ? null : tags;
+		// Update search history
+		kieSession = kieContainer.newKieSession("rental_history_update_session");
 
-        // Update search history
-        kieSession = kieContainer.newKieSession("rental_history_update_session");
+		kieSession.insert(modelMapper);
+		kieSession.insert(searchDTO);
+		Customer customer = customerRepo.getOne(searchDTO.getCustomer().getId());
+        System.out.println(customer);
+		kieSession.insert(customer);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		Customer customerSaved = customerRepo.save(customer);
 
-        kieSession.insert(searchDTO);
-        Customer customer = customerRepo.getOne(searchDTO.getCustomer().getId());
-        kieSession.insert(customer);
-        kieSession.fireAllRules();
-        kieSession.dispose();
-        Customer customerSaved = customerRepo.save(customer);
+		NewSearchEvent event = new NewSearchEvent(searchDTO, customerSaved);
 
-        NewSearchEvent event = new NewSearchEvent(searchDTO);
+		//MainApp.recommendationSession.setGlobal("customerRepository", customerRepo);
 
-        //MainApp.recommendationSession.setGlobal("customerRepository", customerRepo);
+		MainApp.recommendationSession.getAgenda().getAgendaGroup("events-group").setFocus();
+		EntryPoint eventsEntryPoint = MainApp.recommendationSession.getEntryPoint("events-entry");
+		eventsEntryPoint.insert(event);
 
-        MainApp.recommendationSession.getAgenda().getAgendaGroup("events-group").setFocus();
-        EntryPoint eventsEntryPoint = MainApp.recommendationSession.getEntryPoint("events-entry");
-        eventsEntryPoint.insert(event);
-        List<Category> categories = searchDTO.getCategories();
-        return vehicleRepo.getBySearchParams(brands, models, fuels, transmissions, searchDTO.getDoorNo().isEmpty() ? null : searchDTO.getDoorNo() , searchDTO.getSeatsNo().isEmpty() ? null : searchDTO.getSeatsNo());
-    }
-    
-    public LinkedHashMap<Vehicle, Integer> getUserRecommendations(Long userID) {
-    	
-    	Customer customer = customerRepo.findById(userID).orElse(null);
-    	if (customer == null) {
-    		return null;
-    	}
-    	
-    	Recommendations recommendations = customer.getRecommendations();
-    	
-    	Map<Vehicle, Integer> combined = new HashMap<Vehicle, Integer>();
-    	
-    	int i = 0;
-    	for (Vehicle vehicle: recommendations.getRentalMap().keySet()) {
-    		if(combined.containsKey(vehicle)) {
-    			combined.put(vehicle, combined.get(vehicle) + recommendations.getRentalMap().get(vehicle));
-		    } else {
-		    	combined.put(vehicle, recommendations.getRentalMap().get(vehicle));
-		    }
-    		if (++i > 9) {
-    			break;
-    		}
-    	}
-    	i = 0;
-    	for (Vehicle vehicle: recommendations.getSearchMap().keySet()) {
-    		if(combined.containsKey(vehicle)) {
-    			combined.put(vehicle, combined.get(vehicle) + recommendations.getSearchMap().get(vehicle));
-		    } else {
-		    	combined.put(vehicle, recommendations.getSearchMap().get(vehicle));
-		    }
-    		if (++i > 9) {
-    			break;
-    		}
-    	}
-    	i = 0;
-    	for (Vehicle vehicle: recommendations.getPreferencesMap().keySet()) {
-    		if(combined.containsKey(vehicle)) {
-    			combined.put(vehicle, combined.get(vehicle) + recommendations.getPreferencesMap().get(vehicle));
-		    } else {
-		    	combined.put(vehicle, recommendations.getPreferencesMap().get(vehicle));
-		    }
-    		if (++i > 9) {
-    			break;
-    		}
-    	}
-    	
-    	LinkedHashMap<Vehicle, Integer> sortedMap = 
-    			combined.entrySet().stream()
-			    .sorted(Entry.<Vehicle, Integer>comparingByValue().reversed())
-			    .collect(Collectors.toMap(Entry::getKey, Entry::getValue,
-			                              (e1, e2) -> e1, LinkedHashMap::new));
-    	
-    	
-		
-		return sortedMap;
+        List<Vehicle> foundVehicles = vehicleRepo.getBySearchParams(brands, models, fuels, transmissions,
+                searchDTO.getDoorNo().isEmpty() ? null : searchDTO.getDoorNo(),
+                searchDTO.getSeatsNo().isEmpty() ? null : searchDTO.getSeatsNo(), categories, tags, searchDTO.getFuelConsumptions().isEmpty() ? null : searchDTO.getFuelConsumptions());
+        List<VehicleDTO> vehicleDTOS = new ArrayList<>();
+        for (Vehicle vehicle: foundVehicles) {
+            vehicleDTOS.add(convertVehicleToDTO(vehicle));
+        }
+		return vehicleDTOS;
 	}
+
+    public LinkedHashMap<Vehicle, Integer> getUserRecommendations(Long userID) {
+
+        Customer customer = customerRepo.findById(userID).orElse(null);
+        if (customer == null) {
+            return null;
+        }
+
+        Recommendations recommendations = customer.getRecommendations();
+
+        Map<Vehicle, Integer> combined = new HashMap<Vehicle, Integer>();
+
+        int i = 0;
+        for (Vehicle vehicle: recommendations.getRentalMap().keySet()) {
+            if(combined.containsKey(vehicle)) {
+                combined.put(vehicle, combined.get(vehicle) + recommendations.getRentalMap().get(vehicle));
+            } else {
+                combined.put(vehicle, recommendations.getRentalMap().get(vehicle));
+            }
+            if (++i > 9) {
+                break;
+            }
+        }
+        i = 0;
+        for (Vehicle vehicle: recommendations.getSearchMap().keySet()) {
+            if(combined.containsKey(vehicle)) {
+                combined.put(vehicle, combined.get(vehicle) + recommendations.getSearchMap().get(vehicle));
+            } else {
+                combined.put(vehicle, recommendations.getSearchMap().get(vehicle));
+            }
+            if (++i > 9) {
+                break;
+            }
+        }
+        i = 0;
+        for (Vehicle vehicle: recommendations.getPreferencesMap().keySet()) {
+            if(combined.containsKey(vehicle)) {
+                combined.put(vehicle, combined.get(vehicle) + recommendations.getPreferencesMap().get(vehicle));
+            } else {
+                combined.put(vehicle, recommendations.getPreferencesMap().get(vehicle));
+            }
+            if (++i > 9) {
+                break;
+            }
+        }
+
+        LinkedHashMap<Vehicle, Integer> sortedMap =
+                combined.entrySet().stream()
+                        .sorted(Entry.<Vehicle, Integer>comparingByValue().reversed())
+                        .collect(Collectors.toMap(Entry::getKey, Entry::getValue,
+                                (e1, e2) -> e1, LinkedHashMap::new));
+
+
+
+        return sortedMap;
+    }
+
 
     private Brand convertDTOtoBrand(BrandDTO brand){
         Brand b = modelMapper.map(brand, Brand.class);

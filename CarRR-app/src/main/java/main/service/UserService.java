@@ -2,12 +2,8 @@ package main.service;
 
 import main.dto.CustomerPreferencesDTO;
 import main.dto.UserDTO;
-import main.facts.Customer;
-import main.facts.CustomerPreferences;
-import main.facts.User;
-import main.repository.CustomerPreferencesRepo;
-import main.repository.CustomerRepo;
-import main.repository.UserRepo;
+import main.facts.*;
+import main.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +19,12 @@ public class UserService {
     private CustomerRepo customerRepo;
     @Autowired
     private CustomerPreferencesRepo customerPreferencesRepo;
+    @Autowired
+    RentalHistoryRepo rentalHistoryRepo;
+    @Autowired
+    SearchHistoryRepo searchHistoryRepo;
+    @Autowired
+    RecommendationsRepo recommendationsRepo;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -53,7 +55,23 @@ public class UserService {
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setCustomer(userDTO.isCustomer());
         if(user.isCustomer()){
-            customerRepo.save((Customer)user);
+            Customer customer = (Customer)user;
+            CustomerPreferences customerPreferences = new CustomerPreferences();
+            SearchHistory searchHistory = new SearchHistory();
+            Recommendations recommendations = new Recommendations();
+            RentalHistory rentalHistory = new RentalHistory();
+
+            customer.setPreferences(customerPreferences);
+            customer.setSearchHistory(searchHistory);
+            customer.setRecommendations(recommendations);
+            customer.setRentalHistory(rentalHistory);
+
+            customerPreferencesRepo.save(customerPreferences);
+            searchHistoryRepo.save(searchHistory);
+            recommendationsRepo.save(recommendations);
+            rentalHistoryRepo.save(rentalHistory);
+
+            customerRepo.save(customer);
         }else{
             userRepo.save(user);
         }
