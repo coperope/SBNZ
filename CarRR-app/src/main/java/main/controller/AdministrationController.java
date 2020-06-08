@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
+import main.dto.SearchDTO;
+import main.dto.VehicleDTO;
 import org.apache.maven.shared.invoker.DefaultInvocationRequest;
 import org.apache.maven.shared.invoker.DefaultInvoker;
 import org.apache.maven.shared.invoker.InvocationRequest;
@@ -23,11 +25,9 @@ import org.kie.api.io.ResourceType;
 import org.kie.internal.utils.KieHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import main.MainApp;
 import main.dto.CategoryRuleDTO;
@@ -36,7 +36,7 @@ import main.repository.CategoryRepo;
 
 @RestController
 @RequestMapping(value = "rule")
-public class NewRulesController {
+public class AdministrationController {
 	
 	@Autowired
 	CategoryRepo categoryRepo;
@@ -106,7 +106,13 @@ public class NewRulesController {
         buildKjar();
         return new ResponseEntity<>("Rule successfuly added", HttpStatus.OK);
     }
-	
+
+	@PutMapping(path = "/vehicle/events/{number}")
+	public ResponseEntity<String> searchVehicle(@PathVariable("number") int number) {
+		System.out.println("**********************************");
+
+		return new ResponseEntity<>("More novi broj vehicle eventova potreban za aktiviranje pravila", HttpStatus.OK);
+	}
 	
 	private String getCategorizationConditionString(CategoryRuleDTO category) throws Exception {
 		String condition = "";

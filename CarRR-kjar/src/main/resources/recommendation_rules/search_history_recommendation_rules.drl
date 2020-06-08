@@ -28,7 +28,6 @@ lock-on-active true
         
         $vehicle: Vehicle($brand: brand)
     then
-    System.out.println("------------- Search history brand rule -------------");
     	modify ($recommendations) {addSearchHits($vehicle, $searchBrands.get($brand))}
 end
 
@@ -50,8 +49,6 @@ lock-on-active true
             result(count)
         )
     then
-        System.out.println("------------- Search history category rule -------------");
-
     	modify ($recommendations) {addSearchHits($vehicle, $preferencesHit)}
 end
 
