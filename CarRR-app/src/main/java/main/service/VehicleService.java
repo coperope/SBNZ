@@ -138,11 +138,10 @@ public class VehicleService {
 		// Update search history
 		kieSession = kieContainer.newKieSession("rental_history_update_session");
 
+		kieSession.insert(modelMapper);
 		kieSession.insert(searchDTO);
 		Customer customer = customerRepo.getOne(searchDTO.getCustomer().getId());
-        System.out.println("*****************************************");
         System.out.println(customer);
-        System.out.println("*****************************************");
 		kieSession.insert(customer);
 		kieSession.fireAllRules();
 		kieSession.dispose();

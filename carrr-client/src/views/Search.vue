@@ -234,11 +234,10 @@ export default {
         surname: this.$store.state.user.surname,
         customer: this.$store.state.user.customer
       }
-      console.log(this.searchParam);
+
       axios
         .post("vehicle/search", this.searchParam)
         .then(response => {
-          console.log(response.data);
           this.vehicles = response.data;
         })
         .catch(error => {

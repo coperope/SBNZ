@@ -65,7 +65,7 @@
           </label>
         </v-row>
       </v-col>
-      <v-col v-if="vehicle.owner==null || vehicle.owner.isCustomer">
+      <v-col v-if="vehicle.owner==null || vehicle.owner.customer">
         <v-row>
           <v-col>
             <b-form-rating stars="5" v-model="vehicle.numberOfStars"></b-form-rating>
@@ -73,7 +73,7 @@
         </v-row>
         <v-row>
           <v-col>
-            <b-button variant="primary" @click="rent">Rent</b-button>
+            <b-button variant="primary" @click="pickDatesForRent">Pick dates for rent</b-button>
           </v-col>
         </v-row>
       </v-col>
@@ -101,17 +101,20 @@
       </label>
     </v-row>
 
-    <v-dialog v-model="dialog" persistent max-width="290">
-      <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
-      </template>
+    <v-dialog v-model="dialog" persistent max-width="40%">
       <v-card>
-        <v-card-title class="headline">Use Google's location service?</v-card-title>
-        <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+        <v-card-title class="headline">Pick your date</v-card-title>
+        <v-container>
+          <v-row>
+            <v-col>
+              <v-date-picker v-model="dates" range full-width></v-date-picker>
+            </v-col>
+          </v-row>
+        </v-container>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="dialog = false">Disagree</v-btn>
-          <v-btn color="green darken-1" text @click="dialog = false">Agree</v-btn>
+          <v-btn color="red darken-1" text @click="cancelRentalRequest">Cancel</v-btn>
+          <v-btn color="green darken-1" text @click="sendRentalRequest">Rent</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -119,21 +122,50 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
     props: ["vehicle"],
     data(){
       return{
-        dialog: false
+        dialog: false,
+        dates: [],
       }
     },
     methods: {
-      rent(){
+      pickDatesForRent(){
         this.dialog = true;
+      },
+      cancelRentalRequest(){
+        console.log(this.dates);
+        this.dates = [];
+        this.dialog = false;
+      },
+      sendRentalRequest(){
+
+        if (this.dates.length != 2) {
+          alert("Please select from and to date!")
+          return;
+        }
+
+        let rental = {
+          vehicle: this.vehicle,
+          owner: this.vehicle.owner,
+          customer: this.$store.state.user,
+          dateFrom: this.dates[0],
+          dateTo: this.dates[this.dates.length - 1]
+        }
+
+        axios
+          .post("rental", rental)
+          .then(() => {
+            this.dialog = false;
+          })
+          .catch(error => {
+            console.log(error.response.data);
+          });
+
       }
-    },
-    mounted(){
-        console.log("Usao");
-        console.log(this.vehicle);
     }
 };
 </script>

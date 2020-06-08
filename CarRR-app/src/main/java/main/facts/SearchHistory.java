@@ -186,7 +186,7 @@ public class SearchHistory implements Serializable {
 		this.fuelConsumption = fuelConsumption;
 	}
 
-	public void updateSearchHistory(SearchDTO searchParam) {
+	public void updateSearchHistory(SearchDTO searchParam, ModelMapper modelMapper) {
 		Integer factor = searchParam.getScaleFactor();
 
 		// Category update
@@ -211,11 +211,8 @@ public class SearchHistory implements Serializable {
 		
 		// Brand update
 		for (BrandDTO brandDTO : searchParam.getBrands()) {
-//			Integer brandValue = this.brands.get(modelMapper.map(brandDTO, Brand.class));
-			System.out.println(this.brands);
-			System.out.println("******************");
-			System.out.println(brandRepo);
-			Integer brandValue = this.brands.get(brandRepo.findById(brandDTO.getId()));
+			Integer brandValue = this.brands.get(modelMapper.map(brandDTO, Brand.class));
+//			Integer brandValue = this.brands.get(brandRepo.findById(brandDTO.getId()));
 			if (brandValue != null) {
 				brandValue += factor;
 			} else {
