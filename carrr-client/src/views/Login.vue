@@ -40,7 +40,9 @@ export default {
   methods: {
     login() {
         axios.post("user/login", this.user).then(response => {
-          localStorage.setItem("user", JSON.stringify(response.data))
+          localStorage.setItem("user", JSON.stringify(response.data));
+          this.$store.state.user = localStorage.getItem('user');
+          console.log(this.$store.state.user)
           this.$router.push("/");
         }).catch(error => {
         console.log(error.response.data);
