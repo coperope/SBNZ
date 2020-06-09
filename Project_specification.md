@@ -120,22 +120,22 @@ Kao i kod rentiranja tako i kod pretrage nakon sto korisnik pretrazi ili udje u 
 ### Događaji:
 1. Dodavanje novog vozila - Kada se doda novo vozilo kreira se događaj koji se ubacuje u sesiju koja je stalno aktivna.
 
-    - Ukoliko vlasnik tog vozila ima kategoriju "GOLD" njegovo vozilo biva obrađeno svim pravilima za preporuku (preference, rentali, istorija pretrage) za svakog korisnika u sistemu. Tek kada se obave sve tri grupe pravila, izmene se čuvaju a činjenice izbacuju iz sesije.
-    - Ukoliko vlasnik tog vozila nema kategoriju "GOLD", pravila za preporuku se ne pokreću automatski. Čeka se da se na sistemu kreira određen broj novih oglasa vozila i tek tada se pokreće gore opisan proces.
+    - Ukoliko vlasnik tog vozila ima kategoriju "GOLD" njegovo vozilo biva obrađeno svim pravilima za preporuku (preference, rentali, istorija pretrage) za svakog korisnika u sistemu. Tek kada se izvrše sve tri grupe pravila, izmene se čuvaju a činjenice izbacuju iz sesije.
+    - Ukoliko vlasnik tog vozila nema kategoriju "GOLD", pravila za preporuku se ne pokreću odmah. Čeka se da se na sistemu kreira određen broj novih oglasa vozila i tek tada se pokreće gore opisan proces.
     
 
 2. Pretraživanje i pregledanje vozila - Kada korisnik obavi pretragu automobila kreira se događaj koji se ubacuje u sesiju koja je stalno aktivna. 
-Kada se skupi određen broj tih događaja vezanih za tog korisnika a u koliko se ne nalaze u periodu od 15 sekundi, dobavljaju se sva vozila iz baze i pokreću se pravila za prilagođavanje preporuka vozila na osnovu pretraga vozila.
-Ova restrikcija je postavljena kako ne bi moglo doći do zloupotrebe konstantnim zahtevima za pretragom vozila.
+Kada se skupi određen broj tih događaja vezanih za tog korisnika, a u koliko se nisu desili u periodu od 15 sekundi, dobavljaju se sva vozila iz baze i pokreću se pravila za prilagođavanje preporuka vozila na osnovu istorije pretrage istih.
+Ova restrikcija je postavljena kako ne bi moglo doći do zloupotrebe veoma učestalim zahtevima za pretragom vozila u kratkom vremenskom periodu.
 
-3. Novo iznajmljivanje vozila - Kada korisnik iznajmi novo vozilo kreira se događaji koji se ubacuje u sesiju koja je stalno aktivna.
+3. Novo iznajmljivanje vozila - Kada korisnik iznajmi novo vozilo kreira se događaj koji se ubacuje u sesiju koja je stalno aktivna.
 Nakon toga, dobavljaju se sva vozila iz baze i pokreću pravila za prilagođavanje preporuka na osnovu prethodnih iznajmljivanja vozila.
 U ovom skupu pravila se takođe vrši i kategorizacija vlasnika automobila. Ukoliko je njegovo vozilo iznajmljeno određen broj puta on dobija status GOLD;
 
-4. Izmena korisničkih preferencija - Kada korisnik izmeni svoje preferencije kreira se događaji koji se ubacuje u sesiju koja je stalno aktivna.
+4. Izmena korisničkih preferencija - Kada korisnik izmeni svoje preferencije kreira se događaj koji se ubacuje u sesiju koja je stalno aktivna.
 Nakon toga, dobavljaju se sva vozila iz baze i pokreću pravila za kreiranje preporuka na osnovu preferencija korisnika.
 
-*S obzirom da pravila koja obrađuju ove događaje ubacuju veliki broj činjenica u sesiju. Nakon izvršavanja pravila za preporuku, izmene se čuvaju u bazi a obrađenje činjenice izbacuju iz sesije.
+*S obzirom da pravila koja obrađuju ove događaje ubacuju veliki broj činjenica u sesiju, nakon izvršavanja pravila za preporuku izmene se čuvaju u bazi a obrađene činjenice izbacuju iz sesije.
 
 
 ### Opis koncepta i pravila za predlaganja vozila korisniku
@@ -171,14 +171,14 @@ Korisnik upotrebom opcije pretrage šalje podatke:
 Ovi podaci se čuvaju u bazi za svakog pojedinačnog korisnika i to u obliku ključ-vrednost. Ključ predstavlja jednu instancu entiteta pretrage (npr. model "Zastava") dok je vrednost broj koji predstavlja koliko puta se taj entitet pretražio. Takođe se vodi evidencija i o zahtevu za detaljnim pregledom vozila. Ta akcija je značajnija te se polje vrednosti povećava sa određenim faktorom skaliranja.
 
 Za svaki od prethodno navedenih podataka postoji pravilo koje pronalazi vozila koja se podudaraju sa korisničkim pretragama. Vozila koja imaju podudaranja se pamte i sortiraju prema ukupnom broju broju pretraga svih entiteta vozila koja se podudaraju sa korisničkim pretragama. Time dobijamo listu vozila koja su najsličnija onima koje je korisnik ranije pretraživao ili pregledao.
-Sistem na zahtev korisnika (potencijalno i automatski), obrađuje unete podatke i pronalazi automobile sa najviše podudaranja. Takvi automobili se onda prosleđuju korisniku.
+Sistem na zahtev dostavlja korisniku automobile sa najviše podudaranja.
 
 #### Personalizovani predlog vozila korisniku na osnovu njegovog ranijeg rentiranja vozila.
 Prilikom rentiranja vozila, za korisnika se vezuje istorija rentiranja i čuvaju svi podaci vozila.
 
 Ovi podaci se čuvaju u bazi za svakog pojedinačnog korisnika i to u obliku ključ-vrednost. Ključ predstavlja jednu instancu entiteta pretrage (npr. model "Zastava") dok je vrednost broj koji predstavlja koliko puta se vozilo sa tim entitetom rentiralo.
 
-Za svaki od prethodno navedenih podataka postoji pravilo koje pronalazi vozila koja poseduju entitete sačuvane u prethodno navenom obliku. Vozila koja imaju podudaranja se pamte i sortiraju prema ukupnom broju broju podudaranja. Time dobijamo listu vozila koja su najsličnija onima koje je korisnik ranije rentirao. Sistem na zahtev korisnika (potencijalno i automatski), obrađuje unete podatke i pronalazi automobile sa najviše podudaranja. Takvi automobili se onda prosleđuju korisniku.
+Za svaki od prethodno navedenih podataka postoji pravilo koje pronalazi vozila koja poseduju entitete sačuvane u prethodno navedenom obliku. Vozila koja imaju podudaranja se pamte i sortiraju prema ukupnom broju broju podudaranja. Time dobijamo listu vozila koja su najsličnija onima koje je korisnik ranije rentirao. Sistem na zahtev dostavlja korisniku automobile sa najviše podudaranja.
 
 
 ### Literatura:
