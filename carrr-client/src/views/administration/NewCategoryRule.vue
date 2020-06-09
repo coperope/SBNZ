@@ -17,7 +17,16 @@
               </v-col>
             </v-row>
 
-            <hr>
+            <v-row align="center" justify="center">
+              <v-col cols="5" align="center">
+                <v-label>Categorize existing vehicles</v-label>
+              </v-col>
+              <v-col cols="5" align="center">
+                <v-switch label v-model="categorizeExistingVehicles"></v-switch>
+              </v-col>
+            </v-row>
+
+            <hr />
             <v-row align="center" justify="center">
               <v-col cols="5" align="center">
                 <v-label>
@@ -313,7 +322,8 @@ export default {
         cargoAndPassengerAreaVolumeOperation: null,
         features: null,
         featuresOperation: null
-      }
+      },
+      categorizeExistingVehicles: true
     };
   },
 
@@ -326,7 +336,8 @@ export default {
         conditions: Array(),
         features: this.combinedParameters.features,
         featureOperation: this.combinedParameters.featureOperation,
-        categoryName: this.categoryName.replace(/ /g,"_")
+        categoryName: this.categoryName.replace(/ /g, "_"),
+        categorizeExistingVehicles: this.categorizeExistingVehicles
       };
 
       if (
@@ -353,20 +364,14 @@ export default {
           this.parameters.height
         ]);
       }
-      if (
-        this.parameters.widthOperation &&
-        this.parameters.width
-      ) {
+      if (this.parameters.widthOperation && this.parameters.width) {
         rule.conditions.push([
           "width",
           this.parameters.widthOperation,
           this.parameters.width
         ]);
       }
-      if (
-        this.parameters.cargoVolumeOperation &&
-        this.parameters.cargoVolume
-      ) {
+      if (this.parameters.cargoVolumeOperation && this.parameters.cargoVolume) {
         rule.conditions.push([
           "cargoVolume",
           this.parameters.cargoVolumeOperation,
@@ -383,37 +388,27 @@ export default {
           this.parameters.passengerAreaVolume
         ]);
       }
-      if (
-        this.parameters.seatsNoOperation &&
-        this.parameters.seatsNo
-      ) {
+      if (this.parameters.seatsNoOperation && this.parameters.seatsNo) {
         rule.conditions.push([
           "seatsNo",
           this.parameters.seatsNoOperation,
           this.parameters.seatsNo
         ]);
       }
-      if (
-        this.parameters.doorNoOperation &&
-        this.parameters.doorNo
-      ) {
+      if (this.parameters.doorNoOperation && this.parameters.doorNo) {
         rule.conditions.push([
           "doorNo",
           this.parameters.doorNoOperation,
           this.parameters.doorNo
         ]);
       }
-      if (
-        this.parameters.pricePerDayOperation &&
-        this.parameters.pricePerDay
-      ) {
+      if (this.parameters.pricePerDayOperation && this.parameters.pricePerDay) {
         rule.conditions.push([
           "pricePerDay",
           this.parameters.pricePerDayOperation,
           this.parameters.pricePerDay
         ]);
       }
-
 
       if (
         this.combinedParameters.powerToWeightOperation &&

@@ -2,6 +2,7 @@ package main.controller;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.ValidationException;
 
@@ -98,10 +99,32 @@ public class UserController {
         return new ResponseEntity<>(customer.getPreferences(), HttpStatus.OK);
     }
     
-    @GetMapping(path = "/{id}/recommendations", produces = "application/json")
-    public ResponseEntity getUserRecommendations(@PathVariable("id") Long userID) {
-    	LinkedHashMap<Vehicle, Integer> recommendations = vehicleService.getUserRecommendations(userID);
+    @GetMapping(path = "/{id}/recommendations/combined", produces = "application/json")
+    public ResponseEntity getUserRecommendationsCombined(@PathVariable("id") Long userID) {
+    	List<VehicleDTO> recommendations = vehicleService.getUserRecommendationsCombined(userID);
 
         return new ResponseEntity<>(recommendations, HttpStatus.OK);
     }
+    
+    @GetMapping(path = "/{id}/recommendations/preferences", produces = "application/json")
+    public ResponseEntity getUserRecommendationsPreferences(@PathVariable("id") Long userID) {
+    	List<VehicleDTO> recommendations = vehicleService.getUserRecommendationsPreferences(userID);
+
+        return new ResponseEntity<>(recommendations, HttpStatus.OK);
+    }
+    
+    @GetMapping(path = "/{id}/recommendations/searches", produces = "application/json")
+    public ResponseEntity getUserRecommendationsSearches(@PathVariable("id") Long userID) {
+    	List<VehicleDTO> recommendations = vehicleService.getUserRecommendationsSearches(userID);
+
+        return new ResponseEntity<>(recommendations, HttpStatus.OK);
+    }
+    
+    @GetMapping(path = "/{id}/recommendations/rentals", produces = "application/json")
+    public ResponseEntity getUserRecommendationsRentals(@PathVariable("id") Long userID) {
+    	List<VehicleDTO> recommendations = vehicleService.getUserRecommendationsRentals(userID);
+
+        return new ResponseEntity<>(recommendations, HttpStatus.OK);
+    }
+    
 }
