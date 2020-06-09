@@ -6,11 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import main.dto.SearchDTO;
-import main.dto.VehicleDTO;
 import org.apache.maven.shared.invoker.DefaultInvocationRequest;
 import org.apache.maven.shared.invoker.DefaultInvoker;
 import org.apache.maven.shared.invoker.InvocationRequest;
@@ -22,24 +21,40 @@ import org.drools.template.objects.ArrayDataProvider;
 import org.kie.api.builder.Message;
 import org.kie.api.builder.Results;
 import org.kie.api.io.ResourceType;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 import org.kie.internal.utils.KieHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import main.MainApp;
 import main.dto.CategoryRuleDTO;
 import main.facts.Category;
+import main.facts.ExtraFeatures;
+import main.facts.Tag;
+import main.facts.Vehicle;
 import main.repository.CategoryRepo;
+import main.repository.TagRepo;
+import main.repository.VehicleRepo;
 
 @RestController
 @RequestMapping(value = "rule")
 public class AdministrationController {
 	
 	@Autowired
+    KieContainer kieContainer;
+	@Autowired
 	CategoryRepo categoryRepo;
+	@Autowired
+	VehicleRepo vehicleRepo;
 	
 	@PostMapping(path = "/categorization", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> newCategorisationRule(@RequestBody CategoryRuleDTO categoryRuleDTO) {
@@ -104,6 +119,10 @@ public class AdministrationController {
         createCategoryIfNotExists(category);
         // Build kjar with new rule
         buildKjar();
+        
+        if (categoryRuleDTO.getCategorizeExistingVehicles()) {
+            categorizeExistingVehicles(category);
+        }
         return new ResponseEntity<>("Rule successfuly added", HttpStatus.OK);
     }
 
@@ -166,4 +185,30 @@ public class AdministrationController {
 			e.printStackTrace();
 		}
 	}
+	
+    @Async
+	private void categorizeExistingVehicles(String categoryName) {
+
+    	try {
+			Thread.sleep(15000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		KieSession taggingAndCategorisation = kieContainer.newKieSession("categorisation_tagging_session");
+		
+	    List<Vehicle> vehicles = vehicleRepo.findAll();
+    	Category category = categoryRepo.findByName(categoryName);
+
+	    taggingAndCategorisation.insert(category);
+		for (Vehicle v: vehicles) {
+			taggingAndCategorisation.insert(v);
+		}
+		
+		taggingAndCategorisation.fireAllRules();
+		taggingAndCategorisation.dispose();
+		
+		for (Vehicle v: vehicles) {
+			vehicleRepo.save(v);
+		}
+    }
 }

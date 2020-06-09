@@ -1,7 +1,7 @@
 <template>
   <b-navbar type="dark" variant="dark">
     <b-container>
-      <router-link to="/" tag="b-navbar-brand">CarRR</router-link>
+      <router-link to="/" tag="b-navbar-brand" style="cursor: pointer;">CarRR</router-link>
       <template v-if="userSignedIn">
         <b-navbar-nav>
           <router-link to="/search" tag="b-nav-item" v-if="userSignedIn.customer">Search</router-link>
