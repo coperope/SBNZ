@@ -3,6 +3,15 @@ package main.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kie.api.KieServices;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
+
+import main.facts.Category;
+import main.facts.ExtraFeatures;
+import main.facts.Tag;
+import main.facts.Vehicle;
+
 public class CategoryRuleDTO {
 
 	/* fuelConsumption < 8, length < 400, height < 160
@@ -17,7 +26,7 @@ public class CategoryRuleDTO {
 	int features;
 	String featureOperation;
 	String categoryName;
-	
+	Boolean categorizeExistingVehicles;
 	
 	public CategoryRuleDTO() {
 		
@@ -54,6 +63,12 @@ public class CategoryRuleDTO {
 	public void setFeatureOperation(String featureOperation) {
 		this.featureOperation = featureOperation;
 	}
-	
-	
+
+	public Boolean getCategorizeExistingVehicles() {
+		return categorizeExistingVehicles;
+	}
+
+	public void setCategorizeExistingVehicles(Boolean categorizeExistingVehicles) {
+		this.categorizeExistingVehicles = categorizeExistingVehicles;
+	}
 }

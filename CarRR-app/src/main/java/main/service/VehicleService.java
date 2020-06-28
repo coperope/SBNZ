@@ -175,7 +175,7 @@ public class VehicleService {
 		return vehicleDTOS;
 	}
 
-    public LinkedHashMap<Vehicle, Integer> getUserRecommendations(Long userID) {
+    public List<VehicleDTO> getUserRecommendationsCombined(Long userID) {
 
         Customer customer = customerRepo.findById(userID).orElse(null);
         if (customer == null) {
@@ -183,52 +183,159 @@ public class VehicleService {
         }
 
         Recommendations recommendations = customer.getRecommendations();
-
         Map<Vehicle, Integer> combined = new HashMap<Vehicle, Integer>();
-
         int i = 0;
         for (Vehicle vehicle: recommendations.getRentalMap().keySet()) {
-            if(combined.containsKey(vehicle)) {
-                combined.put(vehicle, combined.get(vehicle) + recommendations.getRentalMap().get(vehicle));
-            } else {
-                combined.put(vehicle, recommendations.getRentalMap().get(vehicle));
-            }
-            if (++i > 9) {
-                break;
-            }
+        	if (recommendations.getRentalMap().get(vehicle) > 0) {
+        		if(combined.containsKey(vehicle)) {
+                    combined.put(vehicle, combined.get(vehicle) + recommendations.getRentalMap().get(vehicle));
+                } else {
+                    combined.put(vehicle, recommendations.getRentalMap().get(vehicle));
+                }
+                if (++i > 9) {
+                    break;
+                }
+        	}
         }
         i = 0;
         for (Vehicle vehicle: recommendations.getSearchMap().keySet()) {
-            if(combined.containsKey(vehicle)) {
-                combined.put(vehicle, combined.get(vehicle) + recommendations.getSearchMap().get(vehicle));
-            } else {
-                combined.put(vehicle, recommendations.getSearchMap().get(vehicle));
-            }
-            if (++i > 9) {
-                break;
-            }
+        	if (recommendations.getSearchMap().get(vehicle) > 0) {
+        		if(combined.containsKey(vehicle)) {
+                    combined.put(vehicle, combined.get(vehicle) + recommendations.getSearchMap().get(vehicle));
+                } else {
+                    combined.put(vehicle, recommendations.getSearchMap().get(vehicle));
+                }
+                if (++i > 9) {
+                    break;
+                }
+        	}
         }
         i = 0;
         for (Vehicle vehicle: recommendations.getPreferencesMap().keySet()) {
-            if(combined.containsKey(vehicle)) {
-                combined.put(vehicle, combined.get(vehicle) + recommendations.getPreferencesMap().get(vehicle));
-            } else {
-                combined.put(vehicle, recommendations.getPreferencesMap().get(vehicle));
-            }
-            if (++i > 9) {
-                break;
-            }
+        	if (recommendations.getPreferencesMap().get(vehicle) > 0) {
+        		if(combined.containsKey(vehicle)) {
+                    combined.put(vehicle, combined.get(vehicle) + recommendations.getPreferencesMap().get(vehicle));
+                } else {
+                    combined.put(vehicle, recommendations.getPreferencesMap().get(vehicle));
+                }
+                if (++i > 9) {
+                    break;
+                }
+        	}
+        }
+        LinkedHashMap<Vehicle, Integer> sortedMap =
+                combined.entrySet().stream()
+                        .sorted(Entry.<Vehicle, Integer>comparingByValue().reversed())
+                        .collect(Collectors.toMap(Entry::getKey, Entry::getValue,
+                                (e1, e2) -> e1, LinkedHashMap::new));
+        List<VehicleDTO> vehicleDTOS = new ArrayList<>();
+        for (Vehicle vehicle: sortedMap.keySet()) {
+            vehicleDTOS.add(convertVehicleToDTO(vehicle));
+        }
+        return vehicleDTOS;
+    }
+    
+    public List<VehicleDTO> getUserRecommendationsPreferences(Long userID) {
+
+        Customer customer = customerRepo.findById(userID).orElse(null);
+        if (customer == null) {
+            return null;
         }
 
+        Recommendations recommendations = customer.getRecommendations();
+        Map<Vehicle, Integer> combined = new HashMap<Vehicle, Integer>();
+        int i = 0;
+        for (Vehicle vehicle: recommendations.getPreferencesMap().keySet()) {
+        	if (recommendations.getPreferencesMap().get(vehicle) > 0) {
+        		if(combined.containsKey(vehicle)) {
+                    combined.put(vehicle, combined.get(vehicle) + recommendations.getPreferencesMap().get(vehicle));
+                } else {
+                    combined.put(vehicle, recommendations.getPreferencesMap().get(vehicle));
+                }
+                if (++i > 9) {
+                    break;
+                }
+        	}
+        }
         LinkedHashMap<Vehicle, Integer> sortedMap =
                 combined.entrySet().stream()
                         .sorted(Entry.<Vehicle, Integer>comparingByValue().reversed())
                         .collect(Collectors.toMap(Entry::getKey, Entry::getValue,
                                 (e1, e2) -> e1, LinkedHashMap::new));
 
+        List<VehicleDTO> vehicleDTOS = new ArrayList<>();
+        for (Vehicle vehicle: sortedMap.keySet()) {
+            vehicleDTOS.add(convertVehicleToDTO(vehicle));
+        }
+        return vehicleDTOS;
+    }
+    
+    public List<VehicleDTO> getUserRecommendationsSearches(Long userID) {
 
+        Customer customer = customerRepo.findById(userID).orElse(null);
+        if (customer == null) {
+            return null;
+        }
 
-        return sortedMap;
+        Recommendations recommendations = customer.getRecommendations();
+        Map<Vehicle, Integer> combined = new HashMap<Vehicle, Integer>();
+        int i = 0;
+        for (Vehicle vehicle: recommendations.getSearchMap().keySet()) {
+        	if (recommendations.getSearchMap().get(vehicle) > 0) {
+        		if(combined.containsKey(vehicle)) {
+                    combined.put(vehicle, combined.get(vehicle) + recommendations.getSearchMap().get(vehicle));
+                } else {
+                    combined.put(vehicle, recommendations.getSearchMap().get(vehicle));
+                }
+                if (++i > 9) {
+                    break;
+                }
+        	}
+        }
+        LinkedHashMap<Vehicle, Integer> sortedMap =
+                combined.entrySet().stream()
+                        .sorted(Entry.<Vehicle, Integer>comparingByValue().reversed())
+                        .collect(Collectors.toMap(Entry::getKey, Entry::getValue,
+                                (e1, e2) -> e1, LinkedHashMap::new));
+        List<VehicleDTO> vehicleDTOS = new ArrayList<>();
+        for (Vehicle vehicle: sortedMap.keySet()) {
+            vehicleDTOS.add(convertVehicleToDTO(vehicle));
+        }
+        return vehicleDTOS;
+    }
+    
+    public List<VehicleDTO> getUserRecommendationsRentals(Long userID) {
+
+        Customer customer = customerRepo.findById(userID).orElse(null);
+        if (customer == null) {
+            return null;
+        }
+
+        Recommendations recommendations = customer.getRecommendations();
+        Map<Vehicle, Integer> combined = new HashMap<Vehicle, Integer>();
+        int i = 0;
+        for (Vehicle vehicle: recommendations.getRentalMap().keySet()) {
+        	if (recommendations.getRentalMap().get(vehicle) > 0) {
+        		if(combined.containsKey(vehicle)) {
+                    combined.put(vehicle, combined.get(vehicle) + recommendations.getRentalMap().get(vehicle));
+                } else {
+                    combined.put(vehicle, recommendations.getRentalMap().get(vehicle));
+                }
+                if (++i > 9) {
+                    break;
+                }
+        	}
+        }
+        LinkedHashMap<Vehicle, Integer> sortedMap =
+                combined.entrySet().stream()
+                        .sorted(Entry.<Vehicle, Integer>comparingByValue().reversed())
+                        .collect(Collectors.toMap(Entry::getKey, Entry::getValue,
+                                (e1, e2) -> e1, LinkedHashMap::new));
+        List<VehicleDTO> vehicleDTOS = new ArrayList<>();
+        for (Vehicle vehicle: sortedMap.keySet()) {
+            vehicleDTOS.add(convertVehicleToDTO(vehicle));
+        }
+        return vehicleDTOS;
     }
 
     public void changeVehicleEventsGlobal(int number){

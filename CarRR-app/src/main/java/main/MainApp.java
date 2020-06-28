@@ -20,6 +20,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import main.facts.Category;
 import main.facts.Customer;
@@ -31,6 +32,7 @@ import main.facts.SearchHistory;
 import main.facts.Tag;
 import main.facts.Vehicle;
 
+@EnableAsync
 @SpringBootApplication
 public class MainApp {
 
