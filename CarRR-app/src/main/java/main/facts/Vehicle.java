@@ -378,6 +378,8 @@ public class Vehicle implements Serializable {
 				+ ", mileageLimit=" + mileageLimit + ", mileagePrice=" + mileagePrice + ", power=" + power + ", weight="
 				+ weight + ", cargoVolume=" + cargoVolume + ", passengerAreaVolume=" + passengerAreaVolume + ", width="
 				+ width + ", height=" + height + ", length=" + length + ", tankVolume=" + tankVolume + ", pricePerDay="
-				+ pricePerDay + "]";
+				+ pricePerDay + ", numberOfStars=" + numberOfStars + ", numberOfReviews=" + numberOfReviews + ", owner="
+				+ owner.getId() + ", warning=" + warning + "]";
 	}
+
 }

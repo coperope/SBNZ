@@ -3,7 +3,6 @@ package recommendation_rules
 //list any import classes here.
 import main.facts.Customer;
 import main.facts.RentalRecommendations;
-import main.repository.
 import main.facts.Category;
 import main.facts.Tag;
 import main.facts.Brand;
@@ -17,27 +16,66 @@ import main.facts.Bundle;
 import main.facts.Malfunction;
 import main.facts.MalfunctionType;
 import main.facts.RentalHistory;
-import java.lang.Long
 
-query getVehiclesRentals(Vehicle vehicle)
-    $rentals: rentalRepository.findAllByVehicle(vehicle)
+import java.lang.Long
+import java.util.List;
+import java.time.LocalDate;
+import java.util.Date;
+import java.lang.Math;
+
+query checkMalfunctions(List vehicleRentals, List $rentals, MalfunctionType desiredType)
+	accumulate(
+        Rental($r: this, $malfunctions: malfunctions, System.currentTimeMillis()/1000 - 6652800 < dateTo ) from vehicleRentals and
+        List(size > 0) from collect(
+            Malfunction(type == desiredType) from $malfunctions
+        ),
+        $rentals:= collectList($r)
+    )
 end
 
 rule "Service needed"
+salience ((int)((100 - $rentals.size())))
+lock-on-active true
+no-loop true
+agenda-group "warnings"
     when
-        $u: User($ownerId: id)
-        $v: Vehicle($vehicleId: id, owner.id == $ownerId)
-        $ownersRentals: getVehiclesRentals($v)
-        accumulate(
-            Rental($r: this, $malfunctions: malfunctions, $traveledKm: traveledKm ) from $ownersRentals and
-            List(size > 0) from collect(
-                Malfunction(type == MalfunctionType.SERIOUS) from $malfunctions
-            ),
-            $rentals: collectList($r),
-            $traveledKm: sum($traveledKm)
+        $v: Vehicle($vehicleId: id)
+        $vehicleRentals: List() from collect( Rental(vehicle.id == $v.id, finished == true) )
+        checkMalfunctions($vehicleRentals, $rentals, MalfunctionType.INTERMEDIATE;)
+        Number($traveledSum : intValue) from accumulate(
+            Rental($traveledKm: traveledKm, System.currentTimeMillis()/1000 - 6652800 < dateTo ) from $vehicleRentals
+            ,
+            sum($traveledKm)
         )
-        eval(($rentals.size() >= 3) || ($traveledKm >= 2000))
+        eval(($rentals.size() >= 3) || ($traveledSum >= 2000))
     then
-        System.out.println("STIGO");
+    	modify ($v) {setWarning("Service needed")}
+    	System.out.println("--------------------------------------------");
+    	System.out.println("Intermediate malfunctions: " + $rentals.size());
+    	System.out.println("Traveled mileage: " + $traveledSum);
+        System.out.println("--------------------------------------------");
+end
 
+
+rule "Serious malfunctions"
+salience ((int)((100 - $rentals.size() * 3)))
+lock-on-active true
+no-loop true
+agenda-group "warnings"
+    when
+        $v: Vehicle($vehicleId: id)
+        $vehicleRentals: List() from collect( Rental(vehicle.id == $v.id, finished == true) )
+        checkMalfunctions($vehicleRentals, $rentals, MalfunctionType.SERIOUS;)
+        eval($rentals.size() >= 1)
+    then
+    	String malfunctions = "SERIOUS MALFUNCTIONS: ";
+    	for (Object rent: $rentals) {
+    		for (Object mal: ((Rental)rent).getMalfunctions()){
+    			malfunctions += ((Malfunction)mal).getName() + ", ";
+    		}
+    	}
+    	modify ($v) {setWarning(malfunctions)};
+    	System.out.println("--------------------------------------------");
+    	System.out.println("Serious malfunctions: " + $rentals.size());
+        System.out.println("--------------------------------------------");
 end

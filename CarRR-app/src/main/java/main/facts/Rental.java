@@ -34,9 +34,12 @@ public class Rental implements Serializable {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Malfunction> malfunctions;
+    
+    @Column(name = "finished")
+    private boolean finished = false;
 
     public Rental(){
-
+    	this.finished = false;
     }
 
     public Rental(Vehicle vehicle, User owner, Customer customer, long dateFrom, long dateTo) {
@@ -118,4 +121,12 @@ public class Rental implements Serializable {
     public void setMalfunctions(List<Malfunction> malfunctions) {
         this.malfunctions = malfunctions;
     }
+
+	public boolean isFinished() {
+		return finished;
+	}
+
+	public void setFinished(boolean finished) {
+		this.finished = finished;
+	}
 }
