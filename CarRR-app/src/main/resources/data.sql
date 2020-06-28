@@ -158,6 +158,32 @@ INSERT INTO public.vehicle( -- BMW 206
 	id, owner_id, ac, door_no, fuel_consumption, mileage_limit, seats_no, brand_id, fuel_id, model_id, transmission_id, cargo_volume, height, length, mileage_price, number_of_reviews, number_of_stars, passenger_area_volume, power, price_per_day, tank_volume, weight, width)
 	VALUES (nextval('vehicle_id_seq'), 1, true, 4, 18, 150, 12, 1, 2, 3, 2, 500, 202, 560, 0.4, 20, 88 , 4600, 500, 150, 40, 4500, 200);
 
+-- Rentals
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id)
+VALUES (nextval('rental_id_seq'), 1593529200, 1593788400, 4, 500, 1, 2, 1);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id)
+VALUES (nextval('rental_id_seq'), 1593539200, 1593798400, 5, 160, 1, 2, 1);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id)
+VALUES (nextval('rental_id_seq'), 1593788400, 1594134000, 2, 180, 1, 2, 1);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id)
+VALUES (nextval('rental_id_seq'), 1593788400, 1594134000, 1, 2500, 1, 2, 1);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id)
+VALUES (nextval('rental_id_seq'), 1593529200, 1593788400, 1, 400, 1, 2, 1);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id)
+VALUES (nextval('rental_id_seq'), 1593539200, 1593798400, 2, 622, 1, 2, 1);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id)
+VALUES (nextval('rental_id_seq'), 1593788400, 1594134000, 3, 356, 1, 2, 1);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id)
+VALUES (nextval('rental_id_seq'), 1593788400, 1594234000, 1, 144, 1, 2, 1);
+
 -- Extra features
 INSERT INTO public.extra_features(
     id, name)
@@ -179,3 +205,50 @@ VALUES (1, 2);
 INSERT INTO public.vehicle_extra_features(
     vehicle_id, feature_id)
 VALUES (1, 3);
+
+
+-- Malfunctions
+INSERT INTO public.malfunction(
+	id, name, type)
+VALUES (nextval('malfunction_id_seq'), 'Flat tire', 'TRIVIAL');
+INSERT INTO public.malfunction(
+	id, name, type)
+VALUES (nextval('malfunction_id_seq'), 'Engine on fire', 'SERIOUS');
+INSERT INTO public.malfunction(
+	id, name, type)
+VALUES (nextval('malfunction_id_seq'), 'Engine radiator fell off', 'SERIOUS');
+INSERT INTO public.malfunction(
+	id, name, type)
+VALUES (nextval('malfunction_id_seq'), 'Oil leakage', 'INTERMEDIATE');
+INSERT INTO public.malfunction(
+	id, name, type)
+VALUES (nextval('malfunction_id_seq'), 'Car battery died', 'INTERMEDIATE');
+INSERT INTO public.malfunction(
+	id, name, type)
+VALUES (nextval('malfunction_id_seq'), 'Broken windshield', 'SERIOUS');
+
+-- Rental malfunctions
+INSERT INTO public.rental_malfunctions(
+	rental_id, malfunctions_id)
+VALUES (1, 1);
+INSERT INTO public.rental_malfunctions(
+	rental_id, malfunctions_id)
+VALUES (2, 2);
+INSERT INTO public.rental_malfunctions(
+	rental_id, malfunctions_id)
+VALUES (3, 3);
+INSERT INTO public.rental_malfunctions(
+	rental_id, malfunctions_id)
+VALUES (4, 4);
+INSERT INTO public.rental_malfunctions(
+	rental_id, malfunctions_id)
+VALUES (5, 5);
+INSERT INTO public.rental_malfunctions(
+	rental_id, malfunctions_id)
+VALUES (6, 6);
+INSERT INTO public.rental_malfunctions(
+	rental_id, malfunctions_id)
+VALUES (7, 6);
+INSERT INTO public.rental_malfunctions(
+	rental_id, malfunctions_id)
+VALUES (8, 3);

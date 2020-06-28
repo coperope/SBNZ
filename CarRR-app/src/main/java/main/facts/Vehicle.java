@@ -108,6 +108,10 @@ public class Vehicle implements Serializable {
 	@ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private User owner;
 
+	@Column(name = "warning")
+	private String warning;
+
+
     public Vehicle(){
 
     }
@@ -356,6 +360,14 @@ public class Vehicle implements Serializable {
 
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
+	}
+
+	public String getWarning() {
+		return warning;
+	}
+
+	public void setWarning(String warning) {
+		this.warning = warning;
 	}
 
 	@Override

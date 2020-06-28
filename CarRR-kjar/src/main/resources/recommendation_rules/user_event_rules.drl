@@ -20,6 +20,7 @@ global main.repository.RecommendationsRepo recommendationsRepo;
 global main.repository.CustomerRepo customerRepository;
 global main.repository.VehicleRepo vehicleRepo;
 global main.repository.UserRepo userRepository;
+global main.repository.rentalRepo rentalRepository;
 
 rule "New vehicle event gold user"
 agenda-group "events-group"

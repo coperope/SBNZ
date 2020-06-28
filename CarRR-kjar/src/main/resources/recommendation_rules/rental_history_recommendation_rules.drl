@@ -63,8 +63,7 @@ salience 10
 
         $vehicle: Vehicle($tags: tags)
         Number($preferencesHit : intValue) from accumulate(
-            $t: Tag() from $tags
-            ,
+            $t: Tag() from $tags,
             init(int count = 0;),
             action(count += ($rentalTags.get($t)!=null) ? (int)$rentalTags.get($t) : 0;),
             result(count)

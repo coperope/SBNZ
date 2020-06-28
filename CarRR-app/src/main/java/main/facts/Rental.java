@@ -2,6 +2,7 @@ package main.facts;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class Rental implements Serializable {
@@ -20,16 +21,25 @@ public class Rental implements Serializable {
     private Customer customer;
 
     @Column(name = "dateFrom")
-    private String dateFrom;
+    private long dateFrom;
 
     @Column(name = "dateTo")
-    private String dateTo;
+    private long dateTo;
+
+    @Column(name = "traveledKm")
+    private Double traveledKm;
+
+    @Column(name = "rating")
+    private int rating;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Malfunction> malfunctions;
 
     public Rental(){
 
     }
 
-    public Rental(Vehicle vehicle, User owner, Customer customer, String dateFrom, String dateTo) {
+    public Rental(Vehicle vehicle, User owner, Customer customer, long dateFrom, long dateTo) {
         this.vehicle = vehicle;
         this.owner = owner;
         this.customer = customer;
@@ -69,19 +79,43 @@ public class Rental implements Serializable {
         this.customer = customer;
     }
 
-    public String getDateFrom() {
+    public long getDateFrom() {
         return dateFrom;
     }
 
-    public void setDateFrom(String dateFrom) {
+    public void setDateFrom(long dateFrom) {
         this.dateFrom = dateFrom;
     }
 
-    public String getDateTo() {
+    public long getDateTo() {
         return dateTo;
     }
 
-    public void setDateTo(String dateTo) {
+    public void setDateTo(long dateTo) {
         this.dateTo = dateTo;
+    }
+
+    public Double getTraveledKm() {
+        return traveledKm;
+    }
+
+    public void setTraveledKm(Double traveledKm) {
+        this.traveledKm = traveledKm;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public List<Malfunction> getMalfunctions() {
+        return malfunctions;
+    }
+
+    public void setMalfunctions(List<Malfunction> malfunctions) {
+        this.malfunctions = malfunctions;
     }
 }

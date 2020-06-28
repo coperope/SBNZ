@@ -5,8 +5,8 @@ public class RentalDTO {
     private VehicleDTO vehicle;
     private UserDTO owner;
     private UserDTO customer;
-    private String dateFrom;
-    private String dateTo;
+    private long dateFrom;
+    private long dateTo;
 
     public RentalDTO() {
     }
@@ -43,19 +43,19 @@ public class RentalDTO {
         this.customer = customer;
     }
 
-    public String getDateFrom() {
+    public long getDateFrom() {
         return dateFrom;
     }
 
-    public void setDateFrom(String dateFrom) {
+    public void setDateFrom(long dateFrom) {
         this.dateFrom = dateFrom;
     }
 
-    public String getDateTo() {
+    public long getDateTo() {
         return dateTo;
     }
 
-    public void setDateTo(String dateTo) {
+    public void setDateTo(long dateTo) {
         this.dateTo = dateTo;
     }
 

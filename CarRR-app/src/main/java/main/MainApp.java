@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import main.repository.*;
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieScanner;
 import org.kie.api.runtime.KieContainer;
@@ -29,16 +30,6 @@ import main.facts.RentalHistory;
 import main.facts.SearchHistory;
 import main.facts.Tag;
 import main.facts.Vehicle;
-import main.repository.BrandRepo;
-import main.repository.CategoryRepo;
-import main.repository.CustomerPreferencesRepo;
-import main.repository.CustomerRepo;
-import main.repository.RecommendationsRepo;
-import main.repository.RentalHistoryRepo;
-import main.repository.SearchHistoryRepo;
-import main.repository.TagRepo;
-import main.repository.UserRepo;
-import main.repository.VehicleRepo;
 
 @SpringBootApplication
 public class MainApp {
@@ -85,6 +76,8 @@ public class MainApp {
     RecommendationsRepo recommendationsRepo;
     @Autowired
     BrandRepo brandRepo;
+    @Autowired
+	RentalRepo rentalRepo;
     
 	@PostConstruct
     public void startSessions() { 
@@ -138,6 +131,7 @@ public class MainApp {
 		recommendationSession.setGlobal("vehicleRepo", vehicleRepo);
 		recommendationSession.setGlobal("recommendationsRepo", recommendationsRepo);
 		recommendationSession.setGlobal("userRepository", userRepo);
+		recommendationSession.setGlobal("rentalRepository", rentalRepo);
 
 
 		recommendationSession.insert(customerRepo);

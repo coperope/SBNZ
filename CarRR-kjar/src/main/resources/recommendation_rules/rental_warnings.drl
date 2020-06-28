@@ -1,0 +1,43 @@
+package recommendation_rules
+
+//list any import classes here.
+import main.facts.Customer;
+import main.facts.RentalRecommendations;
+import main.repository.
+import main.facts.Category;
+import main.facts.Tag;
+import main.facts.Brand;
+import main.facts.Fuel;
+import main.facts.Transmission;
+import main.facts.Vehicle;
+import main.facts.Rental;
+import main.facts.User;
+import main.facts.OwnerStatus;
+import main.facts.Bundle;
+import main.facts.Malfunction;
+import main.facts.MalfunctionType;
+import main.facts.RentalHistory;
+import java.lang.Long
+
+query getVehiclesRentals(Vehicle vehicle)
+    $rentals: rentalRepository.findAllByVehicle(vehicle)
+end
+
+rule "Service needed"
+    when
+        $u: User($ownerId: id)
+        $v: Vehicle($vehicleId: id, owner.id == $ownerId)
+        $ownersRentals: getVehiclesRentals($v)
+        accumulate(
+            Rental($r: this, $malfunctions: malfunctions, $traveledKm: traveledKm ) from $ownersRentals and
+            List(size > 0) from collect(
+                Malfunction(type == MalfunctionType.SERIOUS) from $malfunctions
+            ),
+            $rentals: collectList($r),
+            $traveledKm: sum($traveledKm)
+        )
+        eval(($rentals.size() >= 3) || ($traveledKm >= 2000))
+    then
+        System.out.println("STIGO");
+
+end
