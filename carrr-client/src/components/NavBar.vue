@@ -6,7 +6,7 @@
         <b-navbar-nav>
           <router-link to="/search" tag="b-nav-item" v-if="userSignedIn.customer">Search</router-link>
           <router-link to="/about" tag="b-nav-item" class="mr-5">About</router-link>
-          <router-link to="/administration" tag="b-nav-item" class="mr-5" v-if="!userSignedIn.customer">Rule administration</router-link>
+          <router-link to="/administration" tag="b-nav-item" class="mr-5" v-if="!userSignedIn.customer && userSignedIn != null">Rule administration</router-link>
 
           <b-nav-item-dropdown right>
             <template v-slot:button-content>
@@ -20,6 +20,7 @@
             </template>
             <template v-else>
               <router-link to="/vehicles" tag="b-dropdown-item">Vehicles</router-link>
+              <router-link to="/rentals" tag="b-dropdown-item">Rentals</router-link>
             </template>
             <b-dropdown-divider />
             <b-dropdown-item @click="logout">Logout</b-dropdown-item>

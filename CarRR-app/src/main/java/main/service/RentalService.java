@@ -6,6 +6,10 @@ import main.events.NewRentalEvent;
 import main.events.NewVehicleEvent;
 import main.facts.*;
 import main.repository.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.rule.EntryPoint;
 import org.modelmapper.ModelMapper;
@@ -82,4 +86,23 @@ public class RentalService {
     private Rental convertDTOToRental(RentalDTO rentalDTO){
         return modelMapper.map(rentalDTO, Rental.class);
     }
+
+	public List<RentalDTO> getOwnersActiveRentals(Long ownerID) {
+		User owner = userRepo.findById(ownerID).get();
+		
+		List<RentalDTO> rentals = new ArrayList<RentalDTO>();
+		
+		for (Rental rental : rentalRepo.findAllByOwnerAndFinished(owner, false)) {
+			rentals.add(convertRentalToDTO(rental));
+		}
+
+		return rentals;
+	}
+
+	public void finishRental(Long rentalID, List<Malfunction> malfunctions) {
+		Rental rental = rentalRepo.findById(rentalID).get();
+		rental.setMalfunctions(malfunctions);
+		rental.setFinished(true);
+		rentalRepo.save(rental);
+	}
 }

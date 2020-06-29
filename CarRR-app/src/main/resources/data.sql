@@ -249,6 +249,6 @@ VALUES (6, 6);
 INSERT INTO public.rental_malfunctions(
 	rental_id, malfunctions_id)
 VALUES (7, 6);
-INSERT INTO public.rental_malfunctions(
-	rental_id, malfunctions_id)
-VALUES (8, 3);
+--INSERT INTO public.rental_malfunctions(
+--	rental_id, malfunctions_id)
+--VALUES (8, 3);

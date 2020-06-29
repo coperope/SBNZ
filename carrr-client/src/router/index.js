@@ -6,6 +6,7 @@ import Register from "../views/Register.vue";
 import Search from "../views/Search.vue"
 import Preferences from "../views/customer/Preferences.vue";
 import OwnerVehicles from "../views/owner/OwnerVehicles.vue";
+import ActiveRentals from "../views/owner/ActiveRentals.vue";
 import NewCategoryRule from "../views/administration/NewCategoryRule.vue";
 
 Vue.use(VueRouter);
@@ -83,7 +84,15 @@ const routes = [
     meta: {
       requiresAuth: false
     }
-  }
+  },
+  {
+    path: "/rentals",
+    name: "Active rentals",
+    component: ActiveRentals,
+    meta: {
+      requiresAuth: false
+    }
+  },
 ];
 
 const router = new VueRouter({
