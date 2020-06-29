@@ -50,6 +50,7 @@ agenda-group "warnings"
         eval(($rentals.size() >= 3) || ($traveledSum >= 2000))
     then
     	modify ($v) {setWarning("Service needed")}
+    	vehicleRepo.save($v);
     	System.out.println("--------------------------------------------");
     	System.out.println("Intermediate malfunctions: " + $rentals.size());
     	System.out.println("Traveled mileage: " + $traveledSum);
@@ -75,7 +76,29 @@ agenda-group "warnings"
     		}
     	}
     	modify ($v) {setWarning(malfunctions)};
+    	vehicleRepo.save($v);
     	System.out.println("--------------------------------------------");
     	System.out.println("Serious malfunctions: " + $rentals.size());
         System.out.println("--------------------------------------------");
+end
+
+
+rule "Warnings - Remove vehicle from session"
+agenda-group "warnings"
+salience 0
+    when
+    	$v: Vehicle()
+    then
+        System.out.println("------------- WARNING RULES: Removing vehicle -------------");
+    	delete($v);
+end
+
+rule "Warnings - Remove rental from session"
+agenda-group "warnings"
+salience 0
+    when
+    	$r: Rental()
+    then
+        System.out.println("------------- WARNING RULES: Removing rental -------------");
+    	delete($r);
 end
