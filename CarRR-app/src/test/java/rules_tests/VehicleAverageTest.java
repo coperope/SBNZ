@@ -18,7 +18,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { VehicleRepo.class, UserRepo.class, RentalRepo.class, MainApp.class })
@@ -52,10 +54,15 @@ public class VehicleAverageTest {
         for (Rental rent: rentals) {
             kieSession.insert(rent);
         }
+        Set<Long> set = new HashSet<>();
 
+        kieSession.insert(set);
         kieSession.insert(owner);
         kieSession.getAgenda().getAgendaGroup("topRentals").setFocus();
         kieSession.fireAllRules();
         kieSession.dispose();
+        System.out.println("********************************************");
+        System.out.println(set);
+        System.out.println("********************************************");
     }
 }

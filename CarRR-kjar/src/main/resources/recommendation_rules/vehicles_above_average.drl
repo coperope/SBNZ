@@ -20,6 +20,7 @@ import main.facts.RentalHistory;
 
 import java.lang.Long
 import java.util.List;
+import java.util.Set;
 
 
 rule "Find vehicles rented above average from 3 unique customers"
@@ -28,6 +29,7 @@ lock-on-active true
 no-loop true
 agenda-group "topRentals"
     when
+        $set: Set()
         $o: User($ownerId: id)
         $ownersRentals: List() from collect( Rental(owner.id == $ownerId, finished == true) )
         accumulate(
@@ -44,6 +46,7 @@ agenda-group "topRentals"
         )
         eval(($customers.size() >= 2))
     then
+        modify ($set) {addAll($vehicles)};
     	System.out.println("--------------------------------------------");
     	System.out.println("Vehicles above average: ");
     	System.out.println($vehicles);
