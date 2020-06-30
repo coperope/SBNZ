@@ -21,6 +21,14 @@ INSERT INTO public.customer(id, name, surname, email, password, phone_number, is
 -- Owner
 INSERT INTO public.users(id, name, surname, email, password, phone_number, is_customer, no_of_rentals)
 	VALUES (nextval('users_id_seq'), 'Ernesto', 'Guevara', 'che@gmail.com', '123456', '061265978', false, 9);
+	
+-- Additional customers
+INSERT INTO public.customer(id, name, surname, email, password, phone_number, is_customer, no_of_rentals)
+VALUES (nextval('users_id_seq'), 'Mao', 'Dung', 'ce@gmail.com', '123456', '061265978', true, -1);
+INSERT INTO public.customer(id, name, surname, email, password, phone_number, is_customer, no_of_rentals)
+VALUES (nextval('users_id_seq'), 'Karl', 'Marx', 'marx@gmail.com', '123456', '061265978', true, -1);
+INSERT INTO public.customer(id, name, surname, email, password, phone_number, is_customer, no_of_rentals)
+VALUES (nextval('users_id_seq'), 'Friedrich', 'Engels', 'engels@gmail.com', '123456', '061265978', true, -1);
 
 -- Categories
 INSERT INTO public.category(id, name)
@@ -179,10 +187,59 @@ INSERT INTO public.rental(
 VALUES (nextval('rental_id_seq'), 1593539200, 1593798400, 2, 622, 1, 2, 1, true);
 INSERT INTO public.rental(
     id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
-VALUES (nextval('rental_id_seq'), 1593788400, 1594134000, 3, 356, 1, 2, 1, false);
+VALUES (nextval('rental_id_seq'), 1593788400, 1594134000, 3, 356, 1, 2, 1, true);
 INSERT INTO public.rental(
     id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
-VALUES (nextval('rental_id_seq'), 1593788400, 1594234000, 1, 144, 1, 2, 1, false);
+VALUES (nextval('rental_id_seq'), 1593788400, 1594234000, 1, 144, 1, 2, 1, true);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
+VALUES (nextval('rental_id_seq'), 1593529200, 1593788400, 4, 500, 5, 2, 4, false);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
+VALUES (nextval('rental_id_seq'), 1577880000, 1577885000, 5, 160, 5, 2, 3, true);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
+VALUES (nextval('rental_id_seq'), 1593788400, 1594134000, 2, 180, 5, 2, 2, true);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
+VALUES (nextval('rental_id_seq'), 1593788400, 1594134000, 1, 2500, 3, 2, 5, true);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
+VALUES (nextval('rental_id_seq'), 1593529200, 1593788400, 1, 400, 4, 2, 4, false);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
+VALUES (nextval('rental_id_seq'), 1593539200, 1593798400, 2, 622, 4, 2, 3, true);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
+VALUES (nextval('rental_id_seq'), 1593788400, 1594134000, 3, 356, 3, 2, 2, true);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
+VALUES (nextval('rental_id_seq'), 1593788400, 1594234000, 1, 144, 3, 2, 2, true);
+
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
+VALUES (nextval('rental_id_seq'), 1593529200, 1593788400, 4, 500, 5, 2, 4, false);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
+VALUES (nextval('rental_id_seq'), 1577880000, 1577885000, 5, 160, 5, 2, 3, true);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
+VALUES (nextval('rental_id_seq'), 1593788400, 1594134000, 2, 180, 5, 2, 3, true);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
+VALUES (nextval('rental_id_seq'), 1593788400, 1594134000, 1, 2500, 3, 2, 5, true);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
+VALUES (nextval('rental_id_seq'), 1593529200, 1593788400, 1, 400, 4, 2, 2, false);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
+VALUES (nextval('rental_id_seq'), 1593539200, 1593798400, 2, 622, 4, 2, 2, true);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
+VALUES (nextval('rental_id_seq'), 1593788400, 1594134000, 3, 356, 3, 2, 2, true);
+INSERT INTO public.rental(
+    id, date_from, date_to, rating, traveled_km, customer_id, owner_id, vehicle_id, finished)
+VALUES (nextval('rental_id_seq'), 1593788400, 1594234000, 1, 144, 3, 2, 2, true); 
 
 -- Extra features
 INSERT INTO public.extra_features(

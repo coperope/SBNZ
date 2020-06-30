@@ -48,4 +48,13 @@ public class VehicleController {
         System.out.println("**********************************");
         return new ResponseEntity<>(vehicleService.searchVehicles(searchDTO), HttpStatus.OK);
     }
+    
+    @GetMapping(path = "/above-average/{id}")
+    public ResponseEntity<List<VehicleDTO>> getOwnersVehiclesAboveAverage(@PathVariable("id") Long ownersId) {
+        List<VehicleDTO> vehicleDTOS = vehicleService.getOwnersVehiclesAboveAverage(ownersId);
+        if (vehicleDTOS == null) {
+        	 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        return new ResponseEntity<>(vehicleDTOS, HttpStatus.OK);
+    }
 }

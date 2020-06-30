@@ -7,6 +7,7 @@ import Search from "../views/Search.vue"
 import Preferences from "../views/customer/Preferences.vue";
 import OwnerVehicles from "../views/owner/OwnerVehicles.vue";
 import ActiveRentals from "../views/owner/ActiveRentals.vue";
+import VehicleAboveAvg from "../views/owner/VehicleAboveAvg.vue";
 import NewCategoryRule from "../views/administration/NewCategoryRule.vue";
 
 Vue.use(VueRouter);
@@ -64,6 +65,14 @@ const routes = [
     path: "/administration",
     name: "Administration",
     component: NewCategoryRule,
+    meta: {
+      requiresAuth: false // change later
+    }
+  },
+  {
+    path: "/above",
+    name: "Vehicle Above Avg",
+    component: VehicleAboveAvg,
     meta: {
       requiresAuth: false // change later
     }

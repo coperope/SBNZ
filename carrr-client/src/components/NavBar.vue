@@ -21,6 +21,7 @@
             <template v-else>
               <router-link to="/vehicles" tag="b-dropdown-item">Vehicles</router-link>
               <router-link to="/rentals" tag="b-dropdown-item">Rentals</router-link>
+              <router-link to="/above" tag="b-dropdown-item">Above</router-link>
             </template>
             <b-dropdown-divider />
             <b-dropdown-item @click="logout">Logout</b-dropdown-item>
