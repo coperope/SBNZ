@@ -4,6 +4,7 @@ import main.MainApp;
 import main.dto.RentalDTO;
 import main.events.NewRentalEvent;
 import main.events.NewVehicleEvent;
+import main.events.NewWarningEvent;
 import main.facts.*;
 import main.repository.*;
 
@@ -103,6 +104,13 @@ public class RentalService {
 		Rental rental = rentalRepo.findById(rentalID).get();
 		rental.setMalfunctions(malfunctions);
 		rental.setFinished(true);
+		
 		rentalRepo.save(rental);
+		
+		NewWarningEvent event = new NewWarningEvent(rental.getVehicle(), rental.getOwner());
+		
+		MainApp.recommendationSession.getAgenda().getAgendaGroup("events-group").setFocus();
+		EntryPoint eventsEntryPoint = MainApp.recommendationSession.getEntryPoint("events-entry");
+		eventsEntryPoint.insert(event);
 	}
 }

@@ -6,10 +6,12 @@ import main.events.NewVehicleEvent;
 import main.events.NewSearchEvent;
 import main.events.NewRentalEvent;
 import main.events.NewCustomerPreferencesEvent;
+import main.events.NewWarningEvent;
 import main.facts.Customer;
 import main.facts.User;
 import main.facts.Bundle;
 import main.facts.Vehicle;
+import main.facts.Rental;
 import main.repository.CustomerRepo;
 import main.facts.OwnerStatus;
 import java.util.ArrayList;
@@ -126,5 +128,20 @@ agenda-group "events-group"
         insert($customer.getRecommendations());
         for(Vehicle vehicle: vehicleRepo.findAll()) {
             insert(vehicle);
+        };
+    end
+    
+rule "New Warning Event"
+agenda-group "events-group"
+    when
+        $event: NewWarningEvent($vehicle: vehicle, $owner: owner) from entry-point "events-entry"
+
+    then
+        System.out.println("------------- NEW WARNING EVENT: Starting rules -------------");
+        kcontext.getKnowledgeRuntime().getAgenda().getAgendaGroup("warnings").setFocus();
+        insert($vehicle);
+        insert($owner);
+        for(Rental rental: rentalRepository.findAllByVehicle($vehicle)) {
+            insert(rental);
         };
     end
