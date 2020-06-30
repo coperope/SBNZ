@@ -1,0 +1,54 @@
+package recommendation_rules
+
+//list any import classes here.
+import main.facts.Customer;
+import main.facts.RentalRecommendations;
+import main.facts.Category;
+import main.facts.Tag;
+import main.facts.Brand;
+import main.facts.Fuel;
+import main.facts.Transmission;
+import main.facts.Vehicle;
+import main.facts.Rental;
+import main.facts.User;
+import main.facts.Customer;
+import main.facts.OwnerStatus;
+import main.facts.Bundle;
+import main.facts.Malfunction;
+import main.facts.MalfunctionType;
+import main.facts.RentalHistory;
+
+import java.lang.Long
+import java.util.List;
+
+
+rule "Find vehicles rented above average from 3 unique customers"
+salience 10
+lock-on-active true
+no-loop true
+agenda-group "topRentals"
+    when
+        $o: User($ownerId: id)
+        $ownersRentals: List() from collect( Rental(owner.id == $ownerId, finished == true) )
+        accumulate(
+            Rental($vehicleId: vehicle.id) from $ownersRentals,
+            $uniqueVehicles: collectSet($vehicleId)
+        )
+        accumulate(
+            Rental($r: this, $vehicleId: vehicle.id, $customer: customer, System.currentTimeMillis()/1000 - 6652800 < dateTo ) from $ownersRentals and
+            List(size > $ownersRentals.size() / $uniqueVehicles.size())from collect(
+                Rental(vehicle.id == $vehicleId) from $ownersRentals
+            ),
+            $vehicles: collectSet($vehicleId),
+            $customers: collectSet($customer.getId())
+        )
+        eval(($customers.size() >= 2))
+    then
+    	System.out.println("--------------------------------------------");
+    	System.out.println("Vehicles above average: ");
+    	System.out.println($vehicles);
+        System.out.println("--------------------------------------------");
+end
+
+
+

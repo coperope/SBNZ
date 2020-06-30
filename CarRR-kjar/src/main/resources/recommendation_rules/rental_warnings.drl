@@ -19,9 +19,6 @@ import main.facts.RentalHistory;
 
 import java.lang.Long
 import java.util.List;
-import java.time.LocalDate;
-import java.util.Date;
-import java.lang.Math;
 
 query checkMalfunctions(List vehicleRentals, List $rentals, MalfunctionType desiredType)
 	accumulate(

@@ -111,6 +111,8 @@ public class Vehicle implements Serializable {
 	@Column(name = "warning")
 	private String warning;
 
+	@Column(name = "notice")
+	private String notice;
 
     public Vehicle(){
 
@@ -370,16 +372,45 @@ public class Vehicle implements Serializable {
 		this.warning = warning;
 	}
 
-	@Override
-	public String toString() {
-		return "Vehicle [id=" + id + ", brand=" + brand + ", model=" + model + ", fuel=" + fuel + ", transmission="
-				+ transmission + ", seatsNo=" + seatsNo + ", doorNo=" + doorNo + ", fuelConsumption=" + fuelConsumption
-				+ ", ac=" + ac + ", categories=" + categories + ", tags=" + tags + ", features=" + features
-				+ ", mileageLimit=" + mileageLimit + ", mileagePrice=" + mileagePrice + ", power=" + power + ", weight="
-				+ weight + ", cargoVolume=" + cargoVolume + ", passengerAreaVolume=" + passengerAreaVolume + ", width="
-				+ width + ", height=" + height + ", length=" + length + ", tankVolume=" + tankVolume + ", pricePerDay="
-				+ pricePerDay + ", numberOfStars=" + numberOfStars + ", numberOfReviews=" + numberOfReviews + ", owner="
-				+ owner.getId() + ", warning=" + warning + "]";
+	public String getNotice() {
+		return notice;
 	}
 
+	public void setNotice(String notice) {
+		this.notice = notice;
+	}
+
+	@Override
+	public String toString() {
+		return "Vehicle{" +
+				"id=" + id +
+				", brand=" + brand +
+				", model=" + model +
+				", fuel=" + fuel +
+				", transmission=" + transmission +
+				", seatsNo=" + seatsNo +
+				", doorNo=" + doorNo +
+				", fuelConsumption=" + fuelConsumption +
+				", ac=" + ac +
+				", categories=" + categories +
+				", tags=" + tags +
+				", features=" + features +
+				", mileageLimit=" + mileageLimit +
+				", mileagePrice=" + mileagePrice +
+				", power=" + power +
+				", weight=" + weight +
+				", cargoVolume=" + cargoVolume +
+				", passengerAreaVolume=" + passengerAreaVolume +
+				", width=" + width +
+				", height=" + height +
+				", length=" + length +
+				", tankVolume=" + tankVolume +
+				", pricePerDay=" + pricePerDay +
+				", numberOfStars=" + numberOfStars +
+				", numberOfReviews=" + numberOfReviews +
+				", owner=" + owner.getName() +
+				", warning='" + warning + '\'' +
+				", notice='" + notice + '\'' +
+				'}';
+	}
 }

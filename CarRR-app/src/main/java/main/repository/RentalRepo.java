@@ -11,4 +11,5 @@ public interface RentalRepo extends JpaRepository<Rental, Long> {
     public List<Rental> findAllByVehicle(Vehicle vehicle);
     
     public List<Rental> findAllByOwnerAndFinished(User owner, boolean finished);
+
 }
