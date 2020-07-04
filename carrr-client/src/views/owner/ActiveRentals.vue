@@ -75,7 +75,7 @@ export default {
   },
   filters: {
     dateFormat(value) {
-      var date = new Date(value);
+      var date = new Date(value*1000);
       return (
         ("0" + date.getHours()).slice(-2) +
         ":" +

@@ -103,6 +103,7 @@ public class RentalService {
 	public void finishRental(Long rentalID, List<Malfunction> malfunctions) {
 		Rental rental = rentalRepo.findById(rentalID).get();
 		rental.setMalfunctions(malfunctions);
+		rental.setTraveledKm(150.0);
 		rental.setFinished(true);
 		
 		rentalRepo.save(rental);

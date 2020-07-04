@@ -147,13 +147,13 @@ export default {
           alert("Please select from and to date!")
           return;
         }
-
+        console.log((new Date(this.dates[0])).getTime());
         let rental = {
           vehicle: this.vehicle,
           owner: this.vehicle.owner,
           customer: this.$store.state.user,
-          dateFrom: this.dates[0],
-          dateTo: this.dates[this.dates.length - 1]
+          dateFrom: (new Date(this.dates[0])).getTime() / 1000,
+          dateTo: (new Date(this.dates[this.dates.length - 1])).getTime() / 1000
         }
 
         let params = {'Content-Type': "application/json"}
